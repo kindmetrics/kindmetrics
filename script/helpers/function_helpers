@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+# This file contains a set of functions used as helpers
+# for various tasks. Read the examples for each one for
+# more information. Feel free to put any additional helper
+# functions you may need for your app
+
+
+# Returns true if the command $1 is not found
+# example:
+#   if command_not_found "yarn"; then
+#     echo "no yarn"
+#   fi
+command_not_found() {
+  ! command -v $1 > /dev/null
+  return $?
+}
+
+# Returns true if the command $1 is not running
+# You must supply the full command to check as an argument
+# example:
+#   if command_not_running "redis-cli ping"; then
+#     print_error "Redis is not running"
+#   fi
+command_not_running() {
+  $1
+  if [ $? -ne 0 ]; then
+    true
+  else
+    false
+  fi
+}
+
+# Returns true if the OS is macOS
+# example:
+#   if is_mac; then
+#     echo "do mac stuff"
+#   fi
+is_mac() {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    true
+  else
+    false
+  fi
+}
+
+# Returns true if the OS is linux based
+# example:
+#   if is_linux; then
+#     echo "do linux stuff"
+#   fi
+is_linux() {
+  if [[ "$OSTYPE" == "linux"* ]]; then
+    true
+  else
+    false
+  fi
+}
+
+# Prints error and exit.
+# example:
+#   print_error "Redis is not running. Run it with some_command"
+print_error() {
+  printf "${BOLD_RED_COLOR}There is a problem with your system setup:\n\n"
+  printf "${BOLD_RED_COLOR}$1 \n\n" | indent
+  exit 1
+}

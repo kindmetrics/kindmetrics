@@ -1,0 +1,4 @@
+# Learn more about robots.txt: https://www.robotstxt.org/robotstxt.html
+User-agent: *
+# 'Disallow' with an empty value allows all paths to be crawled
+Disallow:

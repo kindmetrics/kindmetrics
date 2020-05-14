@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# This file contains a set of functions used to format text,
+# and make printing text a little easier. Feel free to put
+# any additional functions you need for formatting your shell
+# output text.
+
+# Colors
+BOLD_RED_COLOR="\e[1m\e[31m"
+
+# Indents the text 2 spaces
+# example:
+#   printf "Hello" | indent
+indent() {
+  while read LINE; do
+    echo "  $LINE" || true
+  done
+}
+
+# Prints out an arrow to your custom notice
+# example:
+#   notice "Installing new magic"
+notice() {
+  printf "\n▸ $1\n"
+}
+
+# Prints out a check mark and Done.
+# example:
+#   print_done
+print_done() {
+  printf "✔ Done\n" | indent
+}

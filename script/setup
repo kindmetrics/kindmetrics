@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# Exit if any subcommand fails
+set -e
+set -o pipefail
+
+source script/helpers/text_helpers
+
+
+notice "Running System Check"
+./script/system_check
+print_done
+
+notice "Installing node dependencies"
+yarn install --no-progress | indent
+
+notice "Compiling assets"
+yarn dev | indent
+
+print_done
+
+notice "Installing shards"
+shards install | indent
+
+if [ ! -f ".env" ]; then
+  notice "No .env found. Creating one."
+  touch .env
+  print_done
+fi
+
+notice "Creating the database"
+lucky db.create | indent
+
+notice "Verifying postgres connection"
+lucky db.verify_connection | indent
+
+notice "Migrating the database"
+lucky db.migrate | indent
+
+notice "Seeding the database with required and sample records"
+lucky db.create_required_seeds | indent
+lucky db.create_sample_seeds | indent
+
+print_done
+notice "Run 'lucky dev' to start the app"

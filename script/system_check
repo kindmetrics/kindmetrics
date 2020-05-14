@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+source script/helpers/text_helpers
+source script/helpers/function_helpers
+
+# Use this script to check the system for required tools and process that your app needs.
+# A few helper functions are provided to make writing bash a little easier. See the 
+# script/helpers/function_helpers file for more examples.
+#
+# A few examples you might use here:
+#   * 'lucky db.verify_connection' to test postgres can be connected
+#   * Checking that elasticsearch, redis, or postgres is installed and/or booted
+#   * Note: Booting additional processes for things like mail, background jobs, etc...
+#     should go in your Procfile.dev.
+
+if command_not_found "yarn"; then
+  print_error "Yarn is not installed\n  See https://yarnpkg.com/lang/en/docs/install/ for install instructions."
+fi
+
+# Only if this isn't CI
+if [ -z "$CI" ]; then
+  lucky ensure_process_runner_installed
+fi
+
+if command_not_found "createdb"; then
+  MSG="Please install the postgres CLI tools, then try again."
+  if is_mac; then
+    MSG="$MSG\nIf you're using Postgres.app, see https://postgresapp.com/documentation/cli-tools.html."
+  fi
+  MSG="$MSG\nSee https://www.postgresql.org/docs/current/tutorial-install.html for install instructions."
+
+  print_error "$MSG"
+fi
+
+
+## CUSTOM PRE-BOOT CHECKS ##
+# example:
+# if command_not_running "redis-cli ping"; then
+#   print_error "Redis is not running."
+# fi
+
+
