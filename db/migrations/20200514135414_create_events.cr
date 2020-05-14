@@ -3,7 +3,7 @@ class CreateEvents::V20200514135414 < Avram::Migrator::Migration::V1
     # Learn about migrations at: https://luckyframework.org/guides/database/migrations
     create table_for(Event) do
       primary_key id : Int64
-      add user_id : String, unique: true
+      add user_id : String
       add referrer : String?
       add domain : String?
       add url : String?

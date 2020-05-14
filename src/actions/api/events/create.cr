@@ -3,21 +3,23 @@ class Events::Create < ApiAction
   post "/api/track" do
     data = params.to_h
     Log.debug { {params: data} }
-    address = data["domain"]
+    address = data["domain"].to_s
     return error unless address.present?
-    ip_address = request.remote_address
+    Log.debug { {headers: request.headers.to_h} }
+    remote_ip = request.headers["X-Forwarded-For"]? || "localhost"
+
     user_agent = data["user_agent"].to_s
 
     browser_name, browser_version = UserHash.get_browser(user_agent) if user_agent.present?
     Log.debug { {browser: browser_name, version: browser_version} }
 
-    user_id = UserHash.create(address, ip_address, browser_name || "", browser_version || "")
+    user_id = UserHash.create(address, remote_ip, browser_name || "", browser_version || "").to_s
 
-    domain = DomainQuery.new.address(address.to_s).first
+    domain = DomainQuery.new.address(address).first
 
     return error unless domain.present?
 
-    SaveEvent.create(domain_id: domain.id, user_id: user_id) do |operation, event|
+    SaveEvent.create(name: data["name"].to_s, user_agent: user_agent, referrer: data["referrer"].to_s, url: data["url"].to_s, source: data["source"].to_s, screen_width: data["screen_width"].to_s, domain_id: domain.id, user_id: user_id) do |operation, event|
       if event
         Log.debug { "Yay, saved!" }
       else

@@ -12,8 +12,10 @@
   </head>
 
   <body>
-    <%=mount Shared::FlashMessages.new(context.flash) %>
-    <% render_signed_in_user %>
-    <% content %>
+    <div class="container-md mx-auto px-10 sm:px-20 md:px-30">
+      <%=mount Shared::FlashMessages.new(context.flash) %>
+      <% render_signed_in_user %>
+      <% content %>
+    </div>
   </body>
 </html>
