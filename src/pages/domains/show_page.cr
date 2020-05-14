@@ -38,17 +38,20 @@ class Domains::ShowPage < MainLayout
   end
 
   def render_total
-    div class: "" do
-      text @total_unique.to_s
-    end
-    div class: "" do
-      text @total_sum.to_s
+    div class: "w-3/5 shadow-md p-8" do
+      div class: "float-left w-1/3 mr-2" do
+        para "Unique Visitors", class: "text-md strong"
+        para @total_unique.to_s, class: "text-md strong"
+      end
+      div class: "float-left w-1/3" do
+        text @total_sum.to_s
+      end
     end
   end
 
   def render_events
     table class: "w-full" do
-      @events.each do |event|
+      @events.id.desc_order.each do |event|
         tr do
           td do
             text event.created_at.to_s

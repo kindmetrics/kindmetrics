@@ -5,13 +5,11 @@ class Events::Create < ApiAction
     Log.debug { {params: data} }
     address = data["domain"].to_s
     return error unless address.present?
-    Log.debug { {headers: request.headers.to_h} }
     remote_ip = request.headers["X-Forwarded-For"]? || "localhost"
 
     user_agent = data["user_agent"].to_s
 
     browser_name, browser_version = UserHash.get_browser(user_agent) if user_agent.present?
-    Log.debug { {browser: browser_name, version: browser_version} }
 
     user_id = UserHash.create(address, remote_ip, browser_name || "", browser_version || "").to_s
 
