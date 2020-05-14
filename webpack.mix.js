@@ -6,6 +6,7 @@
  |
  | Docs: https://github.com/JeffreyWay/laravel-mix/tree/master/docs#readme
  */
+ const tailwindcss = require('tailwindcss')
 
 let mix = require("laravel-mix");
 let plugins = [];
@@ -57,7 +58,10 @@ mix
     // https://github.com/tcoopman/image-webpack-loader
     imgLoaderOptions: { enabled: false },
     // Stops Mix from clearing the console when compilation succeeds
-    clearConsole: false
+    clearConsole: false,
+    postCss: [
+      tailwindcss('./tailwind.config.js'),
+    ]
   })
   // Set public path so manifest gets output here
   .setPublicPath("public")

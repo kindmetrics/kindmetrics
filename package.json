@@ -4,6 +4,7 @@
   "dependencies": {
     "@rails/ujs": "^6.0.0",
     "normalize-scss": "^7.0.1",
+    "tailwindcss": "^1.4.6",
     "turbolinks": "^5.2.0"
   },
   "scripts": {

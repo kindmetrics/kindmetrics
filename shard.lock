@@ -8,6 +8,10 @@ shards:
     github: luckyframework/avram
     version: 0.14.0
 
+  baked_file_system:
+    github: schovi/baked_file_system
+    version: 0.9.8
+
   bindata:
     github: spider-gazelle/bindata
     version: 1.5.1
@@ -27,6 +31,10 @@ shards:
   db:
     github: crystal-lang/crystal-db
     version: 0.9.0
+
+  device_detector:
+    github: creadone/device_detector
+    version: 0.3.3
 
   dexter:
     github: luckyframework/dexter
@@ -48,9 +56,17 @@ shards:
     github: crystal-community/jwt
     version: 1.4.0
 
+  kilt:
+    github: jeromegn/kilt
+    version: 0.6.0
+
   lucky:
     github: luckyframework/lucky
     version: 0.21.1
+
+  lucky_can:
+    github: confact/lucky_can
+    commit: 2004fe0e4d02a43ca3f7b4728c28b1c501285a9c
 
   lucky_cli:
     github: luckyframework/lucky_cli

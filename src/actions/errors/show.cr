@@ -48,6 +48,14 @@ class Errors::Show < Lucky::ErrorAction
     end
   end
 
+  def render(error : Avram::RecordNotFoundError)
+    if html?
+      error_html DEFAULT_MESSAGE, status: 404
+    else
+      error_json DEFAULT_MESSAGE, status: 404
+    end
+  end
+
   private def error_html(message : String, status : Int)
     context.response.status_code = status
     html Errors::ShowPage, message: message, status: status

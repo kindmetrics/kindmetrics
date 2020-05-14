@@ -30,7 +30,6 @@
 # `InlineTextField`
 class Shared::Field(T) < BaseComponent
   # Raises a helpful error if component receives an unpermitted attribute
-  include Lucky::CatchUnpermittedAttribute
 
   needs attribute : Avram::PermittedAttribute(T)
   needs label_text : String?

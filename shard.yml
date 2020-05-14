@@ -29,3 +29,9 @@ dependencies:
   jwt:
     github: crystal-community/jwt
     version: ~> 1.4.0
+  kilt:
+    github: jeromegn/kilt
+  lucky_can:
+    github: confact/lucky_can
+  device_detector:
+    github: creadone/device_detector

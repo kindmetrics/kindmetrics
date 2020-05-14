@@ -3,7 +3,7 @@
 
   try {
     const parentNode = window.document.querySelector('[src*="' + kindmetricsURL +'"]')
-    const domain = scriptEl && scriptEl.getAttribute('data-domain')
+    const domain = parentNode && parentNode.getAttribute('data-domain')
 
     const CONFIG = {
       domain: domain || window.location.hostname,
@@ -36,7 +36,7 @@
       payload.user_agent = window.navigator.userAgent
       payload.screen_width = window.innerWidth
 
-      url = kindmetricsURL + '/api/track'
+      const url = kindmetricsURL + '/api/track'
 
       let response = fetch(url, {
         method: 'POST',
