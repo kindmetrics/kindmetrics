@@ -7,10 +7,12 @@ class Domains::ShowPage < MainLayout
 
   def content
     link "Back to all Domains", Domains::Index
-    h1 "Domain with id: #{@domain.id}"
+    h1 @domain.address
     render_actions
-    render_domain_fields
-    render_total
+    div class: "w-full p-5 shadow-md bg-white rounded my-3" do
+      render_total
+      render_canvas
+    end
     render_events
   end
 
@@ -24,29 +26,21 @@ class Domains::ShowPage < MainLayout
     end
   end
 
-  def render_domain_fields
-    ul do
-      li do
-        text "address: "
-        strong @domain.address.to_s
+  def render_total
+    div class: "w-3/5 grid grid-flow-col gap-4" do
+      div class: "" do
+        para @total_unique.to_s, class: "text-2xl strong"
+        para "Unique Visitors", class: "text-sm strong"
       end
-      li do
-        text "time_zone: "
-        strong @domain.time_zone.to_s
+      div class: "" do
+        para @total_sum.to_s, class: "text-2xl strong"
+        para "Total Pageviews", class: "text-sm strong"
       end
     end
   end
 
-  def render_total
-    div class: "w-3/5 shadow-md p-8" do
-      div class: "float-left w-1/3 mr-2" do
-        para "Unique Visitors", class: "text-md strong"
-        para @total_unique.to_s, class: "text-md strong"
-      end
-      div class: "float-left w-1/3" do
-        text @total_sum.to_s
-      end
-    end
+  def render_canvas
+    render_template "domains/canvas"
   end
 
   def render_events

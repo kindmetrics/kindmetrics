@@ -5,8 +5,8 @@
     const parentNode = window.document.querySelector('[src*="' + kindmetricsURL +'"]')
     const domain = parentNode && parentNode.getAttribute('data-domain')
 
-    const CONFIG = {
-      domain: domain || window.location.hostname,
+    function getDomain() {
+      return domain || window.location.hostname
     }
 
     function getUrl() {
@@ -30,7 +30,7 @@
       var payload = {}
       payload.name = eventName
       payload.url = getUrl()
-      payload.domain = CONFIG['domain']
+      payload.domain = getDomain()
       payload.referrer = window.document.referrer || null
       payload.source = getUtmSource()
       payload.user_agent = window.navigator.userAgent

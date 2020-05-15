@@ -19,7 +19,4 @@
 // Add your own components and import them like this:
 //
 // @import "components/my_new_component";
-
-a {
-  @apply text-blue-600;
-}
+@import "components/base"
