@@ -1,6 +1,8 @@
-import Chart from 'chart.js';
-export function getChart(ref) {
-  const createChart = function(ctx, response) {
+import { Controller } from "stimulus"
+import Chart from 'chart.js'
+export default class extends Controller {
+
+  createChart(ctx, response) {
     console.log("inside create")
     console.log(response)
 
@@ -35,9 +37,16 @@ export function getChart(ref) {
         }
     });
   }
-  fetch(ref.getAttribute("data-url")).then(response => {
-    return response.json()
-  }).then(response => {
-    return createChart(ref, response)
-  })
+
+  getData() {
+    fetch(this.data.get("url")).then(response => {
+      return response.json()
+    }).then(response => {
+      return this.createChart(this.element, response)
+    })
+  }
+
+  connect() {
+    this.getData();
+  }
 }

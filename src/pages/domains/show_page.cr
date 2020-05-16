@@ -13,6 +13,7 @@ class Domains::ShowPage < MainLayout
       render_total
       render_canvas
     end
+    render_the_rest
     render_events
   end
 
@@ -27,7 +28,7 @@ class Domains::ShowPage < MainLayout
   end
 
   def render_total
-    div class: "w-3/5 grid grid-flow-col gap-4" do
+    div class: "w-3/5 grid grid-flow-col gap-4 mb-4" do
       div class: "" do
         para @total_unique.to_s, class: "text-2xl strong"
         para "Unique Visitors", class: "text-sm strong"
@@ -41,6 +42,10 @@ class Domains::ShowPage < MainLayout
 
   def render_canvas
     render_template "domains/canvas"
+  end
+
+  def render_the_rest
+    render_template "domains/show"
   end
 
   def render_events

@@ -3,9 +3,9 @@
   "private": true,
   "dependencies": {
     "@rails/ujs": "^6.0.0",
-    "alpinejs": "^2.3.3",
     "chart.js": "^2.9.3",
     "normalize-scss": "^7.0.1",
+    "stimulus": "^1.1.1",
     "tailwindcss": "^1.4.6",
     "turbolinks": "^5.2.0"
   },

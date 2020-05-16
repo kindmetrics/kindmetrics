@@ -1,5 +1,5 @@
-class Domains::Days < BrowserAction
-  get "/domains/:domain_id/days" do
+class Domains::Data::Days < BrowserAction
+  get "/domains/:domain_id/data/days" do
     domain = DomainQuery.find(domain_id)
     days, today, data = parse_response(domain)
     json DaysSerializer.new(days, today, data)
@@ -12,7 +12,7 @@ class Domains::Days < BrowserAction
     GROUP BY DATE_TRUNC('day', created_at);
     SQL
     grouped = AppDatabase.run do |db|
-      db.query_all sql, as: EventDays
+      db.query_all sql, as: StatsDays
     end
     days = grouped.map { |d| d.date }
     data = grouped.map { |d| d.count }

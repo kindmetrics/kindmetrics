@@ -1,6 +1,6 @@
-class StatsDays
+class StatsPages
   DB.mapping({
-    date: Time,
+    address: String?,
     count: Int64
   })
 end

@@ -7,16 +7,15 @@ require("@rails/ujs").start();
 // Turbolinks is optional. Learn more: https://github.com/turbolinks/turbolinks/
 require("turbolinks").start();
 
-require("alpinejs");
+import { Application } from "stimulus"
+import { definitionsFromContext } from "stimulus/webpack-helpers"
 
-import { getChart } from './components/charts'
-
-window.getChart = getChart
+const application = Application.start()
+const context = require.context("./controllers", true, /\.js$/)
+application.load(definitionsFromContext(context))
 
 document.addEventListener("turbolinks:load", function() {
-  if(document.getElementById("days_chart")) {
-    window.getChart(document.getElementById("days_chart"))
-  }
+
 })
 
 // If using Turbolinks, you can attach events to page load like this:

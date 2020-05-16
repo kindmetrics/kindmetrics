@@ -6,7 +6,6 @@ class UserHash
   end
 
   def self.get_browser(user_agent)
-    response = DeviceDetector::Detector.new(user_agent).call
-    [response.browser_name, response.browser_version]
+    DeviceDetector::Detector.new(user_agent).call
   end
 end

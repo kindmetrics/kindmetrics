@@ -1,0 +1,16 @@
+<div class="flex justify-between text-xs uppercase mt-3">
+  <span>Referrer</span>
+  <span>Visitors</span>
+</div>
+  <% @referrers.each do |r| %>
+  <div class="flex items-center justify-between my-1 text-sm">
+    <div class="w-full h-8" style="max-width: calc(100% - 4rem);">
+      <div class="bg-blue-100" style="width: 100%;height: 30px"></div>
+      <span class="block px-2" style="margin-top: -26px;"><%=r.referrer_domain%></span>
+    </div>
+    <span>
+      <%=r.count%>
+    </span>
+  </div>
+  <% end %>
+</div>
