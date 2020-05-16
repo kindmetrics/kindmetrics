@@ -9,7 +9,8 @@ class Domains::Data::Days < BrowserAction
     sql = <<-SQL
     SELECT DATE_TRUNC('day', created_at) as date, COUNT(id) as count FROM events
     WHERE domain_id=#{domain.id} AND created_at > '#{30.days.ago}'
-    GROUP BY DATE_TRUNC('day', created_at);
+    GROUP BY DATE_TRUNC('day', created_at)
+    ORDER BY DATE_TRUNC('day', created_at) asc;
     SQL
     grouped = AppDatabase.run do |db|
       db.query_all sql, as: StatsDays
