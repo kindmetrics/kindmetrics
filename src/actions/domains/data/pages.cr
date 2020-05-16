@@ -8,7 +8,8 @@ class Domains::Data::Pages < BrowserAction
     sql = <<-SQL
     SELECT path as address, COUNT(id) as count FROM events
     WHERE domain_id=#{domain.id} AND created_at > '#{30.days.ago}'
-    GROUP BY path;
+    GROUP BY path
+    ORDER BY COUNT(id) desc;
     SQL
     pages = AppDatabase.run do |db|
       db.query_all sql, as: StatsPages

@@ -12,6 +12,8 @@ class Event < BaseModel
     column device : String?
     column operative_system : String?
     column referrer_domain : String?
+    column browser_name : String?
+    column browser_version : String?
     belongs_to domain : Domain
   end
 end

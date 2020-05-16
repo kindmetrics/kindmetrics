@@ -1,0 +1,16 @@
+<div class="flex justify-between text-xs uppercase mt-3">
+  <span>Browser</span>
+  <span>Percentage</span>
+</div>
+  <% @browsers.each do |r| %>
+  <div class="flex items-center justify-between my-1 text-sm">
+    <div class="w-full h-8" style="max-width: calc(100% - 4rem);">
+      <div class="bg-blue-100 rounded" style="width: <%=(r.percentage || 0.001)*100%>%;height: 30px"></div>
+      <span class="block px-2" style="margin-top: -26px;"><%=r.browser%></span>
+    </div>
+    <span>
+      <%=((r.percentage || 0.001)*100).to_i%>%
+    </span>
+  </div>
+  <% end %>
+</div>

@@ -39,6 +39,7 @@ export default class extends Controller {
   }
 
   getData() {
+    this.element.innerHTML = this.loader()
     fetch(this.data.get("url")).then(response => {
       return response.json()
     }).then(response => {
@@ -48,5 +49,9 @@ export default class extends Controller {
 
   connect() {
     this.getData();
+  }
+
+  loader() {
+    return "<div class=\"w-1/6 m-auto\"><div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div></div>"
   }
 }
