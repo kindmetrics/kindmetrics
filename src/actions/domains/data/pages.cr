@@ -13,6 +13,11 @@ class Domains::Data::Pages < BrowserAction
     pages = AppDatabase.run do |db|
       db.query_all sql, as: StatsPages
     end
+    total = pages.sum { |p| p.count }
+    pages.map! do |p|
+      p.percentage = p.count / total.to_f32
+      p
+    end
     return pages
   end
 end
