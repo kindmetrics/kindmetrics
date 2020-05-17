@@ -16,7 +16,7 @@ class Events::Create < ApiAction
     referrer = URI.parse data["referrer"]?.try { |r| r.to_s } || ""
     url = URI.parse data["url"]?.try { |r| r.to_s } || ""
 
-    SaveEvent.create(name: data["name"].to_s, user_agent: user_agent, referrer: referrer.to_s, referrer_domain: referrer.host, url: url.to_s, path: url.path, source: data["source"].to_s, screen_width: data["screen_width"].to_s, browser_name: browser.try { |b| b.browser_name }, browser_version: browser.try { |b| b.browser_version }, operative_system: browser.try { |b| b.os_name }, domain_id: domain.id, user_id: user_id) do |operation, event|
+    SaveEvent.create(name: data["name"].to_s, user_agent: user_agent, referrer: referrer.to_s, referrer_domain: referrer.host, url: url.to_s, path: url.path, source: data["source"].to_s, device: browser.try { |b| b.device_type }, browser_name: browser.try { |b| b.browser_name }, browser_version: browser.try { |b| b.browser_version }, operative_system: browser.try { |b| b.os_name }, domain_id: domain.id, user_id: user_id) do |operation, event|
       if event
         Log.debug { "Yay, saved!" }
       else

@@ -33,8 +33,8 @@ shards:
     version: 0.9.0
 
   device_detector:
-    github: creadone/device_detector
-    version: 0.3.3
+    github: confact/device_detector
+    commit: 92355cc32dc992ad6c11772445ee7bbb69d9ac84
 
   dexter:
     github: luckyframework/dexter

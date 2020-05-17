@@ -48,6 +48,20 @@ class Metrics
     return pages
   end
 
+  def get_devices
+    sql = <<-SQL
+    SELECT device, COUNT(id) as count FROM events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{30.days.ago}'
+    GROUP BY device
+    ORDER BY COUNT(id) desc;
+    SQL
+    devices = AppDatabase.run do |db|
+      db.query_all sql, as: StatsDevice
+    end
+    devices = count_percentage(devices)
+    return devices
+  end
+
   def get_browsers
     sql = <<-SQL
     SELECT browser_name as browser, COUNT(id) as count FROM events
