@@ -5,10 +5,6 @@
     const parentNode = window.document.querySelector('[src*="' + kindmetricsURL +'"]')
     const domain = parentNode && parentNode.getAttribute('data-domain')
 
-    function getDomain() {
-      return domain || window.location.hostname
-    }
-
     function getUrl() {
       return window.location.protocol + '//' + window.location.hostname + window.location.pathname + window.location.search;
     }
@@ -22,19 +18,15 @@
       console.warn('[Kindmetrics] Ignoring event because ' + reason);
     }
 
-    function done(reason) {
-      console.info('[Kindmetrics] Sent event to server with ' + reason);
-    }
-
     function trigger(eventName, options) {
-      var payload = {}
-      payload.name = eventName
-      payload.url = getUrl()
-      payload.domain = getDomain()
-      payload.referrer = window.document.referrer || null
-      payload.source = getUtmSource()
-      payload.user_agent = window.navigator.userAgent
-      payload.screen_width = window.innerWidth
+      var data = {
+        name: eventName,
+        url: getUrl(),
+        domain: domain || window.location.hostname,
+        referrer: window.document.referrer || null,
+        source: getUtmSource(),
+        user_agent: window.navigator.userAgent
+      }
 
       const url = kindmetricsURL + '/api/track'
 
@@ -43,10 +35,9 @@
         headers: {
           'Content-Type': 'application/json;charset=utf-8'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(data)
       }).then(response => {
         if(response.ok) {
-          done(payload.name)
         } else {
           ignore(payload.name)
         }
@@ -62,7 +53,7 @@
       var originalPushState = his['pushState']
       his.pushState = function() {
         originalPushState.apply(this, arguments)
-        page();
+        page()
       }
       window.addEventListener('popstate', page)
     }
@@ -77,4 +68,4 @@
   } catch(e) {
     new Image().src = kindmetricsURL + '/api/error?message=' + encodeURIComponent(e.message)
   }
-})(window, 'http://localhost:5000')
+})(window, KINDURL)

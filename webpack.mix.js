@@ -8,9 +8,15 @@
  */
  const tailwindcss = require('tailwindcss')
  const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+ const DefinePlugin = require('webpack').DefinePlugin;
 
 let mix = require("laravel-mix");
-let plugins = [];
+
+let plugins = [
+  new DefinePlugin({
+    "KINDURL": JSON.stringify(process.env.NODE_ENV == 'production' ? '//kindmetrics.io' : '//localhost:5000')
+  })
+];
 
 // Customize the notifier to be less noisy
 let WebpackNotifierPlugin = require('webpack-notifier');
