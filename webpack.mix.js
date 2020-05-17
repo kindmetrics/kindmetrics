@@ -7,6 +7,7 @@
  | Docs: https://github.com/JeffreyWay/laravel-mix/tree/master/docs#readme
  */
  const tailwindcss = require('tailwindcss')
+ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 let mix = require("laravel-mix");
 let plugins = [];
@@ -46,7 +47,6 @@ mix
   // More info and options (like React support) here:
   // https://github.com/JeffreyWay/laravel-mix/blob/master/docs/mixjs.md
   .js("src/js/app.js", "public/js")
-
   //track javascript
   .js("src/js/track.js", "public/js")
   // SASS entry file. Uses autoprefixer automatically.
@@ -73,6 +73,12 @@ mix
     plugins: plugins,
     watchOptions: {
       ignored: /node_modules/
+    },
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new UglifyJsPlugin({ cache: true, parallel: true, sourceMap: false })
+      ]
     }
   })
   // Disable default Mix notifications because we're using our own notifier
