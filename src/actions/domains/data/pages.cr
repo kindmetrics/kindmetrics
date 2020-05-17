@@ -5,20 +5,7 @@ class Domains::Data::Pages < BrowserAction
   end
 
   def get_pages(domain)
-    sql = <<-SQL
-    SELECT path as address, COUNT(id) as count FROM events
-    WHERE domain_id=#{domain.id} AND created_at > '#{30.days.ago}'
-    GROUP BY path
-    ORDER BY COUNT(id) desc;
-    SQL
-    pages = AppDatabase.run do |db|
-      db.query_all sql, as: StatsPages
-    end
-    total = pages.sum { |p| p.count }
-    pages.map! do |p|
-      p.percentage = p.count / total.to_f32
-      p
-    end
-    return pages
+    metrics = Metrics.new(domain)
+    metrics.get_pages
   end
 end
