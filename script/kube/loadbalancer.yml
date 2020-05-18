@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: load-balancer
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-algorithm: "least_connections"
+    service.beta.kubernetes.io/do-loadbalancer-protocol: "http"
+    service.beta.kubernetes.io/do-loadbalancer-healthcheck-path: "/"
+    service.beta.kubernetes.io/do-loadbalancer-tls-ports: "443"
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "ecdd9832-3c06-4ffa-b3fa-5be44dd29a3f"
+    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
+  selector:
+    app: kindmetrics
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+      name: http
+    - protocol: TCP
+      port: 443
+      targetPort: 5000
+      name: https

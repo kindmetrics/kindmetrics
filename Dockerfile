@@ -1,6 +1,6 @@
 FROM crystallang/crystal:0.34.0-alpine-build AS build-env
 
-RUN apk --no-cache add build-base libgit2 git nodejs yarn libgit2-dev
+RUN apk --no-cache add build-base nodejs yarn
 
 RUN mkdir -p /app
 WORKDIR /app
@@ -20,10 +20,7 @@ FROM crystallang/crystal:0.34.0-alpine-build
 RUN mkdir -p /app
 WORKDIR /app
 
-RUN apk --no-cache add libgit2-dev libgit2 git
-
-COPY --from=build-env /app/start_server /app/start_server
-COPY --from=build-env /app/public /app/public
+COPY --from=build-env /app /app
 
 ENV PORT 5000
 EXPOSE $PORT

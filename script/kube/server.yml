@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kindmetrics
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kindmetrics
+  template:
+    metadata:
+      labels:
+        app: kindmetrics
+    spec:
+      containers:
+        - name: kindmetrics
+          image: confact/kindmetrics:latest
+          command:
+            - ./start_server
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - secretRef:
+                name: secrets
+      imagePullSecrets:
+        - name: regcred
