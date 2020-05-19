@@ -8,6 +8,6 @@ module Lucky::Env
   {% end %}
 
   def name
-    ENV["LUCKY_ENV"]? || "development"
+    ENV["LUCKY_ENV"]?.try(&.strip) || "development"
   end
 end

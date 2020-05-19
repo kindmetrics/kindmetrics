@@ -6,9 +6,10 @@ class AppServer < Lucky::BaseAppServer
       Lucky::ForceSSLHandler.new,
       Lucky::HttpMethodOverrideHandler.new,
       Lucky::LogHandler.new,
-      Lucky::SessionHandler.new,
+      SessionHandler.new,
       Lucky::FlashHandler.new,
       Lucky::ErrorHandler.new(action: Errors::Show),
+      CORSHandler.new,
       Lucky::RemoteIpHandler.new,
       Lucky::RouteHandler.new,
       Lucky::StaticCompressionHandler.new("./public", file_ext: "gz", content_encoding: "gzip"),
@@ -23,7 +24,9 @@ class AppServer < Lucky::BaseAppServer
 
   def listen
     # Learn about bind_tcp: https://tinyurl.com/bind-tcp-docs
-    server.bind_tcp(host, port, reuse_port: false)
+    address = server.bind_tcp(host, port, reuse_port: false)
+    pp! Lucky::Env.name
+    puts "Listening on http://#{address}"
     server.listen
   end
 end
