@@ -5,6 +5,12 @@ class User < BaseModel
   table do
     column email : String
     column encrypted_password : String
+    column confirmed_at : Time?
+    column confirmed_token : String
+  end
+
+  def confirmed?
+    !confirmed_at.nil?
   end
 
   def emailable : Carbon::Address

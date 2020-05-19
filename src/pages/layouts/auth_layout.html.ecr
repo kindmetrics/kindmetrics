@@ -12,8 +12,9 @@
   </head>
 
   <body>
-    <div class="container-md mx-auto px-10 sm:px-4 md:px-30">
-      <%=mount Shared::FlashMessages.new(context.flash) %>
+    <div class="max-w-2xl mx-auto flex-grow lg:w-2/5 md:w-3/5  sm:w-4/5 px-2 pt-4 lg:pt-20 md:pt-20">
+      <h1 class="text-center text-2xl mb-5">Kindmetrics</h1>
+      <% mount Shared::FlashMessages.new(context.flash) %>
       <% content %>
     </div>
   </body>

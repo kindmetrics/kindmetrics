@@ -5,11 +5,11 @@ abstract class BaseEmail < Carbon::Email
   #
   # Example:
   #
-  #   macro inherited
-  #     from default_from
-  #   end
+  macro inherited
+    from default_from
+  end
   #
-  #   def default_from
-  #     Carbon::Address.new("support@app.com")
-  #   end
+  def default_from
+    Carbon::Address.new("hakan@kindmetrics.io")
+  end
 end
