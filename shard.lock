@@ -24,6 +24,10 @@ shards:
     github: luckyframework/carbon
     version: 0.1.1
 
+  carbon_smtp_adapter:
+    github: oneiros/carbon_smtp_adapter
+    version: 0.1.1
+
   cry:
     github: paulcsmith/cry
     version: 0.4.2
@@ -43,6 +47,10 @@ shards:
   dotenv:
     github: gdotdesign/cr-dotenv
     version: 0.7.0
+
+  email:
+    github: arcage/crystal-email
+    version: 0.4.6
 
   exception_page:
     github: crystal-loot/exception_page

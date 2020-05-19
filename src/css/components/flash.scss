@@ -1,0 +1,23 @@
+.flash-failure {
+  @apply text-red-800;
+  @apply bg-red-200;
+  @apply p-2;
+  @apply rounded-sm;
+  @apply mb-2;
+}
+
+.flash-success {
+  @apply text-green-800;
+  @apply bg-green-200;
+  @apply p-2;
+  @apply rounded-sm;
+  @apply mb-2;
+}
+
+.flash-info {
+  @apply text-gray-800;
+  @apply bg-white;
+  @apply p-2;
+  @apply rounded-sm;
+  @apply mb-2;
+}
