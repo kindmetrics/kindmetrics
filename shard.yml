@@ -37,4 +37,5 @@ dependencies:
     github: confact/device_detector
     commit: master
   carbon_smtp_adapter:
-    github: oneiros/carbon_smtp_adapter
+    github: confact/carbon_smtp_adapter
+    version: ~> 0.1.2

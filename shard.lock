@@ -25,8 +25,8 @@ shards:
     version: 0.1.1
 
   carbon_smtp_adapter:
-    github: oneiros/carbon_smtp_adapter
-    version: 0.1.1
+    github: confact/carbon_smtp_adapter
+    version: 0.1.2
 
   cry:
     github: paulcsmith/cry
@@ -50,7 +50,7 @@ shards:
 
   email:
     github: arcage/crystal-email
-    version: 0.4.6
+    version: 0.6.1
 
   exception_page:
     github: crystal-loot/exception_page
