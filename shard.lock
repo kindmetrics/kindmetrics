@@ -56,6 +56,10 @@ shards:
     github: luckyframework/habitat
     version: 0.4.3
 
+  ip_geolocation:
+    github: florianroesler/ip_geolocation
+    commit: 88cf9e158cba29d7531c6e2fc6848d928ffe03d3
+
   jwt:
     github: crystal-community/jwt
     version: 1.4.0
@@ -83,6 +87,10 @@ shards:
   lucky_router:
     github: luckyframework/lucky_router
     version: 0.2.2
+
+  markd:
+    github: icyleaf/markd
+    version: 0.2.0
 
   openssl_ext:
     github: stakach/openssl_ext

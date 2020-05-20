@@ -39,3 +39,7 @@ dependencies:
   email:
     github: arcage/crystal-email
     version: 0.6.1
+  ip_geolocation:
+    github: florianroesler/ip_geolocation
+  markd:
+    github: icyleaf/markd
