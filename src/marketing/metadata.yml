@@ -1,0 +1,7 @@
+pages:
+  - name: Why Privacy Analytics?
+    slug: why-privacy-analytics
+    file: why_privacy_analytics.md
+  - name: Why Not Google Analytics?
+    slug: why-not-google-analytics
+    file: why_not_google_analytics.md

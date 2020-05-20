@@ -33,6 +33,9 @@ export default class extends Controller {
 
         // Configuration options go here
         options: {
+          legend: {
+              display: false
+          },
           maintainAspectRatio: false
         }
     });

@@ -12,7 +12,7 @@ class Home::Index < BrowserAction
       # Or maybe show signed out users a marketing page:
       #
       #   html Marketing::IndexPage
-      plain_text "Something is coming here soon"
+      html IndexPage
     end
   end
 end

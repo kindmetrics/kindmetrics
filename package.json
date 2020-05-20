@@ -7,6 +7,7 @@
     "normalize-scss": "^7.0.1",
     "stimulus": "^1.1.1",
     "tailwindcss": "^1.4.6",
+    "tailwindcss-stimulus-components": "^1.0.2",
     "turbolinks": "^5.2.0"
   },
   "scripts": {
