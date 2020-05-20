@@ -1,10 +1,23 @@
 class Metrics
-  def initialize(@domain : Domain)
+  def initialize(@domain : Domain, @period : String)
+  end
 
+  def unique_query
+    sql = <<-SQL
+    SELECT COUNT(DISTINCT user_id)  FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}';
+    SQL
+    unique = AppDatabase.run do |db|
+      db.query_all sql, as: Int64
+    end
+    unique.first.to_s
+  end
+
+  def total_query
+    EventQuery.new.domain_id(@domain.id).created_at.gt(period_days).select_count.to_s
   end
 
   def get_days
-    past_time = 7.days.ago
+    past_time = period_days
     time_zone = @domain.time_zone
     today_date = Time.utc
     sql = <<-SQL
@@ -18,7 +31,6 @@ class Metrics
     end
     grouped2 = [] of StatsDays
     range = (past_time..today_date)
-    puts range.size
     range.each do |e|
       date = nil
       grouped.each do |g|
@@ -42,7 +54,7 @@ class Metrics
   def get_referrers
     sql = <<-SQL
     SELECT referrer_domain, COUNT(id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{30.days.ago}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY referrer_domain;
     SQL
     pages = AppDatabase.run do |db|
@@ -56,7 +68,7 @@ class Metrics
   def get_pages
     sql = <<-SQL
     SELECT path as address, COUNT(id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{30.days.ago}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY path
     ORDER BY COUNT(id) desc;
     SQL
@@ -70,7 +82,7 @@ class Metrics
   def get_devices
     sql = <<-SQL
     SELECT device, COUNT(id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{30.days.ago}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY device
     ORDER BY COUNT(id) desc;
     SQL
@@ -84,7 +96,7 @@ class Metrics
   def get_browsers
     sql = <<-SQL
     SELECT browser_name as browser, COUNT(id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{30.days.ago}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY browser_name
     ORDER BY COUNT(id) desc;
     SQL
@@ -98,7 +110,7 @@ class Metrics
   def get_os
     sql = <<-SQL
     SELECT operative_system, COUNT(id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{30.days.ago}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY operative_system;
     SQL
     browsers = AppDatabase.run do |db|
@@ -106,6 +118,21 @@ class Metrics
     end
     browsers = count_percentage(browsers)
     return browsers
+  end
+
+  private def period_days
+    case @period
+    when "14d"
+      return 14.days.ago
+    when "30d"
+      return 30.days.ago
+    when "60d"
+      return 60.days.ago
+    when "90d"
+      return 90.days.ago
+    else
+      return 7.days.ago
+    end
   end
 
   private def count_percentage(array)

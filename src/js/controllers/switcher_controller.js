@@ -28,7 +28,8 @@ export default class extends Controller {
     const title = this.titleTarget
     title.innerHTML = this.type[0].toUpperCase() + this.type.substring(1)
     element.innerHTML = this.loader()
-    fetch(this.data.get("url") + "/" + this.type).then(response => {
+    const period = this.data.get("period") ? this.data.get("period") : "7d"
+    fetch(this.data.get("url") + "/" + this.type + "?period=" + period).then(response => {
       return response.text()
     }).then(response => {
       element.innerHTML = response

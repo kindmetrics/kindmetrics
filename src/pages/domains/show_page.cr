@@ -3,6 +3,7 @@ class Domains::ShowPage < MainLayout
   needs events : EventQuery
   needs total_unique : String
   needs total_sum : String
+  needs period : String
   quick_def page_title, "Domain with id: #{@domain.id}"
 
   def content

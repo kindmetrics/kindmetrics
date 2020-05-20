@@ -8,7 +8,8 @@ export default class extends Controller {
 
   getData() {
     this.element.innerHTML = this.loader()
-    fetch(this.data.get("url")).then(response => {
+    const period = this.data.get("period") ? this.data.get("period") : "7d"
+    fetch(this.data.get("url") + "?period=" + period).then(response => {
       return response.text()
     }).then(response => {
       return this.setData(response)

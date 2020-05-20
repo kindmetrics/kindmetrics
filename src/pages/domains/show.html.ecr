@@ -1,12 +1,12 @@
 <div class="w-full grid grid-flow-col grid-cols-2 gap-4">
   <div class="shadow rounded bg-white p-4">
     <h2>Top Pages</h2>
-    <div data-controller="loader" data-loader-url="/domains/<%=@domain.id%>/data/pages">
+    <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/pages">
     </div>
   </div>
   <div class="shadow rounded bg-white p-4">
     <h2>Top Referrer</h2>
-    <div data-controller="loader" data-loader-url="/domains/<%=@domain.id%>/data/referrer">
+    <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/referrer">
     </div>
   </div>
 </div>
@@ -15,7 +15,7 @@
     <h2>Countries</h2>
   </div>
   <div class="shadow rounded bg-white p-4">
-    <div data-controller="switcher" data-switcher-url="/domains/<%=@domain.id%>/data/devices" data-switcher-type="device">
+    <div data-controller="switcher" data-switcher-period="<%=@period%>" data-switcher-url="/domains/<%=@domain.id%>/data/devices" data-switcher-type="device">
       <div class="flex items-center justify-between">
       <h2 data-target="switcher.title">Devices</h2>
       <div class="rounded border border-gray-300">
