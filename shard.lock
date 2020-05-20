@@ -24,10 +24,6 @@ shards:
     github: luckyframework/carbon
     version: 0.1.1
 
-  carbon_smtp_adapter:
-    github: confact/carbon_smtp_adapter
-    version: 0.1.2
-
   cry:
     github: paulcsmith/cry
     version: 0.4.2

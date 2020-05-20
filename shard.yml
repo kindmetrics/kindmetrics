@@ -36,6 +36,6 @@ dependencies:
   device_detector:
     github: confact/device_detector
     commit: master
-  carbon_smtp_adapter:
-    github: confact/carbon_smtp_adapter
-    version: ~> 0.1.2
+  email:
+    github: arcage/crystal-email
+    version: 0.6.1

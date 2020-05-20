@@ -1,12 +1,11 @@
-require "carbon_smtp_adapter"
 if Lucky::Env.production?
   Carbon::SmtpAdapter.configure do |settings|
-    settings.host = ENV["SMTP_HOST"]
-    settings.port = 25
+    settings.host = ENV["SMTP_HOST"].strip
+    settings.port = 587
     settings.helo_domain = nil
     settings.use_tls = true
-    settings.username = ENV["SMTP_USERNAME"]
-    settings.password = ENV["SMTP_PASSWORD"]
+    settings.username = ENV["SMTP_USERNAME"].strip
+    settings.password = ENV["SMTP_PASSWORD"].strip
   end
 end
 BaseEmail.configure do |settings|
