@@ -1,16 +1,33 @@
 a {
   @apply text-blue-600;
 }
+a:hover {
+  @apply underline;
+}
 h1 {
-  @apply text-2xl;
+  @apply text-5xl;
 }
 h2 {
-  @apply text-xl;
+  @apply text-3xl;
 }
 h3 {
-  @apply text-lg;
+  @apply text-2xl;
+  @apply font-bold;
 }
 
 body {
-  @apply bg-gray-100;
+  background-color: white;
+}
+
+.gradient-color {
+  background-color: #F5F5F5;
+  background: linear-gradient(180deg, #ebe8e89e 0%, rgba(255, 255, 255, 0) 5%) no-repeat, #F5F5F5;
+}
+
+.flex-container {
+  min-height: calc(100vh - 136px);
+}
+
+.transister {
+  transition: ease background 0.2s;
 }

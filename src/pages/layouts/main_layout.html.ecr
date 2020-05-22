@@ -11,10 +11,10 @@
     <% responsive_meta_tag %>
   </head>
 
-  <body>
+  <body class="gradient-color">
+    <% mount InloggedHead.new %>
     <div class="max-w-6xl mx-auto py-6 sm:px-6 lg:px-8">
       <% mount Shared::FlashMessages.new(context.flash) %>
-      <% render_signed_in_user %>
       <% content %>
     </div>
   </body>

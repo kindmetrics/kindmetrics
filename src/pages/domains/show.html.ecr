@@ -1,4 +1,4 @@
-<div class="w-full grid grid-flow-col grid-cols-2 gap-6">
+<div class="w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row">
   <div class="shadow rounded bg-white p-4">
     <h2 class="text-xl">Top Pages</h2>
     <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/pages">
@@ -10,7 +10,7 @@
     </div>
   </div>
 </div>
-<div class="w-full grid grid-flow-col grid-cols-2 gap-6 mt-6">
+<div class="w-full mt-6 grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row">
   <div class="shadow rounded bg-white p-4">
     <h2 class="text-xl">Countries</h2>
   </div>
