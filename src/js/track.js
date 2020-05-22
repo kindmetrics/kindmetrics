@@ -14,11 +14,25 @@
       return result ? result[2] : null
     }
 
+    function check_dnt() {
+      if (window.doNotTrack || navigator.doNotTrack || navigator.msDoNotTrack || 'msTrackingProtectionEnabled' in window.external) {
+        if (window.doNotTrack == "1" || navigator.doNotTrack == "yes" || navigator.doNotTrack == "1" || navigator.msDoNotTrack == "1" || window.external.msTrackingProtectionEnabled()) {
+          return false
+        } else {
+          return true
+        }
+      }
+      return true
+    }
+
     function ignore(reason) {
       console.warn('[Kindmetrics] Ignoring event because ' + reason);
     }
 
     function trigger(eventName, options) {
+      if(!check_dnt()) {
+        return ignore("Do not track is enabled")
+      }
       var data = {
         name: eventName,
         url: getUrl(),
@@ -29,7 +43,6 @@
       }
 
       const url = kindmetricsURL + '/api/track'
-
       let response = fetch(url, {
         method: 'POST',
         headers: {
@@ -37,8 +50,7 @@
         },
         body: JSON.stringify(data)
       }).then(response => {
-        if(response.ok) {
-        } else {
+        if(!response.ok) {
           ignore(payload.name)
         }
       })

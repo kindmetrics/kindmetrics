@@ -55,7 +55,7 @@ class Metrics
     sql = <<-SQL
     SELECT referrer_domain, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
-    GROUP BY referrer_domain;
+    GROUP BY referrer_domain LIMIT 10;
     SQL
     pages = AppDatabase.run do |db|
       db.query_all sql, as: StatsReferrer
@@ -70,7 +70,7 @@ class Metrics
     SELECT path as address, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY path
-    ORDER BY COUNT(id) desc;
+    ORDER BY COUNT(id) desc LIMIT 10;
     SQL
     pages = AppDatabase.run do |db|
       db.query_all sql, as: StatsPages
@@ -84,7 +84,7 @@ class Metrics
     SELECT device, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY device
-    ORDER BY COUNT(id) desc;
+    ORDER BY COUNT(id) desc LIMIT 10;
     SQL
     devices = AppDatabase.run do |db|
       db.query_all sql, as: StatsDevice
@@ -98,7 +98,7 @@ class Metrics
     SELECT browser_name as browser, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY browser_name
-    ORDER BY COUNT(id) desc;
+    ORDER BY COUNT(id) desc LIMIT 10;
     SQL
     browsers = AppDatabase.run do |db|
       db.query_all sql, as: StatsBrowser
@@ -111,7 +111,7 @@ class Metrics
     sql = <<-SQL
     SELECT operative_system, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
-    GROUP BY operative_system;
+    GROUP BY operative_system LIMIT 10;
     SQL
     browsers = AppDatabase.run do |db|
       db.query_all sql, as: StatsOS
