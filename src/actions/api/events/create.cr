@@ -15,17 +15,6 @@ class Events::Create < ApiAction
     referrer = URI.parse params.get(:referrer).try { |r| r.to_s } || ""
     url = URI.parse params.get(:url).try { |r| r.to_s } || ""
 
-    ip2country = IPCountry.country.not_nil!
-    ip_address = IPGeolocation::IPAddress.new(remote_ip)
-    address_as_int = ip_address.to_u32
-    if address_as_int
-      country = ip2country.find(address_as_int)
-    else
-      country = nil
-    end
-    puts country
-    Log.debug { {country: country} }
-
     SaveEvent.create(name: params.get(:name).to_s, user_agent: user_agent, referrer: referrer.to_s, referrer_domain: referrer.host, url: url.to_s, path: url.path, source: params.get(:source).to_s, device: browser.try { |b| b.device_type }, browser_name: browser.try { |b| b.browser_name }, browser_version: browser.try { |b| b.browser_version }, operative_system: browser.try { |b| b.os_name }, domain_id: domain.id, user_id: user_id) do |operation, event|
       if event
         Log.debug { "Yay, saved!" }

@@ -43,3 +43,6 @@ dependencies:
     github: florianroesler/ip_geolocation
   markd:
     github: icyleaf/markd
+  baked_file_system:
+    github: schovi/baked_file_system
+    version: 0.9.8
