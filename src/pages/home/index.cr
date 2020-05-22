@@ -1,4 +1,4 @@
-class Home::IndexPage < MarketingLayout
+class Home::IndexPage < StartpageLayout
   quick_def page_title, "Simple Privacy Analytics"
 
   def content

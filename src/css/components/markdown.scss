@@ -21,18 +21,74 @@
     @apply text-4xl;
     @apply leading-tight;
     @apply tracking-wide;
-    @apply mt-6;
+    @apply mt-10;
     @apply mb-3;
     @apply font-bold;
   }
 
-  blockquote {
-    @apply bg-gray-300;
+  h3 {
+    @apply text-3xl;
+    @apply leading-tight;
+    @apply tracking-wide;
+    @apply mt-10;
+    @apply mb-3;
+    @apply font-bold;
+  }
+
+  h4 {
+    @apply text-2xl;
+    @apply leading-tight;
+    @apply tracking-wide;
+    @apply mt-10;
+    @apply mb-3;
+    @apply font-bold;
+  }
+
+  pre {
+    @apply bg-gray-200;
     @apply rounded;
     @apply w-full;
     @apply p-2;
     @apply font-mono;
     @apply my-2;
+  }
+
+  code {
+    @apply py-1;
+    @apply px-2;
+    @apply rounded;
+    @apply text-gray-800;
+    @apply bg-gray-200;
+  }
+
+  blockquote {
+    @apply border-gray-300;
+    @apply border-l-4;
+    @apply w-full;
+    @apply p-2;
+    @apply pl-4;
+    @apply italic;
+    @apply my-2;
+  }
+
+  table {
+    @apply w-full;
+    @apply my-4;
+    thead {
+      th {
+        @apply font-normal;
+        @apply uppercase;
+        @apply text-gray-700;
+        @apply text-sm;
+        @apply antialiased;
+      }
+    }
+    tr {
+      @apply border-b;
+    }
+    td {
+      @apply p-1;
+    }
   }
 
   & > p {

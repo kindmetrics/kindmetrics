@@ -12,12 +12,10 @@
   </head>
 
   <body>
-    <div class="flex-container">
-      <% mount SiteHead.new %>
-      <div class="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
-        <% mount Shared::FlashMessages.new(context.flash) %>
-        <% content %>
-      </div>
+    <% mount SiteHead.new %>
+    <div class="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
+      <% mount Shared::FlashMessages.new(context.flash) %>
+      <% content %>
     </div>
     <% mount Footer.new %>
   </body>

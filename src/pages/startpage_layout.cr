@@ -1,9 +1,5 @@
-abstract class MainLayout
+abstract class StartpageLayout
   include Lucky::HTMLPage
-
-  # 'needs current_user : User' makes it so that the current_user
-  # is always required for pages using MainLayout
-  needs current_user : User
 
   abstract def content
   abstract def page_title
@@ -24,6 +20,6 @@ abstract class MainLayout
   end
 
   def render
-    render_template "layouts/main_layout"
+    render_template "layouts/startpage_layout"
   end
 end
