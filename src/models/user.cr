@@ -7,6 +7,7 @@ class User < BaseModel
     column encrypted_password : String
     column confirmed_at : Time?
     column confirmed_token : String
+    belongs_to current_domain : Domain?
   end
 
   def confirmed?

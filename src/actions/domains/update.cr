@@ -1,7 +1,7 @@
 class Domains::Update < BrowserAction
   route do
     domain = DomainQuery.find(domain_id)
-    SaveDomain.update(domain, params) do |operation, domain|
+    SaveDomain.update(domain, params, current_user: current_user) do |operation, domain|
       if operation.saved?
         flash.success = "The record has been updated"
         redirect Show.with(domain.id)

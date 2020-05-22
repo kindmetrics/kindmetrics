@@ -3,7 +3,16 @@ class Home::Index < BrowserAction
 
   get "/" do
     if current_user?
-      redirect Me::Show
+      if current_user.not_nil!.current_domain.nil?
+        domain = DomainQuery.new.user_id(current_user.not_nil!.id).first
+        if domain.nil?
+          redirect Domains::New
+        else
+          redirect Domains::Show.with(domain)
+        end
+      else
+        redirect Domains::Show.with(current_user.not_nil!.current_domain.not_nil!)
+      end
     else
       # When you're ready change this line to:
       #
