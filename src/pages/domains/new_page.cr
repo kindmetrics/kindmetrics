@@ -3,8 +3,10 @@ class Domains::NewPage < MainLayout
   quick_def page_title, "New Domain"
 
   def content
-    h1 "New Domain"
-    render_domain_form(@operation)
+    div class: "shadow rounded bg-white p-4" do
+      h1 "New Domain"
+      render_domain_form(@operation)
+    end
   end
 
   def render_domain_form(op)

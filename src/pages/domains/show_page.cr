@@ -1,17 +1,17 @@
 class Domains::ShowPage < MainLayout
   needs domain : Domain
   needs events : EventQuery
+  needs domains : DomainQuery
   needs total_unique : String
   needs total_sum : String
   needs period : String
+  needs period_string : String
   quick_def page_title, "Domain with id: #{@domain.id}"
 
   def content
-    link "Back to all Domains", Domains::Index
-    h1 @domain.address
-    render_actions
-    div class: "w-full p-5 shadow-md bg-white rounded my-3" do
-      render_total
+    render_header
+    render_total
+    div class: "w-full p-5 shadow-md bg-white rounded my-3 mb-6" do
       render_canvas
     end
     render_the_rest
@@ -29,14 +29,14 @@ class Domains::ShowPage < MainLayout
   end
 
   def render_total
-    div class: "w-3/5 grid grid-flow-col gap-4 mb-4" do
-      div class: "" do
-        para @total_unique.to_s, class: "text-2xl strong"
-        para "Unique Visitors", class: "text-sm strong"
+    div class: "w-full grid grid-flow-col gap-6 mb-4 bg-black text-white rounded shadow p-1 mb-4 " do
+      div class: "p-3" do
+        para @total_unique.to_s, class: "text-3xl strong"
+        para "Unique Visitors", class: "text-sm uppercase"
       end
-      div class: "" do
-        para @total_sum.to_s, class: "text-2xl strong"
-        para "Total Pageviews", class: "text-sm strong"
+      div class: "p-3" do
+        para @total_sum.to_s, class: "text-3xl strong"
+        para "Total Pageviews", class: "text-sm strong uppercase"
       end
     end
   end
@@ -47,6 +47,10 @@ class Domains::ShowPage < MainLayout
 
   def render_the_rest
     render_template "domains/show"
+  end
+
+  def render_header
+    render_template "domains/header"
   end
 
   def render_events

@@ -4,9 +4,10 @@ class Domains::EditPage < MainLayout
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
 
   def content
-    link "Back to all Domains", Domains::Index
-    h1 "Edit Domain with id: #{@domain.id}"
-    render_domain_form(@operation)
+    div class: "shadow rounded bg-white p-4" do
+      h1 "Edit Domain with id: #{@domain.id}"
+      render_domain_form(@operation)
+    end
   end
 
   def render_domain_form(op)
