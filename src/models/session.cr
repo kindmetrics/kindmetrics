@@ -1,7 +1,6 @@
-class Event < BaseModel
+class Session < BaseModel
   table do
     column user_id : String
-    column name : String
     column referrer : String?
     column domain : String?
     column url : String?
@@ -15,7 +14,9 @@ class Event < BaseModel
     column browser_name : String?
     column browser_version : String?
     column country : String?
+    column length : Int64?
+    column is_bounce : Bool
     belongs_to domain : Domain
-    belongs_to session : Session?
+    has_many events : Event
   end
 end

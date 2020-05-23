@@ -1,6 +1,6 @@
 class Domains::ShowPage < MainLayout
   needs domain : Domain
-  needs events : EventQuery
+  needs sessions : SessionQuery
   needs domains : DomainQuery
   needs total_unique : String
   needs total_sum : String
@@ -29,7 +29,7 @@ class Domains::ShowPage < MainLayout
   end
 
   def render_total
-    div class: "w-full grid grid-flow-col gap-6 mb-4 bg-black text-white rounded shadow p-1 mb-4 " do
+    div class: "w-full grid grid-flow-col gap-6 mb-4 stats-bg text-white rounded shadow p-1 mb-4 " do
       div class: "p-3" do
         para @total_unique.to_s, class: "text-3xl strong"
         para "Unique Visitors", class: "text-sm uppercase"
@@ -55,13 +55,13 @@ class Domains::ShowPage < MainLayout
 
   def render_events
     table class: "w-full" do
-      @events.id.desc_order.each do |event|
+      @sessions.id.desc_order.each do |event|
         tr do
           td do
             text event.created_at.to_s
           end
           td do
-            text event.name.to_s
+            text event.length.to_s
           end
           td do
             text event.user_id.to_s

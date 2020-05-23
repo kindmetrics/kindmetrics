@@ -1,5 +1,6 @@
 class Metrics
   def initialize(@domain : Domain, @period : String)
+    puts @period
   end
 
   def unique_query
@@ -111,7 +112,8 @@ class Metrics
     sql = <<-SQL
     SELECT operative_system, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
-    GROUP BY operative_system LIMIT 10;
+    GROUP BY operative_system
+    ORDER BY COUNT(id) LIMIT 10;
     SQL
     browsers = AppDatabase.run do |db|
       db.query_all sql, as: StatsOS

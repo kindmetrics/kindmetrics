@@ -8,6 +8,7 @@ class User < BaseModel
     column confirmed_at : Time?
     column confirmed_token : String
     belongs_to current_domain : Domain?
+    has_many domains : Domain
   end
 
   def confirmed?
