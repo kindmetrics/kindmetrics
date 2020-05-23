@@ -3,7 +3,7 @@ class EventHandler
   def self.is_current_session?(user_id : String)
     session = get_session(user_id)
     return false unless session
-    return true if session.events.last.created_at < SESSION_TIMEOUT.ago
+    return session.events.last.created_at > SESSION_TIMEOUT.ago
   end
 
   def self.add_event(user_id, **params)
