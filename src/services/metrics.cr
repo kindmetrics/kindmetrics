@@ -1,6 +1,5 @@
 class Metrics
   def initialize(@domain : Domain, @period : String)
-    puts @period
   end
 
   def unique_query
@@ -56,7 +55,8 @@ class Metrics
     sql = <<-SQL
     SELECT referrer_domain, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
-    GROUP BY referrer_domain LIMIT 10;
+    GROUP BY referrer_domain
+    ORDER BY COUNT(id) LIMIT 10;
     SQL
     pages = AppDatabase.run do |db|
       db.query_all sql, as: StatsReferrer
@@ -78,6 +78,26 @@ class Metrics
     end
     pages = count_percentage(pages)
     return pages
+  end
+
+  def get_countries
+    sql = <<-SQL
+    SELECT country, COUNT(id) as count FROM events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
+    GROUP BY country
+    ORDER BY COUNT(id) LIMIT 10;
+    SQL
+    countries = AppDatabase.run do |db|
+      db.query_all sql, as: StatsCountry
+    end
+    cc2country = IP2Country::CC2Country.new
+    countries = count_percentage(countries)
+    countries.map! do |c|
+      next c if c.country.nil?
+      c.country_name = cc2country.lookup(c.country.not_nil!, "en")
+      next c
+    end
+    return countries
   end
 
   def get_devices

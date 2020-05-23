@@ -13,6 +13,8 @@
 <div class="w-full mt-6 grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row">
   <div class="shadow rounded bg-white p-4">
     <h2 class="text-xl">Countries</h2>
+    <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/countries">
+    </div>
   </div>
   <div class="shadow rounded bg-white p-4">
     <div data-controller="switcher" data-switcher-period="<%=@period%>" data-switcher-url="/domains/<%=@domain.id%>/data/devices" data-switcher-type="device">
