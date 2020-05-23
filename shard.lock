@@ -56,9 +56,9 @@ shards:
     github: luckyframework/habitat
     version: 0.4.3
 
-  ip_geolocation:
-    github: florianroesler/ip_geolocation
-    commit: 88cf9e158cba29d7531c6e2fc6848d928ffe03d3
+  ip2country:
+    github: confact/ip2country
+    version: 0.1.5
 
   jwt:
     github: crystal-community/jwt

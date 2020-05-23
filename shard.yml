@@ -39,10 +39,10 @@ dependencies:
   email:
     github: arcage/crystal-email
     version: 0.6.1
-  ip_geolocation:
-    github: florianroesler/ip_geolocation
   markd:
     github: icyleaf/markd
   baked_file_system:
     github: schovi/baked_file_system
     version: 0.9.8
+  ip2country:
+    github: confact/ip2country
