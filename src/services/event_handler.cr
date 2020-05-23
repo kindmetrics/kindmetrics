@@ -3,13 +3,25 @@ class EventHandler
   def self.is_current_session?(user_id : String)
     session = get_session(user_id)
     return false unless session
-    return session.events.last.created_at > SESSION_TIMEOUT.ago
+    events = EventQuery.new.session_id(session.id).created_at.desc_order
+    return false if events.results.size == 0 && session.created_at > SESSION_TIMEOUT.ago
+    return true if events.results.size == 0
+    return events.first.created_at > SESSION_TIMEOUT.ago
   end
 
-  def self.add_event(user_id, **params)
+  def self.add_event(user_id : String, **params)
     session = get_session(user_id)
     if session
-      SaveEvent.create!(**params, user_id: user_id, session_id: session.not_nil!.id)
+      SaveEvent.create(**params, user_id: user_id, session_id: session.not_nil!.id) do  |operation, event|
+        if event
+          puts "event saved"
+          pp! event
+        else
+          raise Avram::InvalidOperationError.new(operation)
+        end
+      end
+    else
+      puts "session not found?"
     end
   end
 
@@ -17,8 +29,8 @@ class EventHandler
     SaveSession.create!(**params)
   end
 
-  private def self.get_session(user_id)
-    SessionQuery.new.preload_events(EventQuery.new.created_at.asc_order).user_id(user_id).length.is_nil.first
+  private def self.get_session(user_id : String)
+    SessionQuery.new.user_id(user_id).length.is_nil.first
   rescue Avram::RecordNotFoundError
     nil
   end

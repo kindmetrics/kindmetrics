@@ -13,3 +13,4 @@ start_server
 /public/mix-manifest.json
 /node_modules
 yarn-error.log
+/cache

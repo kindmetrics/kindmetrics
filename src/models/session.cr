@@ -2,7 +2,6 @@ class Session < BaseModel
   table do
     column user_id : String
     column referrer : String?
-    column domain : String?
     column url : String?
     column source : String?
     column user_agent : String?
