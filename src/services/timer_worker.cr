@@ -11,22 +11,21 @@ class TimeWorker
 
   def self.timedout(session : Session)
     events = EventQuery.new.session_id(session.id).created_at.asc_order
-    pp! events.results.size
+
+    return false if events.results.size == 0
 
     last_event = events.results.last
     first_event = events.results.first
 
-    pp! last_event.created_at if events.results.size > 0
-    pp! SESSION_TIMEOUT.ago
     timespent = last_event.created_at - first_event.created_at
-    pp! timespent
+    timespent_seconds = timespent.total_seconds.to_i64
 
     not_done = if events.results.size > 0
                 last_event.created_at > SESSION_TIMEOUT.ago
               else
                 true
               end
-    pp! not_done
+
     if not_done
       puts "not yet timedout"
       puts "--"
@@ -34,8 +33,8 @@ class TimeWorker
     end
 
     is_bounce = events.results.size == 1
-    puts "saving session #{session.id} on domain: #{session.domain.not_nil!.address}"
-    SaveSession.update!(session, length: timespent.total_seconds.to_i64, is_bounce: is_bounce)
+    puts "saving session #{session.id} on domain: #{session.domain!.not_nil!.address}"
+    SaveSession.update!(session, length: timespent_seconds, is_bounce: is_bounce)
   end
 
 
