@@ -13,6 +13,8 @@ RUN shards install
 RUN yarn install
 RUN yarn prod
 RUN lucky build.release
+RUN crystal build --release tasks.cr -o start_tasks
+RUN crystal build --release ./src/start_worker.cr -o start_worker
 
 
 FROM crystallang/crystal:0.34.0-alpine-build
