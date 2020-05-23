@@ -20,8 +20,11 @@ body {
 }
 
 .gradient-color {
-  background-color: #F5F5F5;
-  background: linear-gradient(180deg, #ebe8e89e 0%, rgba(255, 255, 255, 0) 5%) no-repeat, #F5F5F5;
+  background-color: #ececec;
+}
+
+.stats-bg {
+  background-color: #222831;
 }
 
 .flex-container {

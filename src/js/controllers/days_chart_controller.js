@@ -9,8 +9,8 @@ export default class extends Controller {
     const { labels, today, data } = response
 
     var gradientFill = ctx.getContext("2d").createLinearGradient(0, 260, 0, 0);
-    gradientFill.addColorStop(0, "rgba(255,255,255,1)");
-    gradientFill.addColorStop(1, "rgba(68,132,206,1)");
+    gradientFill.addColorStop(0, "rgba(255,255,255,0.1)");
+    gradientFill.addColorStop(1, "rgba(48, 71, 94, 0.3)");
 
     var chart = new Chart(ctx, {
         // The type of chart we want to create
@@ -21,11 +21,11 @@ export default class extends Controller {
             labels: labels,
             datasets: [{
               backgroundColor: gradientFill,
-              borderColor: 'rgba(68,132,206,1)',
+              borderColor: 'rgba(48, 71, 94, 1)',
               data: data
             }, {
               backgroundColor: gradientFill,
-              borderColor: 'rgba(68,132,206,1)',
+              borderColor: 'rgba(48, 71, 94, 1)',
               borderDash: [5, 15],
               data: today
             }]
