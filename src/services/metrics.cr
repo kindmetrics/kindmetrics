@@ -3,6 +3,7 @@ class Metrics
   end
 
   def unique_query
+
     sql = <<-SQL
     SELECT COUNT(DISTINCT user_id) FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}';
     SQL
@@ -67,7 +68,7 @@ class Metrics
     SELECT referrer_domain, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY referrer_domain
-    ORDER BY COUNT(id) LIMIT 10;
+    ORDER BY COUNT(id) desc LIMIT 10;
     SQL
     pages = AppDatabase.run do |db|
       db.query_all sql, as: StatsReferrer
@@ -96,7 +97,7 @@ class Metrics
     SELECT country, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY country
-    ORDER BY COUNT(id) LIMIT 10;
+    ORDER BY COUNT(id) desc LIMIT 10;
     SQL
     countries = AppDatabase.run do |db|
       db.query_all sql, as: StatsCountry
@@ -144,7 +145,7 @@ class Metrics
     SELECT operative_system, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY operative_system
-    ORDER BY COUNT(id) LIMIT 10;
+    ORDER BY COUNT(id) desc LIMIT 10;
     SQL
     browsers = AppDatabase.run do |db|
       db.query_all sql, as: StatsOS
