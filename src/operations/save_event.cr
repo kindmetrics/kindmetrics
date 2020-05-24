@@ -6,5 +6,6 @@ class SaveEvent < Event::SaveOperation
     validate_required user_id
     validate_required session_id
     validate_required domain_id
+    validate_required name
   end
 end

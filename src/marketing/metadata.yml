@@ -1,4 +1,7 @@
 pages:
+  - name: Lightweight code that won't slow down your site
+    slug: lightweight-code-your-site
+    file: lightweight_script.md
   - name: Why Privacy Analytics?
     slug: why-privacy-analytics
     file: why_privacy_analytics.md
