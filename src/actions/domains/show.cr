@@ -2,7 +2,7 @@ class Domains::Show < BrowserAction
   param period : String = "7d"
 
   route do
-    domain = DomainQuery.find(domain_id)
+    domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
     domains = DomainQuery.new.user_id(current_user.id)
     if current_user.current_domain_id != domain.id
       SaveUser.update!(current_user, current_domain_id: domain.id)
@@ -19,7 +19,7 @@ class Domains::Show < BrowserAction
   end
 
   def bounce_query(domain)
-    metrics(domain).total_query
+    metrics(domain).bounce_query
   end
 
   def metrics(domain)
