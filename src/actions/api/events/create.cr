@@ -23,9 +23,9 @@ class Events::Create < ApiAction
 
   def handle_event(address, user_agent, browser, user_id, referrer, url, params, country, domain)
     unless EventHandler.is_current_session?(user_id)
-      EventHandler.create_session(user_agent: user_agent, referrer: referrer.to_s, referrer_domain: referrer.host, url: url.to_s, path: url.path, source: params.get?(:source).to_s, device: browser.try { |b| b.device_type }, browser_name: browser.try { |b| b.browser_name }, browser_version: browser.try { |b| b.browser_version }, operative_system: browser.try { |b| b.os_name }, domain_id: domain.id, user_id: user_id, is_bounce: 0)
+      EventHandler.create_session(user_agent: user_agent, referrer: referrer.to_s, referrer_domain: referrer.host, country: country, url: url.to_s, path: url.path, source: params.get?(:source).to_s, device: browser.try { |b| b.device_type }, browser_name: browser.try { |b| b.browser_name }, browser_version: browser.try { |b| b.browser_version }, operative_system: browser.try { |b| b.os_name }, domain_id: domain.id, user_id: user_id, is_bounce: 0)
     end
-    EventHandler.add_event(user_id, name: "pageview", user_agent: user_agent, referrer: referrer.to_s, referrer_domain: referrer.host, url: url.to_s, path: url.path, source: params.get?(:source).to_s, device: browser.try { |b| b.device_type }, browser_name: browser.try { |b| b.browser_name }, browser_version: browser.try { |b| b.browser_version }, operative_system: browser.try { |b| b.os_name }, domain_id: domain.id)
+    EventHandler.add_event(user_id, name: "pageview", user_agent: user_agent, referrer: referrer.to_s, country: country, referrer_domain: referrer.host, url: url.to_s, path: url.path, source: params.get?(:source).to_s, device: browser.try { |b| b.device_type }, browser_name: browser.try { |b| b.browser_name }, browser_version: browser.try { |b| b.browser_version }, operative_system: browser.try { |b| b.os_name }, domain_id: domain.id)
   end
 
   def error
