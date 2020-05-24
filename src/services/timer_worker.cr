@@ -32,7 +32,7 @@ class TimeWorker
       return
     end
 
-    is_bounce = events.results.size == 1
+    is_bounce = events.results.size == 1 ? 1 : 0
     puts "saving session #{session.id} on domain: #{session.domain!.not_nil!.address}"
     SaveSession.update!(session, length: timespent_seconds, is_bounce: is_bounce)
   end

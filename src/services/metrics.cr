@@ -4,7 +4,7 @@ class Metrics
 
   def unique_query
     sql = <<-SQL
-    SELECT COUNT(DISTINCT user_id)  FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}';
+    SELECT COUNT(DISTINCT user_id) FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}';
     SQL
     unique = AppDatabase.run do |db|
       db.query_all sql, as: Int64
@@ -14,6 +14,17 @@ class Metrics
 
   def total_query
     EventQuery.new.domain_id(@domain.id).created_at.gt(period_days).select_count.to_s
+  end
+
+  def bounce_query
+    sql = <<-SQL
+    SELECT round(sum(is_bounce * id) / sum(id) * 100) as bounce_rate
+    FROM sessions WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}';
+    SQL
+    bounce = AppDatabase.run do |db|
+      db.query_all sql, as: PG::Numeric
+    end
+    bounce.first.to_s
   end
 
   def get_days

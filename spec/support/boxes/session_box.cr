@@ -14,7 +14,7 @@ class SessionBox < Avram::Box
     browser_version "81.0.4044.113"
     country "SE"
     length 0
-    is_bounce true
+    is_bounce 1
     domain_id DomainBox.create.id
   end
 end

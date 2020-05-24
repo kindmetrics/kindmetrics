@@ -4,6 +4,7 @@ class Domains::ShowPage < MainLayout
   needs domains : DomainQuery
   needs total_unique : String
   needs total_sum : String
+  needs total_bounce : String
   needs period : String
   needs period_string : String
   quick_def page_title, "Domain with id: #{@domain.id}"
@@ -37,6 +38,10 @@ class Domains::ShowPage < MainLayout
       div class: "p-3" do
         para @total_sum.to_s, class: "text-3xl strong"
         para "Total Pageviews", class: "text-sm strong uppercase"
+      end
+      div class: "p-3" do
+        para "#{@total_bounce.to_s}%", class: "text-3xl strong"
+        para "Bounce rate", class: "text-sm strong uppercase"
       end
     end
   end

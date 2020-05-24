@@ -14,7 +14,7 @@ class Session < BaseModel
     column browser_version : String?
     column country : String?
     column length : Int64?
-    column is_bounce : Bool
+    column is_bounce : Int32
     belongs_to domain : Domain
     has_many events : Event
   end
