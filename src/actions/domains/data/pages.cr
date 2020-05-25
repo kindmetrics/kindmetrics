@@ -1,8 +1,5 @@
-class Domains::Data::Pages < BrowserAction
-  param period : String = "7d"
-
+class Domains::Data::Pages < DomainBaseAction
   get "/domains/:domain_id/data/pages" do
-    domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
     html PagesPage, domain: domain, pages: get_pages(domain)
   end
 

@@ -1,6 +1,7 @@
 class Domains::Delete < BrowserAction
   route do
-    DomainQuery.new.user_id(current_user.id).find(domain_id).delete
+    domain = DomainQuery.find(domain_id)
+    domain.delete if DomainPolicy.delete?(domain, current_user)
     flash.success = "Deleted the record"
     redirect Index
   end

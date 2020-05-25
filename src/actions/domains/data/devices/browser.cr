@@ -1,8 +1,5 @@
-class Domains::Data::Devices::Browser < BrowserAction
-  param period : String = "7d"
-
+class Domains::Data::Devices::Browser < DomainBaseAction
   get "/domains/:domain_id/data/devices/browser" do
-    domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
     html BrowsersPage, domain: domain, browsers: get_browser(domain)
   end
 

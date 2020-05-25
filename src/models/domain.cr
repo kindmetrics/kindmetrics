@@ -6,4 +6,8 @@ class Domain < BaseModel
     has_many sessions : Session
     has_many events : Event
   end
+
+  def shared?
+    true
+  end
 end

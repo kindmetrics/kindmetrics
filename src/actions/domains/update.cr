@@ -1,6 +1,7 @@
 class Domains::Update < BrowserAction
   route do
     domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
+    DomainPolicy.update_not_found?(domain, current_user, context)
     SaveDomain.update(domain, params, current_user: current_user) do |operation, domain|
       if operation.saved?
         flash.success = "The record has been updated"

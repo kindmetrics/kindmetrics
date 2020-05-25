@@ -1,8 +1,5 @@
-class Domains::Data::Country < BrowserAction
-  param period : String = "7d"
-
+class Domains::Data::Country < DomainBaseAction
   get "/domains/:domain_id/data/countries" do
-    domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
     html CountriesPage, domain: domain, countries: get_countries(domain)
   end
 

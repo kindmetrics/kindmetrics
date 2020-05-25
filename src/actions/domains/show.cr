@@ -1,8 +1,5 @@
-class Domains::Show < BrowserAction
-  param period : String = "7d"
-
+class Domains::Show < DomainBaseAction
   route do
-    domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
     domains = DomainQuery.new.user_id(current_user.id)
     if current_user.current_domain_id != domain.id
       SaveUser.update!(current_user, current_domain_id: domain.id)
