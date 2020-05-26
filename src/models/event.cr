@@ -5,7 +5,7 @@ class Event < BaseModel
     column referrer : String?
     column domain : String?
     column url : String?
-    column source : String?
+    column referrer_source : String?
     column user_agent : String?
     column screen_width : String?
     column path : String?

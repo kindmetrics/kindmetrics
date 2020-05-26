@@ -24,7 +24,7 @@ class EventHandler
         country: country,
         url: url.to_s,
         path: url.path,
-        source: source,
+        referrer_source: source,
         domain_id: domain.id,
         user_id: user_id,
         is_bounce: 0
@@ -40,7 +40,7 @@ class EventHandler
       referrer_domain: referrer.host,
       url: url.to_s,
       path: url.path,
-      source: source,
+      referrer_source: source,
       domain_id: domain.id
     )
   end
@@ -80,8 +80,12 @@ class EventHandler
 
   private def self.use_host(referrer)
     if ["http", "https"].includes?(referrer.scheme) && !referrer.host.nil?
-      referrer.host.not_nil!.lstrip("www.")
+      remove_www(referrer.host.not_nil!)
     end
+  end
+
+  private def self.remove_www(uri : String)
+    uri.lstrip("www.")
   end
 
   private def self.get_session(user_id : String)

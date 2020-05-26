@@ -4,7 +4,11 @@ class Home::Index < BrowserAction
   get "/" do
     if current_user?
       if current_user.not_nil!.current_domain.nil?
-        domain = DomainQuery.new.user_id(current_user.not_nil!.id).first
+        begin
+          domain = DomainQuery.new.user_id(current_user.not_nil!.id).first
+        rescue Avram::RecordNotFoundError
+          redirect Domains::New
+        end
         if domain.nil?
           redirect Domains::New
         else
