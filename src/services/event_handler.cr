@@ -1,4 +1,49 @@
 class EventHandler
+  def self.handle_event(address, remote_ip, user_agent, referrer, url, params, domain)
+
+    country = IPCOUNTRY.lookup_cc(remote_ip)
+
+    browser = UserHash.get_browser(user_agent) if user_agent.present?
+    user_id = UserHash.create(address, remote_ip, browser.try { |b| b.browser_name } || "", browser.try { |b| b.browser_version } || "").to_s
+
+    source = params.get?(:source) || parse_referer_data(referrer)
+
+    browser_data = {
+      device: browser.try { |b| b.device_type },
+      browser_name: browser.try { |b| b.browser_name },
+      browser_version: browser.try { |b| b.browser_version },
+      operative_system: browser.try { |b| b.os_name }
+    }
+
+    unless EventHandler.is_current_session?(user_id)
+      EventHandler.create_session(
+        **browser_data,
+        user_agent: user_agent,
+        referrer: referrer.to_s,
+        referrer_domain: referrer.host,
+        country: country,
+        url: url.to_s,
+        path: url.path,
+        source: source,
+        domain_id: domain.id, 
+        user_id: user_id,
+        is_bounce: 0
+      )
+    end
+    EventHandler.add_event(
+      user_id,
+      **browser_data,
+      name: "pageview",
+      user_agent: user_agent,
+      referrer: referrer.to_s,
+      country: country,
+      referrer_domain: referrer.host,
+      url: url.to_s,
+      path: url.path,
+      source: source,
+      domain_id: domain.id
+    )
+  end
 
   def self.is_current_session?(user_id : String)
     session = get_session(user_id)
@@ -26,6 +71,11 @@ class EventHandler
 
   def self.create_session(**params)
     SaveSession.create!(**params)
+  end
+
+  def self.parse_referer_data(referrer : URI)
+    response = REFERERPARSER.parse(referrer.to_s)
+    response[:source]?
   end
 
   private def self.get_session(user_id : String)

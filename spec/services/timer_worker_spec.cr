@@ -5,13 +5,13 @@ describe TimeWorker do
     session = SessionBox.create &.user_id("test_id").length(nil)
 
     session.length.should eq(nil)
-    session.is_bounce.should eq(true)
+    session.is_bounce.should eq(1)
 
     TimeWorker.timedout(session)
 
     session = session.reload
     session.length.should eq(nil)
-    session.is_bounce.should eq(true)
+    session.is_bounce.should eq(1)
   end
 
   it "has one event attached" do
@@ -19,13 +19,13 @@ describe TimeWorker do
     event = EventBox.create &.user_id("test_id").session_id(session.id).domain_id(session.domain_id).created_at(Time.utc - 34.minutes)
 
     session.length.should eq(nil)
-    session.is_bounce.should eq(true)
+    session.is_bounce.should eq(1)
 
     TimeWorker.timedout(session)
 
     session = session.reload
     session.length.should eq(0)
-    session.is_bounce.should eq(true)
+    session.is_bounce.should eq(1)
   end
 
   it "has two event attached" do
@@ -35,12 +35,12 @@ describe TimeWorker do
     event2 = EventBox.create &.session_id(session.id).domain_id(session.domain_id).created_at(Time.utc - 32.minutes)
 
     session.length.should eq(nil)
-    session.is_bounce.should eq(true)
+    session.is_bounce.should eq(1)
 
     TimeWorker.timedout(session)
 
     session = session.reload
     session.length.should eq(120)
-    session.is_bounce.should eq(false)
+    session.is_bounce.should eq(0)
   end
 end

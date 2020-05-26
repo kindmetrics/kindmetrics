@@ -46,3 +46,5 @@ dependencies:
     version: 0.9.8
   ip2country:
     github: confact/ip2country
+  referer-parser:
+    github: confact/referer-parser.cr
