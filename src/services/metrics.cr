@@ -67,15 +67,15 @@ class Metrics
 
   def get_referrers
     sql = <<-SQL
-    SELECT referrer_domain, COUNT(id) as count FROM events
+    SELECT referrer_source, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
-    GROUP BY referrer_domain
+    GROUP BY referrer_source
     ORDER BY COUNT(id) desc LIMIT 10;
     SQL
     pages = AppDatabase.run do |db|
       db.query_all sql, as: StatsReferrer
     end
-    pages.reject! { |r| r.referrer_domain.nil? }
+    pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
     return pages
   end

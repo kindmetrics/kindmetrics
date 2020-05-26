@@ -66,7 +66,7 @@ class Domains::ShowPage < MainLayout
             text event.created_at.to_local_in(Time::Location.load(@domain.time_zone)).to_s
           end
           td do
-            text event.source.to_s
+            text event.referrer_source.to_s
           end
           td do
             text event.length.to_s
