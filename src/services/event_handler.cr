@@ -25,7 +25,7 @@ class EventHandler
         url: url.to_s,
         path: url.path,
         source: source,
-        domain_id: domain.id, 
+        domain_id: domain.id,
         user_id: user_id,
         is_bounce: 0
       )
@@ -75,7 +75,13 @@ class EventHandler
 
   def self.parse_referer_data(referrer : URI)
     response = REFERERPARSER.parse(referrer.to_s)
-    response[:source]?
+    response[:source]? || use_host(referrer)
+  end
+
+  private def self.use_host(referrer)
+    if ["http", "https"].includes?(referrer.scheme) && !referrer.host.nil?
+      referrer.host.not_nil!.lstrip("www.")
+    end
   end
 
   private def self.get_session(user_id : String)

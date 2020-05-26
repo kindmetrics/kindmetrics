@@ -102,7 +102,7 @@ shards:
 
   referer-parser:
     github: confact/referer-parser.cr
-    commit: 0149bb14d367de7cf9843cfc6e2542ad2a9cf4ea
+    commit: f8d53f30341962ccce60ff75c849169e1192a247
 
   selenium:
     github: ysbaddaden/selenium-webdriver-crystal
