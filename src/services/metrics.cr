@@ -82,10 +82,10 @@ class Metrics
 
   def get_pages
     sql = <<-SQL
-    SELECT path as address, COUNT(id) as count FROM events
+    SELECT path as address, COUNT(DISTINCT user_id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY path
-    ORDER BY COUNT(id) desc LIMIT 10;
+    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10;
     SQL
     pages = AppDatabase.run do |db|
       db.query_all sql, as: StatsPages
@@ -96,10 +96,10 @@ class Metrics
 
   def get_countries
     sql = <<-SQL
-    SELECT country, COUNT(id) as count FROM events
+    SELECT country, COUNT(DISTINCT user_id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY country
-    ORDER BY COUNT(id) desc LIMIT 10;
+    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10;
     SQL
     countries = AppDatabase.run do |db|
       db.query_all sql, as: StatsCountry
