@@ -18,6 +18,7 @@ class Metrics
   end
 
   def bounce_query
+    return "0" if SessionQuery.new.domain_id(@domain.id).select_count == 0
     sql = <<-SQL
     SELECT round(sum(is_bounce * id) / sum(id) * 100) as bounce_rate
     FROM sessions WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}';
@@ -29,6 +30,7 @@ class Metrics
   end
 
   def get_days
+    return [nil, nil, nil] if EventQuery.new.domain_id(@domain.id).select_count == 0
     past_time = period_days
     time_zone = @domain.time_zone
     today_date = Time.utc

@@ -1,8 +1,12 @@
 class DaysSerializer < BaseSerializer
-  def initialize(@days : Array(Time), @today : Array(Int64 | Nil), @data : Array(Int64 | Nil))
+  def initialize(@days : Array(Time) | Nil, @today : Array(Int64 | Nil) | Nil, @data : Array(Int64 | Nil) | Nil)
   end
 
   def render
-    {labels: @days.map { |d| d.to_s("%d %B")}, today: @today, data: @data}
+    if @days.nil?
+      {} of String => String
+    else
+      {labels: @days.not_nil!.map { |d| d.to_s("%d %B")}, today: @today, data: @data}
+    end
   end
 end
