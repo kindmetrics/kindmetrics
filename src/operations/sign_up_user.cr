@@ -13,6 +13,9 @@ class SignUpUser < User::SaveOperation
     validate_required email
     validate_uniqueness_of email
     confirmed_token.value = Random::Secure.hex(32)
+    if Lucky::Env.development?
+      Log.debug { {confirmed_token: confirmed_token.value} }
+    end
     Authentic.copy_and_encrypt password, to: encrypted_password
   end
 
