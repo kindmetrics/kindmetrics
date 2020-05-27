@@ -67,9 +67,9 @@ class Metrics
 
   def get_referrers
     sql = <<-SQL
-    SELECT referrer_source, COUNT(id) as count FROM events
+    SELECT referrer_source, referrer_domain, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
-    GROUP BY referrer_source
+    GROUP BY referrer_source, referrer_domain
     ORDER BY COUNT(id) desc LIMIT 10;
     SQL
     pages = AppDatabase.run do |db|

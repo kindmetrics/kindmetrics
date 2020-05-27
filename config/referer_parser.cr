@@ -1,1 +1,1 @@
-REFERERPARSER = RefererParser::Parser.new
+REFERERPARSER = RefererParser::Parser.new("#{Dir.current}/cache/referers.yml")

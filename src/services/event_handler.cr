@@ -6,7 +6,12 @@ class EventHandler
     browser = UserHash.get_browser(user_agent) if user_agent.present?
     user_id = UserHash.create(address, remote_ip, browser.try { |b| b.browser_name } || "", browser.try { |b| b.browser_version } || "").to_s
 
-    source = params.get?(:source) || parse_referer_data(referrer)
+    temp_source = params.get?(:source)
+    source = if !temp_source.nil? && !temp_source.empty? 
+                temp_source
+              else
+                parse_referer_data(referrer)
+              end
 
     browser_data = {
       device: browser.try { |b| b.device_type },
