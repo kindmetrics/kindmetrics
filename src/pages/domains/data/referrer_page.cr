@@ -1,6 +1,7 @@
 class Domains::Data::ReferrerPage
   include Lucky::HTMLPage
   needs domain : Domain
+  needs period : String
   needs referrers : Array(StatsReferrer)
 
   def render

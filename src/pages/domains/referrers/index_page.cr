@@ -1,5 +1,4 @@
-class Domains::Referrer::IndexPage < MainLayout
-  needs domain : Domain
+class Domains::Referrer::IndexPage < Domains::BasePage
   needs events : Array(StatsReferrer)
   quick_def page_title, "All Domains"
 
@@ -14,5 +13,9 @@ class Domains::Referrer::IndexPage < MainLayout
 
   def sub_header
     h1 "Events for #{domain.address}", class: "text-xl"
+  end
+
+  def header_url(period)
+    Domains::Referrer::Index.with(@domain.id, period: period)
   end
 end

@@ -1,11 +1,9 @@
-class Domains::ShowPage < MainLayout
-  needs domain : Domain
+class Domains::ShowPage < Domains::BasePage
   needs sessions : SessionQuery
   needs domains : DomainQuery
   needs total_unique : String
   needs total_sum : String
   needs total_bounce : String
-  needs period : String
   needs period_string : String
   quick_def page_title, "Domain with id: #{@domain.id}"
 
