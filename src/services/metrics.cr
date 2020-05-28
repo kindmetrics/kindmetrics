@@ -65,12 +65,42 @@ class Metrics
     return days, today, data
   end
 
-  def get_referrers
+  def get_referrers(limit : Int32 = 10)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10;
+    ORDER BY COUNT(DISTINCT user_id) desc LIMIT #{limit};
+    SQL
+    pages = AppDatabase.run do |db|
+      db.query_all sql, as: StatsReferrer
+    end
+    pages.reject! { |r| r.referrer_source.nil? }
+    pages = count_percentage(pages)
+    return pages
+  end
+
+  def get_all_referrers
+    sql = <<-SQL
+    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
+    GROUP BY referrer_source
+    ORDER BY COUNT(DISTINCT user_id) desc;
+    SQL
+    pages = AppDatabase.run do |db|
+      db.query_all sql, as: StatsReferrer
+    end
+    pages.reject! { |r| r.referrer_source.nil? }
+    pages = count_percentage(pages)
+    return pages
+  end
+
+  def get_source_referrers(source : String)
+    sql = <<-SQL
+    SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}' AND referrer_source='#{source}'
+    GROUP BY referrer_source
+    ORDER BY COUNT(DISTINCT user_id) desc;
     SQL
     pages = AppDatabase.run do |db|
       db.query_all sql, as: StatsReferrer
