@@ -1,0 +1,8 @@
+<div class="flex justify-between items-center mt-4 mb-4">
+  <div class="">
+    <%=sub_header%>
+  </div>
+  <div class="">
+    <% link @domain.address.to_s, to: Domains::Show.with(@domain)%>
+  </div>
+</div>
