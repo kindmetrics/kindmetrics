@@ -20,10 +20,10 @@
     <div data-controller="switcher" data-switcher-period="<%=@period%>" data-switcher-url="/domains/<%=@domain.id%>/data/devices" data-switcher-type="device">
       <div class="flex items-center justify-between">
       <h2 class="text-xl" data-target="switcher.title">Devices</h2>
-      <div class="rounded border border-gray-300">
-        <a class="px-2 py-1 inline-block shadow-inner m-0 text-black text-xs hover:bg-gray-500 l-rounded border" data-action="click->switcher#switch" data-switcher-type="device">Device</a>
-        <a class="px-2 py-1 inline-block shadow-inner m-0 text-black text-xs hover:bg-gray-500 l-rounded border" data-action="click->switcher#switch" data-switcher-type="browser">Browser</a>
-        <a class="px-2 py-1 inline-block shadow-inner m-0 text-black text-xs hover:bg-gray-500 r-rounded border" data-action="click->switcher#switch" data-switcher-type="os">OS</a>
+      <div class="inline-flex">
+        <a class="px-2 py-1 m-0 text-black text-xs hover:no-underline rounded-l border hover:shadow-inner hover:bg-gray-200 cursor-pointer" data-action="click->switcher#switch" data-switcher-type="device">Device</a>
+        <a class="px-2 py-1 m-0 text-black text-xs hover:no-underline border-t border-b hover:shadow-inner hover:bg-gray-200 cursor-pointer" data-action="click->switcher#switch" data-switcher-type="browser">Browser</a>
+        <a class="px-2 py-1 m-0 text-black text-xs hover:no-underline rounded-r border hover:shadow-inner hover:bg-gray-200 cursor-pointer" data-action="click->switcher#switch" data-switcher-type="os">OS</a>
       </div>
     </div>
       <div data-target="switcher.content"></div>

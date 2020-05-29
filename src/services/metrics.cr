@@ -110,6 +110,19 @@ class Metrics
     return pages
   end
 
+  def get_source_referrers_total(source : String)
+    sql = <<-SQL
+    SELECT COUNT(DISTINCT user_id) FROM events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}' AND referrer_source='#{source}'
+    GROUP BY referrer_source
+    ORDER BY COUNT(DISTINCT user_id) desc;
+    SQL
+    pages = AppDatabase.run do |db|
+      db.query_all sql, as: Int64
+    end
+    return pages.first.to_s
+  end
+
   def get_pages
     sql = <<-SQL
     SELECT path as address, COUNT(DISTINCT user_id) as count FROM events

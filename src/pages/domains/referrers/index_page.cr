@@ -12,7 +12,7 @@ class Domains::Referrer::IndexPage < Domains::BasePage
   end
 
   def sub_header
-    h1 "Events for #{domain.address}", class: "text-xl"
+    h1 "Referrers for #{domain.address}", class: "text-xl"
   end
 
   def header_url(period)

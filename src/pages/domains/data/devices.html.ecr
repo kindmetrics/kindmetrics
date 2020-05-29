@@ -1,9 +1,9 @@
-<div class="flex justify-between text-xs uppercase mt-3">
+<div class="flex justify-between text-xs uppercase mt-3 transister">
   <span>Device</span>
   <span>Percentage</span>
 </div>
   <% @devices.each do |r| %>
-  <div class="flex items-center justify-between my-1 text-sm">
+  <div class="flex items-center justify-between my-1 text-sm subpixel-antialiased">
     <div class="w-full h-8" style="max-width: calc(100% - 4rem);">
       <div class="bg-blue-200 rounded" style="width: <%=(r.percentage || 0.001)*100%>%;height: 30px"></div>
       <span class="block px-2" style="margin-top: -26px;"><%=r.device%></span>
