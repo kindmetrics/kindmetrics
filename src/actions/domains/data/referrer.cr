@@ -1,6 +1,6 @@
 class Domains::Data::Referrer < DomainBaseAction
   get "/domains/:domain_id/data/referrer" do
-    html ReferrerPage, domain: domain, referrers: get_referrers(domain)
+    html ReferrerPage, domain: domain, referrers: get_referrers(domain), period: period
   end
 
   def get_referrers(domain)

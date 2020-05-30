@@ -1,15 +1,15 @@
 <div class="flex justify-between items-center mt-4 mb-4">
   <div class="flex items-center">
-    <div class="text-sm leading-none rounded no-underline text-gray hover:text-gray-900 ">
+    <div class="text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900 bg-white">
       <div class="relative" data-controller="dropdown">
-        <div data-action="click->dropdown#toggle click@window->dropdown#hide" role="button" class="inline-block select-none border rounded p-3 text-md bg-gray-200">
-          <span class="appearance-none flex items-center inline-block text-gray-800 text-xl">
+        <div data-action="click->dropdown#toggle click@window->dropdown#hide" role="button" class="inline-block select-none rounded-md p-3 text-md bg-white">
+          <span class="appearance-none flex items-center inline-block text-xl">
             <%=@domain.address%>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-4 w-4 ml-2"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-4 w-4 ml-2 text-gray-600"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
           </span>
         </div>
         <div data-target="dropdown.menu" class="absolute right-0 mt-2 w-full hidden">
-          <div class="bg-white shadow-md rounded overflow-hidden">
+          <div class="bg-white shadow-lg rounded overflow-hidden">
               <% @domains.each do |d| %>
                 <% link d.address, to: Domains::Show.with(d), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
               <% end %>
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <a href="<%=Domains::Edit.url(@domain)%>" title="settings" class="ml-3">
+    <a href="<%=Domains::Edit.url(@domain)%>" title="settings" class="ml-3 text-gray-600 hover:text-gray-900">
       <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="h-6 w-6 inline-block" viewBox="0 0 34.5 34.5" xml:space="preserve">
   <path d="M34.5,20.375v-6.25h-4.514c-0.32-1.313-0.838-2.545-1.521-3.669l3.193-3.193l-4.42-4.419l-3.193,3.193
     c-1.125-0.683-2.355-1.2-3.67-1.521V0.001h-6.25v4.515c-1.313,0.321-2.546,0.838-3.671,1.521L7.262,2.844L2.843,7.263l3.193,3.193
@@ -30,16 +30,16 @@
     </a>
   </div>
   <div class="">
-    <div class="text-sm leading-none rounded no-underline text-gray hover:text-gray-900">
+    <div class="text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900">
       <div class="relative" data-controller="dropdown">
-        <div data-action="click->dropdown#toggle click@window->dropdown#hide" role="button" class="inline-block select-none border rounded p-3 text-md bg-gray-200">
-          <span class="appearance-none flex items-center inline-block text-gray-800 text-xl">
+        <div data-action="click->dropdown#toggle click@window->dropdown#hide" role="button" class="inline-block select-none rounded-md p-3 text-md bg-white">
+          <span class="appearance-none flex items-center inline-block text-xl">
             <%=@period_string%>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-4 w-4 ml-2"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
           </span>
         </div>
         <div data-target="dropdown.menu" class="absolute right-0 mt-2 w-full hidden">
-          <div class="bg-white shadow-md rounded overflow-hidden">
+          <div class="bg-white shadow-lg rounded overflow-hidden">
             <% link "7 days", to: Domains::Show.with(@domain.id, period: "7d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
             <% link "14 days", to: Domains::Show.with(@domain.id, period: "14d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
             <% link "30 days", to: Domains::Show.with(@domain.id, period: "30d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>

@@ -1,0 +1,31 @@
+<div class="flex justify-between items-center mt-4 mb-4">
+  <div class="">
+    <%=sub_header%>
+  </div>
+  <div class="flex justify-between items-center ">
+    <div class="clear-both block mr-3">
+      <% link "Back to dashboard", to: Domains::Show.with(@domain, period: @period), class: "stats-bg py-3 px-2 text-white hover:bg-gray-700 hover:no-underline rounded transister" %>
+    </div>
+    <div class="">
+      <div class="text-sm leading-none rounded no-underline text-gray-600 hover:text-gray-900">
+        <div class="relative" data-controller="dropdown">
+          <div data-action="click->dropdown#toggle click@window->dropdown#hide" role="button" class="inline-block select-none rounded-md p-3 text-md bg-white">
+            <span class="appearance-none flex items-center inline-block text-xl">
+              <%=period_string%>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-4 w-4 ml-2"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
+            </span>
+          </div>
+          <div data-target="dropdown.menu" class="absolute right-0 mt-2 w-full hidden">
+            <div class="bg-white shadow-lg rounded overflow-hidden">
+              <% link "7 days", to: header_url("7d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+              <% link "14 days", to: header_url("14d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+              <% link "30 days", to: header_url("30d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+              <% link "60 days", to: header_url("60d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+              <% link "90 days", to: header_url("90d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
