@@ -22,11 +22,17 @@ export default class extends Controller {
             datasets: [{
               backgroundColor: gradientFill,
               borderColor: 'rgba(48, 71, 94, 1)',
+              lineTension: 0,
+              pointBackgroundColor: 'rgba(48, 71, 94, 1)',
+              label: 'Visitors',
               data: data
             }, {
               backgroundColor: gradientFill,
               borderColor: 'rgba(48, 71, 94, 1)',
               borderDash: [5, 15],
+              lineTension: 0,
+              pointBackgroundColor: 'rgba(48, 71, 94, 1)',
+              label: 'Visitors',
               data: today
             }]
         },
