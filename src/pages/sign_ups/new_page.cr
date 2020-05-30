@@ -17,6 +17,7 @@ class SignUps::NewPage < AuthLayout
   end
 
   private def sign_up_fields(op)
+    mount Shared::Field.new(op.name)
     mount Shared::Field.new(op.email, "Email"), &.email_input(append_class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-2")
     mount Shared::Field.new(op.password, "Password"), &.password_input(append_class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-2")
     mount Shared::Field.new(op.password_confirmation, "Confirm Password"), &.password_input(append_class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-2")

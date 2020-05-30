@@ -13,7 +13,7 @@
   </head>
 
   <body class="gradient-color">
-    <% mount InloggedHead.new %>
+    <% mount InloggedHead.new(current_user) %>
     <div class="max-w-6xl mx-auto py-6 sm:px-6 lg:px-8">
       <% mount Shared::FlashMessages.new(context.flash) %>
       <% content %>

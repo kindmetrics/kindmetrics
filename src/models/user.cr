@@ -3,6 +3,7 @@ class User < BaseModel
   include Authentic::PasswordAuthenticatable
 
   table do
+    column name : String?
     column email : String
     column encrypted_password : String
     column confirmed_at : Time?

@@ -5,8 +5,8 @@ class Domains::EditPage < MainLayout
 
   def content
     render_header
-    div class: "shadow rounded bg-white p-4" do
-      h1 "Edit #{@domain.address}"
+    div class: "rounded-md bg-white p-4" do
+      h1 "Edit #{@domain.address}", class: "text-2xl"
       render_domain_form(@operation)
     end
     render_code_snippet

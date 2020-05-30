@@ -5,12 +5,13 @@ class SignUpUser < User::SaveOperation
 
   after_save :send_invite_email
 
-  permit_columns email
+  permit_columns email, name
   attribute password : String
   attribute password_confirmation : String
 
   before_save do
     validate_required email
+    validate_required name
     validate_uniqueness_of email
     confirmed_token.value = Random::Secure.hex(32)
     if Lucky::Env.development?
