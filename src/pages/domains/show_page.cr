@@ -5,7 +5,7 @@ class Domains::ShowPage < Domains::BasePage
   needs total_sum : String
   needs total_bounce : String
   needs period_string : String
-  quick_def page_title, "Domain with id: #{@domain.id}"
+  quick_def page_title, @domain.address
 
   def content
     render_header

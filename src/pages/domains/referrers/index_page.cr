@@ -1,6 +1,6 @@
 class Domains::Referrer::IndexPage < Domains::BasePage
   needs events : Array(StatsReferrer)
-  quick_def page_title, "All Domains"
+  quick_def page_title, "Referrers for #{@domain.address}"
 
   def content
     render_template "domains/referrers/header"

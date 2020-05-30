@@ -4,16 +4,22 @@
     <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/pages">
     </div>
   </div>
-  <div class="shadow rounded bg-white p-4">
+  <div class="shadow rounded relative bg-white p-4">
     <h2 class="text-xl">Top Referrer</h2>
     <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/referrer">
+    </div>
+    <div class="text-center w-full absolute bottom-0 left-0 py-2">
+      <% link "Details", to: Domains::Referrer::Index.with(@domain, @period), class: "uppercase text-sm text-gray-700" %>
     </div>
   </div>
 </div>
 <div class="w-full mt-6 grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row">
-  <div class="shadow rounded bg-white p-4">
+  <div class="shadow rounded relative h-full bg-white p-4">
     <h2 class="text-xl">Countries</h2>
-    <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/countries">
+    <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/countries" class="relative clear-both">
+    </div>
+    <div class="text-center w-full relative bottom-0 left-0 pt-2 -pb-1">
+      <% link "Details", to: Domains::Countries::Index.with(@domain, @period), class: "uppercase text-sm text-gray-700" %>
     </div>
   </div>
   <div class="shadow rounded bg-white p-4">

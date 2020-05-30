@@ -2,7 +2,7 @@ class Domains::Referrer::ShowPage < Domains::BasePage
   needs source : String
   needs events : Array(StatsReferrer)
   needs total : String
-  quick_def page_title, "Domain with id: #{@domain.id}"
+  quick_def page_title, "#{source} for #{@domain.address}"
 
   def content
     render_template "domains/referrers/header"

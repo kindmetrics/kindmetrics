@@ -1,5 +1,6 @@
 class Metrics
   def initialize(@domain : Domain, @period : String)
+    puts @period
   end
 
   def unique_query
@@ -63,6 +64,22 @@ class Metrics
     today = today[0..today.size-3].fill {|i| nil}
     today_data.each { |t| today.push t }
     return days, today, data
+  end
+
+  def get_countries_map
+    return nil if EventQuery.new.domain_id(@domain.id).select_count == 0
+    past_time = period_days
+    time_zone = @domain.time_zone
+    today_date = Time.utc
+    sql = <<-SQL
+    SELECT country, COUNT(DISTINCT user_id) as count FROM events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{past_time}'
+    GROUP BY country
+    ORDER BY COUNT(DISTINCT user_id) asc;
+    SQL
+    AppDatabase.run do |db|
+      db.query_all sql, as: StatsCountry
+    end
   end
 
   def get_referrers(limit : Int32 = 10)

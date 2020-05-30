@@ -4,7 +4,7 @@ class Domains::NewPage < MainLayout
 
   def content
     div class: "shadow rounded bg-white p-4" do
-      h1 "New Domain"
+      h1 "New Domain", class: "text-2xl"
       render_domain_form(@operation)
     end
   end
