@@ -3,7 +3,7 @@ class Domains::Countries::IndexPage < Domains::BasePage
 
   def content
     render_template "domains/countries/header"
-    div class: "w-full p-5 shadow-md bg-white rounded my-3 mb-6" do
+    div class: "w-full p-5 bg-white rounded-md my-3 mb-6" do
       render_template "domains/countries/main"
     end
   end

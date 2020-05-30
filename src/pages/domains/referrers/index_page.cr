@@ -4,7 +4,7 @@ class Domains::Referrer::IndexPage < Domains::BasePage
 
   def content
     render_template "domains/referrers/header"
-    div class: "w-full p-5 shadow-md bg-white rounded my-3 mb-6" do
+    div class: "w-full p-5 bg-white rounded-md my-3 mb-6" do
       events.each do |event|
         render_template "domains/referrers/index_event"
       end
