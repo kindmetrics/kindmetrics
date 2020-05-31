@@ -14,6 +14,7 @@ class Share::ShowPage < MainGuestLayout
       render_canvas
     end
     render_the_rest
+    render_promo if current_user.nil?
   end
 
   def render_actions
@@ -53,5 +54,9 @@ class Share::ShowPage < MainGuestLayout
 
   def render_header
     render_template "shares/header"
+  end
+
+  def render_promo
+    render_template "shares/promo"
   end
 end
