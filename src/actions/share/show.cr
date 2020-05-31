@@ -8,6 +8,7 @@ class Share::Show < BrowserAction
 
   get "/share/:share_id" do
     ids = hashids.decode(share_id)
+    raise Lucky::RouteNotFoundError.new(context) if ids.empty?
     domain = DomainQuery.find(ids.first)
     DomainPolicy.show_share_not_found?(domain, current_user, context)
 

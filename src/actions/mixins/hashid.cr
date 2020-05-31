@@ -1,5 +1,5 @@
 module Hashid
   def hashids
-    @hashids ||= Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: 4)
+    @hashids ||= Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: 6)
   end
 end
