@@ -1,4 +1,4 @@
-class Domains::Referrer::Show < DomainBaseAction
+class Domains::Referrer::Show < DomainPublicBaseAction
   get "/domains/:domain_id/referrers/:source" do
     puts URI.decode(source)
     html ShowPage, domain: domain, total: get_total, events: get_referrals, source: parse_source, period: period

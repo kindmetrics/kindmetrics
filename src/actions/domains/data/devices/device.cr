@@ -1,4 +1,5 @@
-class Domains::Data::Devices::Device < DomainBaseAction
+class Domains::Data::Devices::Device < DomainPublicBaseAction
+  include Auth::AllowGuests
   get "/domains/:domain_id/data/devices/device" do
     html DevicesPage, domain: domain, devices: get_device(domain)
   end

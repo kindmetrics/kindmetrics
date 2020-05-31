@@ -1,4 +1,5 @@
-class Domains::Data::Country < DomainBaseAction
+class Domains::Data::Country < DomainPublicBaseAction
+  include Auth::AllowGuests
   get "/domains/:domain_id/data/countries" do
     html CountriesPage, domain: domain, countries: get_countries(domain)
   end

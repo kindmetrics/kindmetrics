@@ -1,4 +1,4 @@
-class Domains::Referrer::Index < DomainBaseAction
+class Domains::Referrer::Index < DomainPublicBaseAction
   get "/domains/:domain_id/referrers" do
     html IndexPage, events: get_referrals, domain: domain, period: period
   end

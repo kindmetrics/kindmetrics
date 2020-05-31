@@ -1,4 +1,5 @@
-class Domains::Data::Devices::Browser < DomainBaseAction
+class Domains::Data::Devices::Browser < DomainPublicBaseAction
+  include Auth::AllowGuests
   get "/domains/:domain_id/data/devices/browser" do
     html BrowsersPage, domain: domain, browsers: get_browser(domain)
   end

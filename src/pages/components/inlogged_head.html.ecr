@@ -1,11 +1,12 @@
 <div class="max-w-6xl mx-auto py-6 sm:px-6 lg:px-8">
   <div class="w-full flex justify-between items-center mb-4">
     <% link "Kindmetrics", to: Home::Index, class: "text-2xl font-sans text-black hover:underline" %>
+    <% unless current_user.nil? %>
     <div class="text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900 bg-white">
       <div class="relative" data-controller="dropdown">
         <div data-action="click->dropdown#toggle click@window->dropdown#hide" role="button" class="inline-block select-none rounded-md p-3 text-md bg-white">
           <span class="appearance-none flex items-center inline-block text-xl">
-            <%=current_user.name || "No name" %>
+            <%=current_user.not_nil!.name || "No name" %>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-4 w-4 ml-2 text-gray-600"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
           </span>
         </div>
@@ -17,5 +18,6 @@
         </div>
       </div>
     </div>
+    <% end %>
   </div>
 </div>

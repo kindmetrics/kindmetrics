@@ -1,4 +1,4 @@
-class Domains::Data::Devices::Os < DomainBaseAction
+class Domains::Data::Devices::Os < DomainPublicBaseAction
   get "/domains/:domain_id/data/devices/os" do
     html OsPage, domain: domain, os: get_os(domain)
   end

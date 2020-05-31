@@ -6,8 +6,9 @@ class DomainPolicy < LuckyCan::BasePolicy
   end
 
   can show_share, domain, current_user do
-    return false if !domain.shared? && current_user.nil?
-    return domain.shared?
+    return false if !domain.shared && current_user.nil?
+    return true if !current_user.nil? && current_user.id == domain.user_id
+    return domain.shared
   end
 
   can update, domain, current_user do
