@@ -1,7 +1,8 @@
-class Domains::Referrer::ShowPage < Domains::BasePage
+class Domains::Referrer::ShowPage < Share::BasePage
   needs source : String
   needs events : Array(StatsReferrer)
   needs total : String
+
   quick_def page_title, "#{source} for #{@domain.address}"
 
   def content

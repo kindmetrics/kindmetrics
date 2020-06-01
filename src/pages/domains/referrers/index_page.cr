@@ -1,4 +1,4 @@
-class Domains::Referrer::IndexPage < Domains::BasePage
+class Domains::Referrer::IndexPage < Share::BasePage
   needs events : Array(StatsReferrer)
   quick_def page_title, "Referrers for #{@domain.address}"
 

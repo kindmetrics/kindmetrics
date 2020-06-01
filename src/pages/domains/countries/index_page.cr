@@ -1,4 +1,4 @@
-class Domains::Countries::IndexPage < Domains::BasePage
+class Domains::Countries::IndexPage < Share::BasePage
   quick_def page_title, "Countries for #{@domain.address}"
 
   def content
