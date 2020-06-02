@@ -9,7 +9,11 @@
     <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/referrer">
     </div>
     <div class="text-center w-full absolute bottom-0 left-0 py-2">
-      <% link "Details", to: Domains::Referrer::Index.with(@domain, @period), class: "uppercase text-sm text-gray-700" %>
+      <% unless @share_page %>
+        <% link "Details", to: Domains::Referrer::Index.with(@domain, @period), class: "uppercase text-sm text-gray-700" %>
+      <% else %>
+        <% link "Details", to: Share::Referrer::Index.with(@domain.hashid, @period), class: "uppercase text-sm text-gray-700" %>
+      <% end %>
     </div>
   </div>
 </div>
@@ -19,7 +23,11 @@
     <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/countries" class="relative clear-both">
     </div>
     <div class="text-center w-full relative bottom-0 left-0 pt-2 -pb-1">
+      <% unless @share_page %>
       <% link "Details", to: Domains::Countries::Index.with(@domain, @period), class: "uppercase text-sm text-gray-700" %>
+      <% else %>
+      <% link "Details", to: Share::Countries::Index.with(@domain.hashid, @period), class: "uppercase text-sm text-gray-700" %>
+      <% end %>
     </div>
   </div>
   <div class="rounded-md bg-white p-4">

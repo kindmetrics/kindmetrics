@@ -5,6 +5,7 @@ class Domains::ShowPage < Domains::BasePage
   needs total_sum : String
   needs total_bounce : String
   needs period_string : String
+  needs share_page : Bool = false
   quick_def page_title, @domain.address
 
   def content
