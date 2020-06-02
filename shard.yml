@@ -48,3 +48,5 @@ dependencies:
     github: confact/ip2country
   referer-parser:
     github: confact/referer-parser.cr
+  hashids:
+    github: splattael/hashids.cr

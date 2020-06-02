@@ -1,5 +1,6 @@
-class Domains::Countries::IndexPage < Domains::BasePage
+class Domains::Countries::IndexPage < Share::BasePage
   quick_def page_title, "Countries for #{@domain.address}"
+  needs share_page : Bool = false
 
   def content
     render_template "domains/countries/header"
@@ -13,6 +14,10 @@ class Domains::Countries::IndexPage < Domains::BasePage
   end
 
   def header_url(period)
-    Domains::Countries::Index.with(@domain.id, period: period)
+    if share_page?
+      Share::Countries::Index.with(@domain.hashid, period: period)
+    else
+      Domains::Countries::Index.with(@domain.id, period: period)
+    end
   end
 end

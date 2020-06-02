@@ -56,6 +56,10 @@ shards:
     github: luckyframework/habitat
     version: 0.4.3
 
+  hashids:
+    github: splattael/hashids.cr
+    version: 0.3.0
+
   ip2country:
     github: confact/ip2country
     version: 0.1.5

@@ -1,4 +1,5 @@
-class Domains::Data::Days < DomainBaseAction
+class Domains::Data::Days < DomainPublicBaseAction
+  include Auth::AllowGuests
   get "/domains/:domain_id/data/days" do
     days, today, data = parse_response(domain)
     json DaysSerializer.new(days, today, data)

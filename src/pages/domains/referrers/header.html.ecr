@@ -4,7 +4,11 @@
   </div>
   <div class="flex justify-between items-center ">
     <div class="clear-both block mr-3">
-      <% link "Back to dashboard", to: Domains::Show.with(@domain, period: @period), class: "stats-bg py-3 px-2 text-white hover:bg-gray-700 hover:no-underline rounded transister" %>
+      <% if @share_page %>
+        <% link "Back to dashboard", to: Share::Show.with(@domain.hashid, period: @period), class: "stats-bg py-3 px-2 text-white hover:bg-gray-700 hover:no-underline rounded transister" %>
+      <% else %>
+        <% link "Back to dashboard", to: Domains::Show.with(@domain, period: @period), class: "stats-bg py-3 px-2 text-white hover:bg-gray-700 hover:no-underline rounded transister" %>
+      <% end %>
     </div>
     <div class="">
       <div class="text-sm leading-none rounded no-underline text-gray-600 hover:text-gray-900">

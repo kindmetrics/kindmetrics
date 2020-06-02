@@ -1,4 +1,5 @@
-class Domains::Data::Countries < DomainBaseAction
+class Domains::Data::Countries < DomainPublicBaseAction
+  include Auth::AllowGuests
   get "/domains/:domain_id/data/countries_map" do
     data = parse_response(domain)
     json CountriesSerializer.new(data)

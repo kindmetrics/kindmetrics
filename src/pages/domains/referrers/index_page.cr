@@ -1,6 +1,7 @@
-class Domains::Referrer::IndexPage < Domains::BasePage
+class Domains::Referrer::IndexPage < Share::BasePage
   needs events : Array(StatsReferrer)
   quick_def page_title, "Referrers for #{@domain.address}"
+  needs share_page : Bool = false
 
   def content
     render_template "domains/referrers/header"
@@ -16,6 +17,10 @@ class Domains::Referrer::IndexPage < Domains::BasePage
   end
 
   def header_url(period)
-    Domains::Referrer::Index.with(@domain.id, period: period)
+    if share_page?
+      Share::Referrer::Index.with(@domain.hashid, period: period)
+    else
+      Domains::Referrer::Index.with(@domain.id, period: period)
+    end
   end
 end
