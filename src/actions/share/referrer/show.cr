@@ -9,7 +9,7 @@ class Share::Referrer::Show < BrowserAction
     raise Lucky::RouteNotFoundError.new(context) if ids.empty?
     domain = DomainQuery.find(ids.first)
     DomainPolicy.show_share_not_found?(domain, current_user, context)
-    html Domains::Referrer::ShowPage, domain: domain, total: get_total(domain), events: get_referrals(domain), source: parse_source, period: period
+    html Domains::Referrer::ShowPage, domain: domain, total: get_total(domain), events: get_referrals(domain), source: parse_source, period: period, share_page: true
   end
 
   def get_referrals(domain)

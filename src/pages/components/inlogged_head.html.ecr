@@ -1,6 +1,9 @@
 <div class="max-w-6xl mx-auto py-6 sm:px-6 lg:px-8">
   <div class="w-full flex justify-between items-center mb-4">
-    <% link "Kindmetrics", to: Home::Index, class: "text-2xl font-sans text-black hover:underline" %>
+    <div class="flex justify-between items-center">
+      <img src="/apple-icon-76x76.png" class="h-6 w-6 mr-2" />
+      <% link "Kindmetrics", to: Home::Index, class: "text-2xl font-sans text-black hover:underline" %>
+    </div>
     <% unless current_user.nil? %>
     <div class="text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900 bg-white">
       <div class="relative" data-controller="dropdown">
