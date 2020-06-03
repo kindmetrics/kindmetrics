@@ -1,6 +1,11 @@
 class EventHandler
   def self.handle_event(address, remote_ip, user_agent, referrer, url, params, domain)
 
+    return if url.host.nil?
+    hostname = remove_www(url.host.not_nil!)
+
+    return unless hostname == domain.address
+
     country = IPCOUNTRY.lookup_cc(remote_ip)
 
     browser = UserHash.get_browser(user_agent) if user_agent.present?

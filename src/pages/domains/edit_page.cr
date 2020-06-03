@@ -1,5 +1,5 @@
 class Domains::EditPage < MainLayout
-  needs operation : SaveDomain
+  needs operation : UpdateDomain
   needs domain : Domain
   needs hashid : String
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
