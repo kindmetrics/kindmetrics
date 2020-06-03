@@ -4,6 +4,6 @@ class FindCountry
   end
 
   def find_by_cc(cc : String)
-    @countries["country"].as_a.each { |c| return c if c["iso2"].as_s == cc }
+    @countries["country"].as_a.find { |c| c["iso2"].as_s == cc }
   end
 end

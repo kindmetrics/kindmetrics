@@ -3,7 +3,7 @@ class Metrics
     puts @period
   end
 
-  def unique_query
+  def unique_query : String
     sql = <<-SQL
     SELECT COUNT(DISTINCT user_id) FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}';
     SQL
@@ -13,11 +13,11 @@ class Metrics
     unique.first.to_s
   end
 
-  def total_query
+  def total_query : String
     EventQuery.new.domain_id(@domain.id).created_at.gt(period_days).select_count.to_s
   end
 
-  def bounce_query
+  def bounce_query : String
     return "0" if SessionQuery.new.domain_id(@domain.id).select_count == 0
     sql = <<-SQL
     SELECT round(sum(is_bounce * id) / sum(id) * 100) as bounce_rate
@@ -65,7 +65,7 @@ class Metrics
     return days, today, data
   end
 
-  def get_countries_map
+  def get_countries_map : Array(StatsCountry)?
     return nil if EventQuery.new.domain_id(@domain.id).select_count == 0
     past_time = period_days
     time_zone = @domain.time_zone
@@ -76,12 +76,13 @@ class Metrics
     GROUP BY country
     ORDER BY COUNT(DISTINCT user_id) asc;
     SQL
-    AppDatabase.run do |db|
+    country = AppDatabase.run do |db|
       db.query_all sql, as: StatsCountry
     end
+    country
   end
 
-  def get_referrers(limit : Int32 = 10)
+  def get_referrers(limit : Int32 = 10) : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
@@ -96,7 +97,7 @@ class Metrics
     return pages
   end
 
-  def get_all_referrers
+  def get_all_referrers : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
@@ -111,7 +112,7 @@ class Metrics
     return pages
   end
 
-  def get_source_referrers(source : String)
+  def get_source_referrers(source : String) : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}' AND referrer_source='#{source}'
@@ -126,7 +127,7 @@ class Metrics
     return pages
   end
 
-  def get_source_referrers_total(source : String)
+  def get_source_referrers_total(source : String) : String
     sql = <<-SQL
     SELECT COUNT(DISTINCT user_id) FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}' AND referrer_source='#{source}'
@@ -139,7 +140,7 @@ class Metrics
     return pages.first.to_s
   end
 
-  def get_pages
+  def get_pages : Array(StatsPages)
     sql = <<-SQL
     SELECT path as address, COUNT(DISTINCT user_id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
@@ -153,7 +154,7 @@ class Metrics
     return pages
   end
 
-  def get_countries
+  def get_countries : Array(StatsCountry)
     sql = <<-SQL
     SELECT country, COUNT(DISTINCT user_id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
@@ -173,7 +174,7 @@ class Metrics
     return countries
   end
 
-  def get_devices
+  def get_devices : Array(StatsDevice)
     sql = <<-SQL
     SELECT device, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
@@ -187,7 +188,7 @@ class Metrics
     return devices
   end
 
-  def get_browsers
+  def get_browsers : Array(StatsBrowser)
     sql = <<-SQL
     SELECT browser_name as browser, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
@@ -201,7 +202,7 @@ class Metrics
     return browsers
   end
 
-  def get_os
+  def get_os : Array(StatsOS)
     sql = <<-SQL
     SELECT operative_system, COUNT(id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
@@ -215,7 +216,7 @@ class Metrics
     return browsers
   end
 
-  private def period_days
+  private def period_days : Time
     case @period
     when "14d"
       return 14.days.ago

@@ -69,8 +69,7 @@ class EventHandler
     session = get_session(user_id)
     if session
       SaveEvent.create(**params, user_id: user_id, session_id: session.not_nil!.id) do |operation, event|
-        if event
-        else
+        unless event
           raise Avram::InvalidOperationError.new(operation)
         end
       end

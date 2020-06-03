@@ -5,7 +5,7 @@ abstract class DomainBaseAction < BrowserAction
 
   @domain : Domain?
 
-  def require_domain
+  private def require_domain
     @domain = DomainQuery.find(domain_id)
     raise Lucky::RouteNotFoundError.new(context) if @domain.nil?
     if DomainPolicy.show?(domain, current_user)
@@ -15,7 +15,7 @@ abstract class DomainBaseAction < BrowserAction
     end
   end
 
-  def domain : Domain
+  private def domain : Domain
     @domain.not_nil!
   end
 end
