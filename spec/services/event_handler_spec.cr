@@ -50,6 +50,4 @@ describe EventHandler do
 
     EventQuery.new.session_id(session.id).select_count.should eq(1)
   end
-
-
 end

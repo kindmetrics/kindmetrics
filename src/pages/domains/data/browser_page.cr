@@ -9,5 +9,4 @@ class Domains::Data::Devices::BrowsersPage
       render_template "domains/data/browsers"
     end
   end
-
 end

@@ -1,6 +1,5 @@
 class EventHandler
   def self.handle_event(address, remote_ip, user_agent, referrer, url, params, domain)
-
     return if url.host.nil?
     hostname = remove_www(url.host.not_nil!)
 
@@ -12,17 +11,19 @@ class EventHandler
     user_id = UserHash.create(address, remote_ip, browser.try { |b| b.browser_name } || "", browser.try { |b| b.browser_version } || "").to_s
 
     temp_source = params.get?(:source)
-    source = if !temp_source.nil? && !temp_source.empty? 
-                temp_source
-              else
-                parse_referer_data(referrer)
-              end
+    source = if !temp_source.nil? && !temp_source.empty?
+               temp_source
+             else
+               parse_referer_data(referrer)
+             end
+
+    Log.debug { {source: source} }
 
     browser_data = {
-      device: browser.try { |b| b.device_type },
-      browser_name: browser.try { |b| b.browser_name },
-      browser_version: browser.try { |b| b.browser_version },
-      operative_system: browser.try { |b| b.os_name }
+      device:           browser.try { |b| b.device_type },
+      browser_name:     browser.try { |b| b.browser_name },
+      browser_version:  browser.try { |b| b.browser_version },
+      operative_system: browser.try { |b| b.os_name },
     }
 
     unless EventHandler.is_current_session?(user_id)
@@ -67,9 +68,8 @@ class EventHandler
   def self.add_event(user_id : String, **params)
     session = get_session(user_id)
     if session
-      SaveEvent.create(**params, user_id: user_id, session_id: session.not_nil!.id) do  |operation, event|
+      SaveEvent.create(**params, user_id: user_id, session_id: session.not_nil!.id) do |operation, event|
         if event
-
         else
           raise Avram::InvalidOperationError.new(operation)
         end

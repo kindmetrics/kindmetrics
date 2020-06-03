@@ -6,10 +6,14 @@ module FixAddress
   private def fix_address
     validate_required address
 
-    new_address = address.value.not_nil!
-    new_address = new_address.lstrip("https://")
-    new_address = new_address.lstrip("http://")
-    new_address = new_address.lstrip("www.")
+    url = URI.parse(address.value.not_nil!)
+    return if !url.absolute? && !address.value.not_nil!.starts_with?("www.")
+
+    new_address = if url.host.nil?
+                    address.value.not_nil!.lstrip("www.")
+                  else
+                    url.host.not_nil!.lstrip("www.")
+                  end
     address.value = new_address
   end
 end

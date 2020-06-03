@@ -9,5 +9,4 @@ class Domains::Data::Devices::DevicesPage
       render_template "domains/data/devices"
     end
   end
-
 end

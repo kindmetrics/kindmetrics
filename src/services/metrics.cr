@@ -4,7 +4,6 @@ class Metrics
   end
 
   def unique_query
-
     sql = <<-SQL
     SELECT COUNT(DISTINCT user_id) FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}';
     SQL
@@ -60,8 +59,8 @@ class Metrics
     data = grouped2.map { |d| d.count }
     today = data.clone
     data.pop
-    today_data = today[today.size-2..today.size]
-    today = today[0..today.size-3].fill {|i| nil}
+    today_data = today[today.size - 2..today.size]
+    today = today[0..today.size - 3].fill { |i| nil }
     today_data.each { |t| today.push t }
     return days, today, data
   end

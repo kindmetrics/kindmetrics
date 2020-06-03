@@ -1,4 +1,5 @@
 require "crypto/bcrypt"
+
 class UserHash
   def self.create(address, ip_address, browser, browser_version) : String
     OpenSSL::HMAC.hexdigest(OpenSSL::Algorithm::SHA256, Lucky::Server.settings.secret_key_base, [address, ip_address, browser, browser_version].join("/"))

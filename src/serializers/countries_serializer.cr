@@ -7,7 +7,7 @@ class CountriesSerializer < BaseSerializer
     if @countries.nil?
       {} of String => String
     else
-      {data: @countries.not_nil!.map {|c| { country: get_country_code(c.country), count: c.count } } }
+      {data: @countries.not_nil!.map { |c| {country: get_country_code(c.country), count: c.count} }}
     end
   end
 

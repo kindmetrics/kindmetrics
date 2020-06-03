@@ -20,11 +20,10 @@ class Domains::EditPage < MainLayout
       mount Shared::Field.new(operation.address, "Domain"), &.text_input(autofocus: "true", disabled: true, append_class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-2")
       label_for(operation.time_zone, class: "custom-label")
       select_input(operation.time_zone, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-2") do
-        options_for_select(operation.time_zone, TIMEZONES.map {|t| {t, t} })
+        options_for_select(operation.time_zone, TIMEZONES.map { |t| {t, t} })
       end
 
       mount Shared::Field.new(op.shared, "Share"), &.checkbox(append_class: "form-checkbox block clear-both my-2")
-
 
       submit "Update", data_disable_with: "Updating...", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
     end

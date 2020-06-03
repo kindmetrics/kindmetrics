@@ -9,5 +9,4 @@ class Domains::Data::Devices::OsPage
       render_template "domains/data/os"
     end
   end
-
 end

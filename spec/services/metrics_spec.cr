@@ -66,15 +66,15 @@ describe Metrics do
     data.size.should eq(7)
     today.size.should eq(8)
 
-    empty_days = data[0..data.size-1]
+    empty_days = data[0..data.size - 1]
     empty_days.size.should eq(7)
 
-    empty_days.each { |ed| ed.should eq(0)}
+    empty_days.each { |ed| ed.should eq(0) }
 
-    empty_today = today[0..today.size-3]
+    empty_today = today[0..today.size - 3]
     empty_today.size.should eq(6)
 
-    empty_today.each { |ed| ed.should eq(nil)}
+    empty_today.each { |ed| ed.should eq(nil) }
   end
 
   it "14 days calculation" do

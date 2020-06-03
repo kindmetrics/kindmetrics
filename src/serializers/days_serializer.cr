@@ -6,7 +6,7 @@ class DaysSerializer < BaseSerializer
     if @days.nil?
       {} of String => String
     else
-      {labels: @days.not_nil!.map { |d| d.to_s("%d %B")}, today: @today, data: @data}
+      {labels: @days.not_nil!.map { |d| d.to_s("%d %B") }, today: @today, data: @data}
     end
   end
 end

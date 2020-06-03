@@ -1,5 +1,4 @@
 class DomainPolicy < LuckyCan::BasePolicy
-
   can show, domain, current_user do
     return false if current_user.nil?
     current_user.id == domain.user_id
@@ -20,5 +19,4 @@ class DomainPolicy < LuckyCan::BasePolicy
     return false if current_user.nil?
     current_user.id == domain.user_id
   end
-
 end

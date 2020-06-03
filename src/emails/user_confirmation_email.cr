@@ -5,5 +5,4 @@ class UserConfirmationEmail < BaseEmail
 
   def initialize(@user : User)
   end
-
 end
