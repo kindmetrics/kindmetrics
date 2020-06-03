@@ -16,7 +16,7 @@ describe Events::Create do
 
     domain.events!.size.should eq(0)
 
-    response = AppClient.exec(Events::Create, domain: domain.address, user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36", referrer: nil, url: "https://www.test.com/asdsadasds", source: nil)
+    response = AppClient.exec(Events::Create, domain: domain.address, user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36", referrer: nil, url: "https://#{domain.address}/asdsadasds", source: nil)
 
     response.status_code.should eq(200)
     domain.events!.size.should eq(1)
