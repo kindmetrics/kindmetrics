@@ -3,7 +3,7 @@ class SignUpUser < User::SaveOperation
   # Change password validations in src/operations/mixins/password_validations.cr
   include PasswordValidations
 
-  after_save :send_invite_email
+  after_commit send_invite_email
 
   permit_columns email, name
   attribute password : String
