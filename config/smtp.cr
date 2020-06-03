@@ -1,4 +1,5 @@
 require "email"
+
 class Carbon::SmtpAdapter < Carbon::Adapter
   Habitat.create do
     setting host : String = "localhost"
@@ -15,7 +16,7 @@ class Carbon::SmtpAdapter < Carbon::Adapter
     config.use_tls(EMail::Client::TLSMode::STARTTLS) if settings.use_tls
 
     client = ::EMail::Client.new(config)
-    #::EMail::Client.log_level = Log::Severity::Debug
+    # ::EMail::Client.log_level = Log::Severity::Debug
 
     new_email = ::EMail::Message.new
     new_email.from email.from.address, email.from.name
