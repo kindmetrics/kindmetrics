@@ -25,7 +25,7 @@ class Home::Index < BrowserAction
       # Or maybe show signed out users a marketing page:
       #
       #   html Marketing::IndexPage
-      html IndexPage
+      redirect to: SignIns::New
     end
   end
 end
