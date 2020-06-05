@@ -19,9 +19,3 @@ application.register('dropdown', Dropdown)
 document.addEventListener("turbolinks:load", function() {
 
 })
-
-// If using Turbolinks, you can attach events to page load like this:
-//
-// document.addEventListener("turbolinks:load", function() {
-//   ...
-// })
