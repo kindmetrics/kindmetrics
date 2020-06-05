@@ -5,7 +5,7 @@
     <title><%="Kindmetrics - #{page_title}"%></title>
     <% css_link asset("css/app.css"), data_turbolinks_track: "reload" %>
     <% js_link asset("js/app.js"), defer: "true", data_turbolinks_track: "reload" %>
-    <script src="//<%=Lucky::Env.production? ? "kindmetrics.io" : "localhost:5000" %>/js/track.js" defer="true" data-domain="kindmetrics.io" data-turbolinks-track="reload"></script>
+    <script src="//<%=Lucky::Env.production? ? "app.kindmetrics.io" : "localhost:5000" %>/js/track.js" defer="true" data-domain="kindmetrics.io" data-turbolinks-track="reload"></script>
     <% meta name: "turbolinks-cache-control", content: "no-cache" %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">

@@ -14,7 +14,7 @@ let mix = require("laravel-mix");
 
 let plugins = [
   new DefinePlugin({
-    "KINDURL": JSON.stringify(process.env.NODE_ENV == 'production' ? '//kindmetrics.io' : '//localhost:5000')
+    "KINDURL": JSON.stringify(process.env.NODE_ENV == 'production' ? '//app.kindmetrics.io' : '//localhost:5000')
   })
 ];
 
