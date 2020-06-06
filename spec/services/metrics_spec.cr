@@ -66,12 +66,12 @@ describe Metrics do
     data.not_nil!.size.should eq(7)
     today.not_nil!.size.should eq(8)
 
-    empty_days = data.try {|d| d[0..(data.not_nil!.size || 1) - 1] }
+    empty_days = data.try { |d| d[0..(data.not_nil!.size || 1) - 1] }
     empty_days.not_nil!.size.should eq(7)
 
     empty_days.not_nil!.each { |ed| ed.should eq(0) }
 
-    empty_today = today.try {|t| t[0..(today.not_nil!.size || 1) - 3] }
+    empty_today = today.try { |t| t[0..(today.not_nil!.size || 1) - 3] }
     empty_today.not_nil!.size.should eq(6)
 
     empty_today.not_nil!.each { |ed| ed.should eq(nil) }
