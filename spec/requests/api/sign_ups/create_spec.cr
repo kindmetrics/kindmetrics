@@ -28,6 +28,7 @@ end
 private def valid_params
   {
     email:                 "test@email.com",
+    name:                  "test name",
     password:              "password",
     password_confirmation: "password",
   }

@@ -2,7 +2,7 @@ require "../../spec_helper"
 
 describe Share::Show do
   it "Domain does not exist" do
-    hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: 6)
+    hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
 
     domain_hashid = hashid.encode([345435])
 
@@ -13,7 +13,7 @@ describe Share::Show do
   it "Domain is not shared" do
     domain = DomainBox.create &.shared(false)
 
-    hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: 6)
+    hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
 
     domain_hashid = hashid.encode([domain.id])
 
@@ -23,7 +23,7 @@ describe Share::Show do
 
   it "Get share page" do
     domain = DomainBox.create &.shared(true)
-    hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: 6)
+    hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
 
     domain_hashid = hashid.encode([domain.id])
 

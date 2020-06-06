@@ -1,6 +1,5 @@
 class Metrics
   def initialize(@domain : Domain, @period : String)
-    puts @period
   end
 
   def unique_query : String
