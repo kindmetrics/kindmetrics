@@ -29,7 +29,6 @@ class EventHandler
     unless EventHandler.is_current_session?(user_id)
       EventHandler.create_session(
         **browser_data,
-        user_agent: user_agent,
         referrer: referrer.to_s,
         referrer_domain: referrer.host,
         country: country,
@@ -45,7 +44,6 @@ class EventHandler
       user_id,
       **browser_data,
       name: "pageview",
-      user_agent: user_agent,
       referrer: referrer.to_s,
       country: country,
       referrer_domain: referrer.host,
