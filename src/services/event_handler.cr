@@ -8,7 +8,7 @@ class EventHandler
     country = IPCOUNTRY.lookup_cc(remote_ip)
 
     browser = UserHash.get_browser(user_agent) if user_agent.present?
-    user_id = UserHash.create(address, remote_ip, browser.try { |b| b.browser_name } || "", browser.try { |b| b.browser_version } || "").to_s
+    user_id = UserHash.create(address, remote_ip, user_agent).to_s
 
     temp_source = params.get?(:source)
     source = if !temp_source.nil? && !temp_source.empty?
@@ -29,7 +29,6 @@ class EventHandler
     unless EventHandler.is_current_session?(user_id)
       EventHandler.create_session(
         **browser_data,
-        user_agent: user_agent,
         referrer: referrer.to_s,
         referrer_domain: referrer.host,
         country: country,
@@ -45,7 +44,6 @@ class EventHandler
       user_id,
       **browser_data,
       name: "pageview",
-      user_agent: user_agent,
       referrer: referrer.to_s,
       country: country,
       referrer_domain: referrer.host,

@@ -45,15 +45,15 @@ describe Metrics do
 
     metrics = Metrics.new(domain, "7d")
     days, today, data = metrics.get_days
-    days.size.should eq(8)
-    data.size.should eq(7)
-    today.size.should eq(8)
+    days.not_nil!.size.should eq(8)
+    data.not_nil!.size.should eq(7)
+    today.not_nil!.size.should eq(8)
 
-    days.last.day.should eq(Time.utc.day)
-    days.last.month.should eq(Time.utc.month)
+    days.not_nil!.last.day.should eq(Time.utc.day)
+    days.not_nil!.last.month.should eq(Time.utc.month)
 
-    days.first.day.should eq((Time.utc - 7.days).day)
-    days.first.month.should eq((Time.utc - 7.days).month)
+    days.not_nil!.first.day.should eq((Time.utc - 7.days).day)
+    days.not_nil!.first.month.should eq((Time.utc - 7.days).month)
   end
 
   it "fill empty days" do
@@ -62,19 +62,19 @@ describe Metrics do
 
     metrics = Metrics.new(domain, "7d")
     days, today, data = metrics.get_days
-    days.size.should eq(8)
-    data.size.should eq(7)
-    today.size.should eq(8)
+    days.not_nil!.size.should eq(8)
+    data.not_nil!.size.should eq(7)
+    today.not_nil!.size.should eq(8)
 
-    empty_days = data[0..data.size - 1]
-    empty_days.size.should eq(7)
+    empty_days = data.try {|d| d[0..(data.not_nil!.size || 1) - 1] }
+    empty_days.not_nil!.size.should eq(7)
 
-    empty_days.each { |ed| ed.should eq(0) }
+    empty_days.not_nil!.each { |ed| ed.should eq(0) }
 
-    empty_today = today[0..today.size - 3]
-    empty_today.size.should eq(6)
+    empty_today = today.try {|t| t[0..(today.not_nil!.size || 1) - 3] }
+    empty_today.not_nil!.size.should eq(6)
 
-    empty_today.each { |ed| ed.should eq(nil) }
+    empty_today.not_nil!.each { |ed| ed.should eq(nil) }
   end
 
   it "14 days calculation" do
@@ -83,14 +83,14 @@ describe Metrics do
 
     metrics = Metrics.new(domain, "14d")
     days, today, data = metrics.get_days
-    days.size.should eq(15)
-    data.size.should eq(14)
-    today.size.should eq(15)
+    days.not_nil!.size.should eq(15)
+    data.not_nil!.size.should eq(14)
+    today.not_nil!.size.should eq(15)
 
-    days.last.day.should eq(Time.utc.day)
-    days.last.month.should eq(Time.utc.month)
+    days.not_nil!.last.day.should eq(Time.utc.day)
+    days.not_nil!.last.month.should eq(Time.utc.month)
 
-    days.first.day.should eq((Time.utc - 14.days).day)
-    days.first.month.should eq((Time.utc - 14.days).month)
+    days.not_nil!.first.day.should eq((Time.utc - 14.days).day)
+    days.not_nil!.first.month.should eq((Time.utc - 14.days).month)
   end
 end
