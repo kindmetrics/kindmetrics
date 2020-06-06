@@ -3,7 +3,7 @@ class SessionBox < Avram::Box
     user_id sequence("event")
     referrer "https://www.test.com/best-analytics"
     url "https://kindmetrics.io/help/test"
-    source nil
+    referrer_source nil
     screen_width nil
     path "/help/test"
     device "desktop"
