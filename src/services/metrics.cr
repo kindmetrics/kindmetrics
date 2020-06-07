@@ -141,7 +141,7 @@ class Metrics
 
   def get_pages : Array(StatsPages)
     sql = <<-SQL
-    SELECT path as address, COUNT(DISTINCT user_id) as count FROM events
+    SELECT path as address, COUNT(DISTINCT user_id) as count FROM sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
     GROUP BY path
     ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10;

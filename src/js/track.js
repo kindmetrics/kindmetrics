@@ -2,23 +2,25 @@
   'use strict';
 
   const trackDocument = window.document
+  const trackLocation = window.location
+  const dnt = window.doNotTrack || navigator.doNotTrack || navigator.msDoNotTrack
 
   try {
     const parentNode = window.document.querySelector('[src*="' + kindmetricsURL +'"]')
     const domain = parentNode && parentNode.getAttribute('data-domain')
 
     function getUrl() {
-      return window.location.protocol + '//' + window.location.hostname + window.location.pathname + window.location.search;
+      return trackLocation.protocol + '//' + trackLocation.hostname + trackLocation.pathname + trackLocation.search;
     }
 
     function getUtmSource() {
-      const result = window.location.search.match(/[?&](ref|source|utm_source)=([^?&]+)/);
+      const result = trackLocation.search.match(/[?&](ref|source|utm_source)=([^?&]+)/);
       return result ? result[2] : null
     }
 
-    function check_dnt() {
-      if (window.doNotTrack || navigator.doNotTrack || navigator.msDoNotTrack || 'msTrackingProtectionEnabled' in window.external) {
-        if (window.doNotTrack == "1" || navigator.doNotTrack == "yes" || navigator.doNotTrack == "1" || navigator.msDoNotTrack == "1" || window.external.msTrackingProtectionEnabled()) {
+    function do_track() {
+      if (dnt) {
+        if (dnt == "1" || dnt == "yes") {
           return false
         } else {
           return true
@@ -32,13 +34,16 @@
     }
 
     function trigger(eventName, options) {
-      if(!check_dnt()) {
+      if(!do_track()) {
         return ignore("Do not track is enabled")
+      }
+      if (document.visibilityState === 'prerender') {
+        return ignore("prerendering");
       }
       var data = {
         name: eventName,
         url: getUrl(),
-        domain: domain || window.location.hostname,
+        domain: domain || trackLocation.hostname,
         referrer: trackDocument.referrer || null,
         source: getUtmSource(),
         user_agent: window.navigator.userAgent
