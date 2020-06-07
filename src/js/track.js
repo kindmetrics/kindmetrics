@@ -1,6 +1,8 @@
 (function(window, kindmetricsURL){
   'use strict';
 
+  const trackDocument = window.document
+
   try {
     const parentNode = window.document.querySelector('[src*="' + kindmetricsURL +'"]')
     const domain = parentNode && parentNode.getAttribute('data-domain')
@@ -37,7 +39,7 @@
         name: eventName,
         url: getUrl(),
         domain: domain || window.location.hostname,
-        referrer: window.document.referrer || null,
+        referrer: trackDocument.referrer || null,
         source: getUtmSource(),
         user_agent: window.navigator.userAgent
       }
