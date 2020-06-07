@@ -29,7 +29,7 @@ class Share::ShowPage < MainGuestLayout
 
   def render_total
     div class: "big_letters" do
-      div class: "w-full grid grid-flow-col gap-6 mb-4 rounded-md" do
+      div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0 grid grid-flow-col gap-6" do
         div class: "p-3" do
           para @total_unique.to_s, class: "text-3xl strong"
           para "Unique Visitors", class: "text-sm uppercase"
