@@ -4,10 +4,12 @@ class Domains::Referrer::IndexPage < Share::BasePage
   needs share_page : Bool = false
 
   def content
-    render_template "domains/referrers/header"
-    div class: "w-full p-5 bg-white rounded-md my-3 mb-6" do
-      events.each do |event|
-        render_template "domains/referrers/index_event"
+    div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
+      render_template "domains/referrers/header"
+      div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
+        events.each do |event|
+          render_template "domains/referrers/index_event"
+        end
       end
     end
   end

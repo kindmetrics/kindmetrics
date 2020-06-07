@@ -7,11 +7,13 @@ class Domains::Referrer::ShowPage < Share::BasePage
   quick_def page_title, "#{source} for #{@domain.address}"
 
   def content
-    render_template "domains/referrers/header"
-    div class: "w-full p-5 bg-white rounded-md my-3 mb-6" do
-      para "Got #{total} Visitors from #{source} the last #{period_string}", class: "text-xl mb-2"
-      events.each do |event|
-        render_template "domains/referrers/show_event"
+    div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
+      render_template "domains/referrers/header"
+      div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
+        para "Got #{total} Visitors from #{source} the last #{period_string}", class: "text-xl mb-2"
+        events.each do |event|
+          render_template "domains/referrers/show_event"
+        end
       end
     end
   end
