@@ -11,11 +11,10 @@ class Share::ShowPage < MainGuestLayout
   def content
     render_header
     render_total
-    div class: "w-full p-5 bg-white rounded-md my-3 mb-6" do
+    div class: "max-w-6xl mx-auto py-6 sm:px-6 lg:px-8 p-5 my-3 mb-6 card" do
       render_canvas
     end
     render_the_rest
-    render_promo if current_user.nil?
   end
 
   def render_actions
@@ -29,18 +28,20 @@ class Share::ShowPage < MainGuestLayout
   end
 
   def render_total
-    div class: "w-full grid grid-flow-col gap-6 mb-4 stats-bg text-white rounded-md p-1 mb-4 " do
-      div class: "p-3" do
-        para @total_unique.to_s, class: "text-3xl strong"
-        para "Unique Visitors", class: "text-sm uppercase"
-      end
-      div class: "p-3" do
-        para @total_sum.to_s, class: "text-3xl strong"
-        para "Total Pageviews", class: "text-sm strong uppercase"
-      end
-      div class: "p-3" do
-        para "#{@total_bounce.to_s}%", class: "text-3xl strong"
-        para "Bounce rate", class: "text-sm strong uppercase"
+    div class: "big_letters" do
+      div class: "w-full grid grid-flow-col gap-6 mb-4 rounded-md" do
+        div class: "p-3" do
+          para @total_unique.to_s, class: "text-3xl strong"
+          para "Unique Visitors", class: "text-sm uppercase"
+        end
+        div class: "p-3" do
+          para @total_sum.to_s, class: "text-3xl strong"
+          para "Total Pageviews", class: "text-sm strong uppercase"
+        end
+        div class: "p-3" do
+          para "#{@total_bounce.to_s}%", class: "text-3xl strong"
+          para "Bounce rate", class: "text-sm strong uppercase"
+        end
       end
     end
   end

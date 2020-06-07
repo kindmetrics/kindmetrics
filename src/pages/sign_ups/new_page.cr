@@ -6,7 +6,7 @@ class SignUps::NewPage < AuthLayout
   end
 
   private def render_sign_up_form(op)
-    div class: "bg-white shadow-lg rounded p-4" do
+    div class: "bg-white shadow-lg rounded-md p-4" do
       h2 "Sign Up"
       form_for SignUps::Create do
         sign_up_fields(op)

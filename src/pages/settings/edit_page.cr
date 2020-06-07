@@ -4,9 +4,11 @@ class Users::EditPage < MainLayout
   quick_def single_page, "Edit my Settings"
 
   def content
-    div class: "rounded-md bg-white p-4" do
-      h1 "Edit your Settings", class: "text-2xl"
-      render_user_form(@operation)
+    div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0 mt-5" do
+      div class: "rounded-md shadow-md bg-white p-4" do
+        h1 "Edit your Settings", class: "text-2xl"
+        render_user_form(@operation)
+      end
     end
   end
 

@@ -16,11 +16,22 @@ h3 {
 }
 
 body {
-  background-color: white;
+  @apply bg-gray-100;
+}
+
+.nav {
+  margin-bottom: -17px !important;
+  @apply pb-2;
+  @apply bg-white;
+
+  a {
+    @apply text-black;
+  }
 }
 
 .gradient-color {
-  background-color: #E2EDF3;
+  //background-color: #E2EDF3;
+  @apply bg-gray-300;
 }
 
 .stats-bg {
@@ -33,4 +44,29 @@ body {
 
 .transister {
   transition: ease background 0.2s;
+}
+
+.card {
+  @apply rounded-md;
+  @apply shadow-md;
+  @apply relative;
+  @apply h-full;
+  @apply bg-white;
+  @apply text-black;
+  @apply p-4;
+
+  a {
+    @apply text-black;
+  }
+}
+.big_letters {
+  @apply w-full;
+  @apply mb-4;
+  @apply text-gray-800;
+  @apply p-1;
+}
+
+.progress_bar {
+  @apply bg-blue-200;
+  @apply rounded;
 }

@@ -5,13 +5,15 @@ class Domains::EditPage < MainLayout
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
 
   def content
-    render_header
-    div class: "rounded-md bg-white p-4" do
-      h1 "Edit #{@domain.address}", class: "text-2xl"
-      render_domain_form(@operation)
+    div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0" do
+      render_header
+      div class: "rounded-md shadow-md bg-white p-4" do
+        h1 "Edit #{@domain.address}", class: "text-2xl"
+        render_domain_form(@operation)
+      end
+      render_code_snippet
+      render_share
     end
-    render_code_snippet
-    render_share
   end
 
   def render_domain_form(op)
@@ -33,7 +35,7 @@ class Domains::EditPage < MainLayout
     snippet = <<-HTML
     <script src="https://kindmetrics.io/js/track.js" defer="true" data-domain="#{@domain.address}"></script>
     HTML
-    div class: "rounded-md bg-white p-4 mt-4" do
+    div class: "rounded-md shadow-md bg-white p-4 mt-4" do
       h2 "The code you use for tracking"
       para "Add this to your header"
       textarea(snippet, attrs: [:readonly], class: "w-full border rounded p-2")
@@ -42,7 +44,7 @@ class Domains::EditPage < MainLayout
 
   def render_share
     url = Share::Show.with(hashid).url
-    div class: "rounded-md bg-white p-4 mt-4" do
+    div class: "rounded-md shadow-md bg-white p-4 mt-4" do
       h2 "Share the analytics"
       para "This will be the link you can share to your clients, friends and more - But don't forget to change the share settings above."
       textarea(url, attrs: [:readonly], class: "w-full border rounded p-2")

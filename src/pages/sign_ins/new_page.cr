@@ -6,7 +6,7 @@ class SignIns::NewPage < AuthLayout
   end
 
   private def render_sign_in_form(op)
-    div class: "bg-white shadow-lg rounded p-4" do
+    div class: "bg-white shadow-lg rounded-md p-4" do
       h2 "Sign In"
       form_for SignIns::Create do
         sign_in_fields(op)

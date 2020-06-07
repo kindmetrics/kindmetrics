@@ -23,11 +23,9 @@
     <% responsive_meta_tag %>
   </head>
 
-  <body class="gradient-color">
+  <body>
     <% mount InloggedHead.new(current_user) %>
-    <div class="max-w-6xl mx-auto py-6 sm:px-6 lg:px-8">
-      <% mount Shared::FlashMessages.new(context.flash) %>
-      <% content %>
-    </div>
+    <% mount Shared::FlashMessages.new(context.flash) %>
+    <% content %>
   </body>
 </html>
