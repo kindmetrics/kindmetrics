@@ -28,22 +28,7 @@ class Domains::ShowPage < Domains::BasePage
   end
 
   def render_total
-    div class: "big_letters" do
-      div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0 grid grid-flow-col gap-6" do
-        div class: "p-3" do
-          para @total_unique.to_s, class: "text-3xl strong"
-          para "Unique Visitors", class: "text-sm uppercase"
-        end
-        div class: "p-3" do
-          para @total_sum.to_s, class: "text-3xl strong"
-          para "Total Pageviews", class: "text-sm strong uppercase"
-        end
-        div class: "p-3" do
-          para "#{@total_bounce.to_s}%", class: "text-3xl strong"
-          para "Bounce rate", class: "text-sm strong uppercase"
-        end
-      end
-    end
+    mount TotalRowComponent.new(@total_unique, @total_sum, @total_bounce)
   end
 
   def render_canvas
