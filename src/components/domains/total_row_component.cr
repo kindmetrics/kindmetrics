@@ -1,5 +1,4 @@
 class TotalRowComponent < BaseComponent
-
   needs total_unique : String
   needs total_sum : String
   needs total_bounce : String
