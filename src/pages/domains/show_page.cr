@@ -10,11 +10,15 @@ class Domains::ShowPage < Domains::BasePage
 
   def content
     render_header
-    render_total
-    div class: "max-w-6xl mx-auto py-6 sm:px-6 lg:px-8 p-5 my-3 mb-6 card" do
-      render_canvas
+    if total_sum == "0"
+      mount AddTrackingComponent.new(domain: @domain)
+    else
+      render_total
+      div class: "max-w-6xl mx-auto py-6 sm:px-6 lg:px-8 p-5 my-3 mb-6 card" do
+        render_canvas
+      end
+      render_the_rest
     end
-    render_the_rest
   end
 
   def render_actions

@@ -30,6 +30,7 @@
       </svg>
       </a>
     </div>
+    <% if total_sum.nil? || total_sum != "0" %>
     <div class="">
       <div class="text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900">
         <div class="relative" data-controller="dropdown">
@@ -51,5 +52,6 @@
         </div>
       </div>
     </div>
+    <% end %>
   </div>
 </div>

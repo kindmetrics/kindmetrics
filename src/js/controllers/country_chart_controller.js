@@ -4,9 +4,6 @@ import { useResize } from 'stimulus-use'
 export default class extends Controller {
 
   createChart(ctx, response) {
-    console.log("inside create")
-    console.log(response)
-
     const { data } = response
 
     var dataset = {}
@@ -14,8 +11,6 @@ export default class extends Controller {
     var onlyValues = data.map(function(obj){ return obj.count; });
     var minValue = Math.min.apply(null, onlyValues),
             maxValue = Math.max.apply(null, onlyValues);
-
-    console.log(onlyValues)
 
     var paletteScale = d3.scale.linear()
             .domain([minValue,maxValue])
@@ -27,8 +22,6 @@ export default class extends Controller {
                 value = item.count;
         dataset[iso] = { numberOfThings: value, fillColor: paletteScale(value) };
     });
-
-    console.log(dataset)
 
     new Datamap({
         element: this.element,
