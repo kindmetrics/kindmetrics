@@ -1,5 +1,6 @@
 class AddTrackingComponent < BaseComponent
   needs domain : Domain
+
   def render
     snippet = <<-HTML
     <script src="https://kindmetrics.io/js/track.js" defer="true" data-domain="#{@domain.address}"></script>
@@ -13,8 +14,7 @@ class AddTrackingComponent < BaseComponent
       div class: "my-3 card" do
         para "Waiting to receive first pageview", class: "py-2 w-full inline-block text-center"
 
-        div data_controller: "content-refresh", data_content_refresh_url: "/domains/#{@domain.id}/data/total", data_content_refresh_refresh_interval: "5000"  do
-
+        div data_controller: "content-refresh", data_content_refresh_url: "/domains/#{@domain.id}/data/total", data_content_refresh_refresh_interval: "5000" do
         end
       end
     end
