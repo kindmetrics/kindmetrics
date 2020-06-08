@@ -3,7 +3,7 @@ class EventHandler
     return if url.host.nil?
     hostname = remove_www(url.host.not_nil!)
 
-    return unless hostname == domain.address
+    return unless hostname.ends_with?(domain.address)
 
     country = IPCOUNTRY.lookup_cc(remote_ip)
 
