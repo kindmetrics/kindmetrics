@@ -2,4 +2,8 @@
 <p>Click on the link below to confirm your account.</p>
 <a href="<%= UserConfirmations::Show.url(token: @user.confirmed_token) %>">Click here</a>
 
+<p>If you can't click on that text, copy this url:</p>
+
+<p><%= UserConfirmations::Show.url(token: @user.confirmed_token) %></p>
+
 <p>If you didn't signup for Kindmetrics, you can ignore this email.</p>

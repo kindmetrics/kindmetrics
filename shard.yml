@@ -50,3 +50,5 @@ dependencies:
     github: confact/referer-parser.cr
   hashids:
     github: splattael/hashids.cr
+  quoted_printable:
+    github: arcage/crystal-quotedprintable
