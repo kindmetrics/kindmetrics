@@ -43,4 +43,14 @@
   .gradient-color {
     @apply bg-gray-700;
   }
+
+  .label {
+    @apply block;
+    @apply uppercase;
+    @apply tracking-wide;
+    @apply text-gray-200;
+    @apply text-xs;
+    @apply font-bold;
+    @apply mt-2;
+  }
 }

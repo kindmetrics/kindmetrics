@@ -35,7 +35,7 @@ class Shared::Field(T) < BaseComponent
   needs label_text : String?
 
   def render
-    label_for attribute, label_text
+    label_for attribute, label_text, class: "label"
 
     # You can add more default options here. For example:
     #
@@ -51,6 +51,6 @@ class Shared::Field(T) < BaseComponent
 
   # Use a text_input by default
   def render
-    render &.text_input(append_class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-2")
+    render &.text_input(append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
   end
 end

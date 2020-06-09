@@ -5,10 +5,10 @@ class Domains::EditPage < MainLayout
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
 
   def content
-    div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0" do
+    div class: "mt-20 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       render_header
-      div class: "rounded-md shadow-md bg-white p-4" do
-        h1 "Edit #{@domain.address}", class: "text-2xl"
+      div class: "my-3 card" do
+        h1 "Edit #{@domain.address}", class: "text-xl"
         render_domain_form(@operation)
       end
       render_code_snippet
@@ -19,13 +19,11 @@ class Domains::EditPage < MainLayout
   def render_domain_form(op)
     form_for Domains::Update.with(@domain.id) do
       # Edit fields in src/components/domains/form_fields.cr
-      mount Shared::Field.new(operation.address, "Domain"), &.text_input(autofocus: "true", disabled: true, append_class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-2")
-      label_for(operation.time_zone, class: "custom-label")
-      select_input(operation.time_zone, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline my-2") do
-        options_for_select(operation.time_zone, TIMEZONES.map { |t| {t, t} })
-      end
+      mount Shared::Field.new(operation.address, "Domain"), &.text_input(autofocus: "true", disabled: true, append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
 
-      mount Shared::Field.new(op.shared, "Share"), &.checkbox(append_class: "form-checkbox block clear-both my-2")
+      mount TimezoneDropdown.new(operation.time_zone)
+
+      mount Shared::Field.new(op.shared, "Share"), &.checkbox(append_class: "form-checkbox block clear-both my-4")
 
       submit "Update", data_disable_with: "Updating...", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
     end
@@ -35,19 +33,19 @@ class Domains::EditPage < MainLayout
     snippet = <<-HTML
     <script src="https://kindmetrics.io/js/track.js" defer="true" data-domain="#{@domain.address}"></script>
     HTML
-    div class: "rounded-md shadow-md bg-white p-4 mt-4" do
-      h2 "The code you use for tracking"
-      para "Add this to your header"
-      textarea(snippet, attrs: [:readonly], class: "w-full border rounded p-2")
+    div class: "my-3 card" do
+      h2 "The code you use for tracking", class: "text-xl"
+      para "Add this to your header", class: "text-sm my-2"
+      textarea(snippet, attrs: [:readonly], class: "w-full text-sm rounded p-2 text-gray-900 border border-gray-400 hover:border hover:border-blue-500")
     end
   end
 
   def render_share
     url = Share::Show.with(hashid).url
-    div class: "rounded-md shadow-md bg-white p-4 mt-4" do
-      h2 "Share the analytics"
-      para "This will be the link you can share to your clients, friends and more - But don't forget to change the share settings above."
-      textarea(url, attrs: [:readonly], class: "w-full border rounded p-2")
+    div class: "my-3 card" do
+      h2 "Share the analytics", class: "text-xl"
+      para "This will be the link you can share to your clients, friends and more - But don't forget to change the share settings above.", class: "text-sm my-2"
+      textarea(url, attrs: [:readonly], class: "w-full text-sm rounded p-2 text-gray-900 border border-gray-400 hover:border hover:border-blue-500")
     end
   end
 
