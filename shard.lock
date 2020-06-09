@@ -104,6 +104,10 @@ shards:
     github: will/crystal-pg
     version: 0.21.0
 
+  quoted_printable:
+    github: arcage/crystal-quotedprintable
+    version: 0.1.0
+
   referer-parser:
     github: confact/referer-parser.cr
     commit: f8d53f30341962ccce60ff75c849169e1192a247

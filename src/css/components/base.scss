@@ -70,3 +70,12 @@ body {
   @apply bg-blue-200;
   @apply rounded;
 }
+.label {
+  @apply block;
+  @apply uppercase;
+  @apply tracking-wide;
+  @apply text-gray-700;
+  @apply text-xs;
+  @apply font-bold;
+  @apply mt-2;
+}
