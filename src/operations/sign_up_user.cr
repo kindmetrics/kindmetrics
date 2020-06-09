@@ -13,7 +13,7 @@ class SignUpUser < User::SaveOperation
     validate_required email
     validate_required name
     validate_uniqueness_of email
-    confirmed_token.value = Random::Secure.hex(32)
+    confirmed_token.value = Random::Secure.urlsafe_base64(32)
     if Lucky::Env.development?
       Log.debug { {confirmed_token: confirmed_token.value} }
     end
