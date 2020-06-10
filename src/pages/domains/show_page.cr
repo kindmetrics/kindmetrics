@@ -21,16 +21,6 @@ class Domains::ShowPage < Domains::BasePage
     end
   end
 
-  def render_actions
-    section do
-      link "Edit", Domains::Edit.with(@domain.id)
-      text " | "
-      link "Delete",
-        Domains::Delete.with(@domain.id),
-        data_confirm: "Are you sure?"
-    end
-  end
-
   def render_total
     mount TotalRowComponent.new(@total_unique, @total_sum, @total_bounce)
   end

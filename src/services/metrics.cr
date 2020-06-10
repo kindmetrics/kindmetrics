@@ -26,6 +26,8 @@ class Metrics
       db.query_all sql, as: PG::Numeric
     end
     bounce.first.to_s
+  rescue
+    "0"
   end
 
   def get_days

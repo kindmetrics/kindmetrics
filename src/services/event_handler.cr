@@ -3,7 +3,9 @@ class EventHandler
     return if url.host.nil?
     hostname = remove_www(url.host.not_nil!)
 
-    return unless hostname.ends_with?(domain.address)
+    if Lucky::Env.production?
+      return unless hostname.ends_with?(domain.address)
+    end
 
     country = IPCOUNTRY.lookup_cc(remote_ip)
 
