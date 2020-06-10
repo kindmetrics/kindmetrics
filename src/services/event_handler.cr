@@ -12,8 +12,8 @@ class EventHandler
     browser = UserHash.get_browser(user_agent) if user_agent.present?
     user_id = UserHash.create(address, remote_ip, user_agent).to_s
 
-    if user_agent.present?
-      return if browser.bot?
+    if user_agent.present? && !browser.nil?
+      return if browser.not_nil!.bot?
     end
 
     temp_source = params.get?(:source)
