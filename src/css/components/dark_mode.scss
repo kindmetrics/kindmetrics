@@ -13,6 +13,9 @@
     a {
       @apply text-gray-200;
     }
+    .dropdown > a {
+      @apply text-gray-900;
+    }
   }
 
   .card {
