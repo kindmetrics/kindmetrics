@@ -8,7 +8,7 @@ targets:
   kindmetrics:
     main: src/kindmetrics.cr
 
-crystal: 0.34.0
+crystal: 0.35.0
 
 dependencies:
   lucky:
@@ -35,7 +35,7 @@ dependencies:
     github: confact/lucky_can
   device_detector:
     github: confact/device_detector
-    commit: master
+    commit: 92355cc32dc992ad6c11772445ee7bbb69d9ac84
   email:
     github: arcage/crystal-email
     version: 0.6.1

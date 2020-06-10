@@ -14,7 +14,7 @@ shards:
 
   bindata:
     github: spider-gazelle/bindata
-    version: 1.5.1
+    version: 1.5.3
 
   blank:
     github: kostya/blank
@@ -66,7 +66,7 @@ shards:
 
   jwt:
     github: crystal-community/jwt
-    version: 1.4.0
+    version: 1.4.2
 
   kilt:
     github: jeromegn/kilt
@@ -98,11 +98,11 @@ shards:
 
   openssl_ext:
     github: stakach/openssl_ext
-    version: 1.2.0
+    version: 1.2.1
 
   pg:
     github: will/crystal-pg
-    version: 0.21.0
+    version: 0.21.1
 
   quoted_printable:
     github: arcage/crystal-quotedprintable
@@ -110,7 +110,7 @@ shards:
 
   referer-parser:
     github: confact/referer-parser.cr
-    commit: f8d53f30341962ccce60ff75c849169e1192a247
+    version: 0.1.0
 
   selenium:
     github: ysbaddaden/selenium-webdriver-crystal
