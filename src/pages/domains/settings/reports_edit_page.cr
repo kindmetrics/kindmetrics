@@ -43,14 +43,18 @@ class Domains::EditReportsPage < MainLayout
               raw ur.email
             end
             td class: "w-1/4 px-2 py-2" do
-              raw ur.weekly.to_s
+              if ur.weekly
+                img src: "/assets/svg/check.svg", class: "h-4 w-4 inline-block"
+              end
             end
             td class: "w-1/4 px-2 py-2" do
-              raw ur.monthly.to_s
+              if ur.monthly
+                img src: "/assets/svg/check.svg", class: "h-4 w-4 inline-block"
+              end
             end
             td class: "w-1/4 px-2 py-2" do
-              a href: "", class: "" do
-                raw "Remove"
+              a href: "", class: "block w-auto max-w-full" do
+                img src: "/assets/svg/delete.svg", alt: "Delete", class: "h-4 w-4 inline-block w-auto max-w-none"
               end
             end
           end
