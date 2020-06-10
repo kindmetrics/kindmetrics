@@ -24,6 +24,14 @@ shards:
     github: luckyframework/carbon
     version: 0.1.1
 
+  cron_parser:
+    github: kostya/cron_parser
+    version: 0.3.0
+
+  cron_scheduler:
+    github: kostya/cron_scheduler
+    version: 0.3.0
+
   cry:
     github: paulcsmith/cry
     version: 0.4.2
