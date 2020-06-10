@@ -3,7 +3,7 @@ require "./app"
 require "cron_scheduler"
 require "logger"
 
-L = Logger.new STDOUT
+L = Log.for("worker")
 
 CronScheduler.define do
   at("* * * * *") { TimeWorker.check }
@@ -11,6 +11,6 @@ CronScheduler.define do
   at("0 8 1 * *") { EmailWorker.send_report("monthly") }
 end
 
-L.info "Scheduler started"
+L.info { "Scheduler started" }
 
 sleep
