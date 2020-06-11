@@ -23,16 +23,20 @@ class Domains::EditReportsPage < MainLayout
     table class: "table-auto" do
       thead do
         tr do
-          th class: "w-1/2 text-left px-2 py-2" do
+          th class: "w-1/2 text-left px-2 py-2 text-xs uppercase text-gray-700" do
             raw "Email"
           end
-          th class: "w-1/4 px-2 py-2 text-left" do
+          th class: "w-1/4 px-2 py-2 text-left text-xs uppercase text-gray-700" do
             raw "Weekly"
           end
-          th class: "w-1/4 px-2 py-2 text-left" do
+          th class: "w-1/4 px-2 py-2 text-left text-xs uppercase text-gray-700" do
             raw "Monthly"
           end
-          th class: "w-1/4 px-2 py-2" do
+          th class: "w-1/4 px-2 py-2 text-left text-xs uppercase text-gray-700" do
+            raw "Unsubscribed"
+          end
+          th class: "w-1/4 px-2 py-2 text-xs uppercase text-gray-700" do
+            raw "Delete"
           end
         end
       end
@@ -53,8 +57,15 @@ class Domains::EditReportsPage < MainLayout
               end
             end
             td class: "w-1/4 px-2 py-2" do
-              a href: "", class: "block w-auto max-w-full" do
-                img src: "/assets/svg/delete.svg", alt: "Delete", class: "h-4 w-4 inline-block w-auto max-w-none"
+              if ur.unsubscribed
+                img src: "/assets/svg/check.svg", class: "h-4 w-4 inline-block"
+              end
+            end
+            td class: "w-1/4 px-2 py-2" do
+              unless ur.unsubscribed
+                link to: Domains::EmailReport::Delete.with(domain_id: @domain.id, user_report_id: ur.id), class: "block w-auto max-w-full" do
+                  img src: "/assets/svg/delete.svg", alt: "Delete", class: "h-4 w-4 inline-block w-auto max-w-none"
+                end
               end
             end
           end
@@ -81,7 +92,7 @@ class Domains::EditReportsPage < MainLayout
   end
 
   def render_header
-    div class: "gradient-color border-b" do
+    div class: "gradient-color" do
       div class: "mt-4 max-w-6xl mx-auto pt-6 px-2 sm:px-0" do
         div class: "flex justify-between items-center" do
           h1 "Domain Settings", class: "text-xl"

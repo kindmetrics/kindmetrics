@@ -4,5 +4,7 @@ class ReportUser < BaseModel
     column email : String
     column weekly : Bool
     column monthly : Bool
+    column unsubcribe_token : String
+    column unsubscribed : Bool
   end
 end

@@ -4,6 +4,7 @@ class SaveReportUser < ReportUser::SaveOperation
   #
   permit_columns email, weekly, monthly
   before_save do
+    unsubcribe_token.value = Random::Secure.urlsafe_base64(32)
     validate_required domain_id
     validate_required email
   end
