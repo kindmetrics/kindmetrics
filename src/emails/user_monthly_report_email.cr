@@ -1,0 +1,9 @@
+class UserMonthlyReportEmail < BaseEmail
+  to Carbon::Address.new(@user.email)
+  subject "Monthly Report for #{@domain.address}"
+  templates html
+
+  def initialize(@user : ReportUser, @domain : Domain)
+    @metrics = MetricsNew.new(@domain, (1.months + 1.days).ago, 1.days.ago)
+  end
+end

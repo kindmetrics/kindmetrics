@@ -1,32 +1,9 @@
 class Metrics
   def initialize(@domain : Domain, @period : String)
+    @new_metrics = MetricsNew.new(@domain, period_days, Time.local)
   end
 
-  def unique_query : String
-    sql = <<-SQL
-    SELECT COUNT(DISTINCT user_id) FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}';
-    SQL
-    unique = AppDatabase.run do |db|
-      db.query_all sql, as: Int64
-    end
-    unique.first.to_s
-  end
-
-  def total_query : String
-    EventQuery.new.domain_id(@domain.id).created_at.gt(period_days).select_count.to_s
-  end
-
-  def bounce_query : String
-    return "0" if SessionQuery.new.domain_id(@domain.id).select_count == 0
-    sql = <<-SQL
-    SELECT round(sum(is_bounce * id) / sum(id) * 100) as bounce_rate
-    FROM sessions WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}';
-    SQL
-    bounce = AppDatabase.run do |db|
-      db.query_all sql, as: PG::Numeric
-    end
-    bounce.first.to_s
-  end
+  delegate :unique_query, :total_query, :bounce_query, :get_referrers, :get_pages, to: @new_metrics
 
   def get_days
     return [nil, nil, nil] if EventQuery.new.domain_id(@domain.id).select_count == 0
@@ -81,21 +58,6 @@ class Metrics
     country
   end
 
-  def get_referrers(limit : Int32 = 10) : Array(StatsReferrer)
-    sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
-    GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc LIMIT #{limit};
-    SQL
-    pages = AppDatabase.run do |db|
-      db.query_all sql, as: StatsReferrer
-    end
-    pages.reject! { |r| r.referrer_source.nil? }
-    pages = count_percentage(pages)
-    return pages
-  end
-
   def get_all_referrers : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
@@ -137,20 +99,6 @@ class Metrics
       db.query_all sql, as: Int64
     end
     return pages.first.to_s
-  end
-
-  def get_pages : Array(StatsPages)
-    sql = <<-SQL
-    SELECT path as address, COUNT(DISTINCT user_id) as count FROM sessions
-    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
-    GROUP BY path
-    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10;
-    SQL
-    pages = AppDatabase.run do |db|
-      db.query_all sql, as: StatsPages
-    end
-    pages = count_percentage(pages)
-    return pages
   end
 
   def get_countries : Array(StatsCountry)
