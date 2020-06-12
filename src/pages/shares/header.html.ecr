@@ -12,7 +12,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-4 w-4 ml-2"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
             </span>
           </div>
-          <div data-target="dropdown.menu" class="absolute right-0 mt-2 w-full hidden">
+          <div data-target="dropdown.menu" class="absolute right-0 mt-2 w-full hidden z-10">
             <div class="bg-white shadow-lg rounded overflow-hidden">
               <% link "7 days", to: Share::Show.with(@domain.hashid, period: "7d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
               <% link "14 days", to: Share::Show.with(@domain.hashid, period: "14d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>

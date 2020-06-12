@@ -34,11 +34,10 @@ class Carbon::SmtpAdapter < Carbon::Adapter
     email.headers.each do |key, value|
       new_email.custom_header(key, value)
     end
-    new_email.custom_header("Content-Transfer-Encoding", "quoted-printable")
 
     new_email.subject email.subject
-    new_email.message QuotedPrintable.encode(email.text_body)
-    new_email.message_html QuotedPrintable.encode(email.html_body)
+    new_email.message email.text_body
+    new_email.message_html email.html_body
 
     client.start do
       send(new_email)

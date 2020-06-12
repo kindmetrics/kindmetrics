@@ -1,6 +1,7 @@
 language: crystal
 crystal:
-  - 0.34.0
+  - latest
+  - nightly
 services:
   - postgresql
 script:

@@ -28,7 +28,7 @@ dependencies:
     version: ~> 0.6.3
   jwt:
     github: crystal-community/jwt
-    version: ~> 1.4.0
+    version: 1.4.0
   kilt:
     github: jeromegn/kilt
   lucky_can:

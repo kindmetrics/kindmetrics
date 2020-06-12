@@ -13,18 +13,14 @@
       return trackLocation.protocol + '//' + trackLocation.hostname + trackLocation.pathname + trackLocation.search;
     }
 
-    function getUtmSource() {
+    function getSource() {
       const result = trackLocation.search.match(/[?&](ref|source|utm_source)=([^?&]+)/);
       return result ? result[2] : null
     }
 
     function do_track() {
-      if (dnt) {
-        if (dnt == "1" || dnt == "yes") {
-          return false
-        } else {
-          return true
-        }
+      if (dnt && (dnt == "1" || dnt == "yes")) {
+        return false
       }
       return true
     }
@@ -33,7 +29,7 @@
       console.warn('[Kindmetrics] Ignoring event because ' + reason);
     }
 
-    function trigger(eventName, options) {
+    function event(eventName, options) {
       if(!do_track()) {
         return ignore("Do not track is enabled")
       }
@@ -45,7 +41,7 @@
         url: getUrl(),
         domain: domain || trackLocation.hostname,
         referrer: trackDocument.referrer || null,
-        source: getUtmSource(),
+        source: getSource(),
         user_agent: window.navigator.userAgent
       }
 
@@ -64,7 +60,7 @@
     }
 
     function page() {
-      trigger('pageview')
+      event('pageview')
     }
 
     var his = window.history
@@ -78,9 +74,9 @@
     }
 
     const queue = (window.kindmetrics && window.kindmetrics.q) || []
-    window.kindmetrics = trigger
+    window.kindmetrics = event
     for (var i = 0; i < queue.length; i++) {
-      trigger.apply(this, queue[i])
+      event.apply(this, queue[i])
     }
 
     page()

@@ -3,12 +3,18 @@ class EventHandler
     return if url.host.nil?
     hostname = remove_www(url.host.not_nil!)
 
-    return unless hostname.ends_with?(domain.address)
+    if Lucky::Env.production?
+      return unless hostname.ends_with?(domain.address)
+    end
 
     country = IPCOUNTRY.lookup_cc(remote_ip)
 
     browser = UserHash.get_browser(user_agent) if user_agent.present?
     user_id = UserHash.create(address, remote_ip, user_agent).to_s
+
+    if user_agent.present? && !browser.nil?
+      return if browser.not_nil!.bot?
+    end
 
     temp_source = params.get?(:source)
     source = if !temp_source.nil? && !temp_source.empty?
