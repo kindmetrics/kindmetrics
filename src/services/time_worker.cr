@@ -1,8 +1,10 @@
 class TimeWorker
+  L = Log.for("worker")
   def self.check
     sessions = get_sessions
     if sessions.size == 0
-      puts "no sessions to check this time.."
+
+      L.info { "no sessions to check this time.." }
     end
     sessions.each do |s|
       timedout(s)
@@ -27,13 +29,13 @@ class TimeWorker
                end
 
     if not_done
-      puts "not yet timedout"
-      puts "--"
+      L.info { "not yet timedout" }
+      L.info { "--" }
       return
     end
 
     is_bounce = events.results.size == 1 ? 1 : 0
-    puts "saving session #{session.id} on domain: #{session.domain!.not_nil!.address}"
+    L.info { "saving session #{session.id} on domain: #{session.domain!.not_nil!.address}" }
     SaveSession.update!(session, length: timespent_seconds, is_bounce: is_bounce)
   end
 
