@@ -99,7 +99,7 @@ class Domains::EditReportsPage < MainLayout
 
           link "Back to dashboard", to: Domains::Show.with(@domain), class: "stats-bg py-3 px-2 text-white hover:bg-gray-700 hover:no-underline rounded transister"
         end
-        mount TabMenu.new(links: [{"link" => Domains::Edit.url(@domain), "name" => "Domain"}, {"link" => Domains::EditReports.url(@domain), "name" => "Reports"}, {"link" => Domains::Edit.url(@domain), "name" => "Sharing"}], active: "Reports")
+        mount TabMenu.new(links: [{"link" => Domains::Edit.url(@domain), "name" => "Domain"}, {"link" => Domains::EditReports.url(@domain), "name" => "Reports"}], active: "Reports")
       end
     end
   end

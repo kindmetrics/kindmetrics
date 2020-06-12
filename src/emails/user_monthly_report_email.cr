@@ -4,6 +4,6 @@ class UserMonthlyReportEmail < BaseEmail
   templates html
 
   def initialize(@user : ReportUser, @domain : Domain)
-    @metrics = MetricsNew.new(@domain, (1.months + 1.days).ago, 1.days.ago)
+    @metrics = MetricsNew.new(@domain, 1.months.ago, 1.days.ago)
   end
 end
