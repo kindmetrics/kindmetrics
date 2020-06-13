@@ -56,4 +56,11 @@
     @apply font-bold;
     @apply mt-2;
   }
+  .current-counter-container {
+    @apply text-gray-300;
+    .current-counter {
+      @apply text-gray-300;
+      @apply font-bold;
+    }
+  }
 }

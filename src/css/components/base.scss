@@ -79,3 +79,11 @@ body {
   @apply font-bold;
   @apply mt-2;
 }
+
+.current-counter-container {
+  @apply text-gray-800;
+  .current-counter {
+    @apply text-gray-800;
+    @apply font-bold;
+  }
+}

@@ -22,6 +22,9 @@
       <a href="<%=Domains::Edit.url(@domain)%>" title="settings" class="ml-3 text-gray-600 hover:text-gray-900">
         <img src="/assets/svg/cog.svg" class="h-6 w-6 inline-block" />
       </a>
+      <div class="md:mx-2 current-counter-container" data-controller="current-refresh" data-current-refresh-url="/domains/<%=@domain.id%>/data/current" data-current-refresh-refresh-interval="10000">
+        <span class="current-counter" data-target="current-refresh.counter">0</span> current active users
+      </div>
     </div>
     <% if total_sum.nil? || total_sum != "0" %>
     <div class="">

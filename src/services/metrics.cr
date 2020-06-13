@@ -3,7 +3,7 @@ class Metrics
     @new_metrics = MetricsNew.new(@domain, period_days, Time.local)
   end
 
-  delegate :unique_query, :total_query, :bounce_query, :get_referrers, :get_pages, to: @new_metrics
+  delegate :current_query, :unique_query, :total_query, :bounce_query, :get_referrers, :get_pages, to: @new_metrics
 
   def get_days
     return [nil, nil, nil] if EventQuery.new.domain_id(@domain.id).select_count == 0
