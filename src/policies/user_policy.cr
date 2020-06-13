@@ -12,4 +12,8 @@ class UserPolicy < LuckyCan::BasePolicy
     return false if current_user.nil?
     user.id == current_user.id
   end
+
+  can see_admin, current_user do
+    current_user.admin
+  end
 end
