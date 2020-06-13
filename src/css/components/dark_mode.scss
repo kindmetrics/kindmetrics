@@ -57,8 +57,10 @@
     @apply mt-2;
   }
   .current-counter-container {
+    @apply text-sm;
     @apply text-gray-300;
     .current-counter {
+      @apply text-sm;
       @apply text-gray-300;
       @apply font-bold;
     }

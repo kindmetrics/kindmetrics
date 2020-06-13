@@ -82,7 +82,9 @@ body {
 
 .current-counter-container {
   @apply text-gray-800;
+  @apply text-sm;
   .current-counter {
+    @apply text-sm;
     @apply text-gray-800;
     @apply font-bold;
   }
