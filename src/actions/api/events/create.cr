@@ -4,7 +4,9 @@ class Events::Create < ApiAction
     address = params.get?(:domain).to_s
     return error unless address.present?
 
-    domain = DomainQuery.new.address(address).first
+    hostname = remove_www(address.not_nil!)
+
+    domain = DomainQuery.new.address(hostname).first
     return error if domain.nil?
 
     remote_ip = request.headers["X-Forwarded-For"]? || "92.35.68.246"
@@ -23,5 +25,9 @@ class Events::Create < ApiAction
 
   def render(error : Avram::RecordNotFoundError)
     head status: 404
+  end
+
+  private def remove_www(uri : String)
+    uri.sub(/^www./i, "")
   end
 end

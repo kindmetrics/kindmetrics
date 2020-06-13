@@ -10,9 +10,9 @@ module FixAddress
     return if !url.absolute? && !address.value.not_nil!.starts_with?("www.")
 
     new_address = if url.host.nil?
-                    address.value.not_nil!.lstrip("www.")
+                    address.value.not_nil!.sub(/^www./i, "")
                   else
-                    url.host.not_nil!.lstrip("www.")
+                    url.host.not_nil!.sub(/^www./i, "")
                   end
     address.value = new_address
   end

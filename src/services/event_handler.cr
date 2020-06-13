@@ -98,7 +98,7 @@ class EventHandler
   end
 
   private def self.remove_www(uri : String)
-    uri.lstrip("www.")
+    uri.sub(/^www./i, "")
   end
 
   private def self.get_session(user_id : String)
