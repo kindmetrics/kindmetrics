@@ -12,6 +12,7 @@ class Domains::EditPage < MainLayout
         render_domain_form(@operation)
       end
       render_code_snippet
+      delete_domain
       render_share
     end
   end
@@ -26,6 +27,14 @@ class Domains::EditPage < MainLayout
       mount Shared::Field.new(op.shared, "Share"), &.checkbox(append_class: "form-checkbox block clear-both my-4")
 
       submit "Update", data_disable_with: "Updating...", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    end
+  end
+
+  def delete_domain
+    div class: "my-3 card" do
+      h2 "Delete domain", class: "text-xl"
+      para "If you want to remove this domain, it will remove all events. It WON'T be able to get the data back if you do so.", class: "py-2 text-sm"
+      link "Delete Domain", to: Domains::Delete.with(@domain.id), data_confirm: "Are you sure? All data will be Permantely removed and can't get back", class: "py-2 px-4 bg-red-800 text-white inline-block rounded font-bold", style: "color: white !important"
     end
   end
 
