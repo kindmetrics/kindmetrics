@@ -103,5 +103,4 @@ class Domains::EditReportsPage < MainLayout
       end
     end
   end
-
 end

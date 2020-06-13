@@ -32,7 +32,6 @@ class MetricsNew
     bounce.first.to_s
   end
 
-
   def get_referrers(limit : Int32 = 10) : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events

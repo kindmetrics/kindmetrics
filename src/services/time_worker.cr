@@ -1,9 +1,9 @@
 class TimeWorker
   L = Log.for("worker")
+
   def self.check
     sessions = get_sessions
     if sessions.size == 0
-
       L.info { "no sessions to check this time.." }
     end
     sessions.each do |s|

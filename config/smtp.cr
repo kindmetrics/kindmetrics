@@ -36,8 +36,8 @@ class Carbon::SmtpAdapter < Carbon::Adapter
     end
 
     new_email.subject email.subject
-    new_email.message email.text_body
-    new_email.message_html email.html_body
+    new_email.message email.text_body.not_nil! unless email.text_body.nil?
+    new_email.message_html email.html_body.not_nil! unless email.html_body.nil?
 
     client.start do
       send(new_email)

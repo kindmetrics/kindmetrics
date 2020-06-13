@@ -22,7 +22,6 @@ class Users::EditPage < MainLayout
     end
   end
 
-
   def delete_me
     div class: "my-3 card" do
       h2 "Delete Your Account", class: "text-xl"

@@ -8,5 +8,4 @@ class AddAdmin < LuckyCli::Task
     SaveUser.update!(user, admin: true)
     puts "Made #{user.email} admin"
   end
-
 end

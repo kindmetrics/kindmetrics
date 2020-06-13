@@ -27,6 +27,7 @@ COPY --from=build-env /app/start_tasks /app/start_tasks
 COPY --from=build-env /app/start_worker /app/start_worker
 COPY --from=build-env /app/public /app/public
 COPY --from=build-env /app/cache /app/cache
+COPY --from=build-env /app/config/watch.yml /app/config/watch.yml
 
 ENV PORT 5000
 EXPOSE $PORT
