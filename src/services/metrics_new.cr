@@ -2,6 +2,10 @@ class MetricsNew
   def initialize(@domain : Domain, @from_date : Time, @to_date : Time)
   end
 
+  def current_query : String
+    SessionQuery.new.length.is_nil.select_count.to_s
+  end
+
   def unique_query : String
     sql = <<-SQL
     SELECT COUNT(DISTINCT user_id) FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}';
