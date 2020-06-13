@@ -20,5 +20,18 @@ describe Events::Create do
 
     response.status_code.should eq(200)
     domain.events!.size.should eq(1)
+    domain.sessions!.size.should eq(1)
+  end
+
+  it "events ignored if bot" do
+    domain = DomainBox.create
+
+    domain.events!.size.should eq(0)
+
+    response = AppClient.exec(Events::Create, domain: domain.address, user_agent: "DuckDuckBot/1.0; (+http://duckduckgo.com/duckduckbot.html)", referrer: nil, url: "https://#{domain.address}/", source: nil)
+
+    response.status_code.should eq(200)
+    domain.events!.size.should eq(0)
+    domain.sessions!.size.should eq(0)
   end
 end

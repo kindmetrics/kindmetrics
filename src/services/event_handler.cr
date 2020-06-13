@@ -23,8 +23,6 @@ class EventHandler
                parse_referer_data(referrer)
              end
 
-    Log.debug { {source: source} }
-
     browser_data = {
       device:           browser.try { |b| b.device_type },
       browser_name:     browser.try { |b| b.browser_name },
@@ -32,8 +30,8 @@ class EventHandler
       operative_system: browser.try { |b| b.os_name },
     }
 
-    unless EventHandler.is_current_session?(user_id)
-      EventHandler.create_session(
+    unless is_current_session?(user_id)
+      create_session(
         **browser_data,
         referrer: referrer.to_s,
         referrer_domain: referrer.host,
@@ -43,21 +41,23 @@ class EventHandler
         referrer_source: source,
         domain_id: domain.id,
         user_id: user_id,
-        is_bounce: 0
+        is_bounce: 0,
+        length: nil
+      )
+    else
+      add_event(
+        user_id,
+        **browser_data,
+        name: "pageview",
+        referrer: referrer.to_s,
+        country: country,
+        referrer_domain: referrer.host,
+        url: url.to_s,
+        path: url.path,
+        referrer_source: source,
+        domain_id: domain.id
       )
     end
-    EventHandler.add_event(
-      user_id,
-      **browser_data,
-      name: "pageview",
-      referrer: referrer.to_s,
-      country: country,
-      referrer_domain: referrer.host,
-      url: url.to_s,
-      path: url.path,
-      referrer_source: source,
-      domain_id: domain.id
-    )
   end
 
   def self.is_current_session?(user_id : String)
@@ -83,7 +83,7 @@ class EventHandler
   end
 
   def self.create_session(**params)
-    SaveSession.create!(**params)
+    CreateSession.create!(**params)
   end
 
   def self.parse_referer_data(referrer : URI)
