@@ -3,7 +3,7 @@ class MetricsNew
   end
 
   def current_query : String
-    SessionQuery.new.length.is_nil.select_count.to_s
+    SessionQuery.new.domain_id(@domain.id).length.is_nil.select_count.to_s
   end
 
   def unique_query : String
