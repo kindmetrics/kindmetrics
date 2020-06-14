@@ -2,7 +2,7 @@ class SignUps::Create < BrowserAction
   include Auth::RedirectSignedInUsers
 
   post "/sign_up" do
-    SignUpUser.create(params) do |operation, user|
+    SignUpUser.create(params, admin: false) do |operation, user|
       if user
         flash.info = "Sent an email for confirm"
         redirect to: SignIns::New
