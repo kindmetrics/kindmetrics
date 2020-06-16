@@ -166,15 +166,15 @@ class Metrics
   private def period_days : Time
     case @period
     when "14d"
-      return 14.days.ago
+      return 14.days.ago.at_beginning_of_day
     when "30d"
-      return 30.days.ago
+      return 30.days.ago.at_beginning_of_day
     when "60d"
-      return 60.days.ago
+      return 60.days.ago.at_beginning_of_day
     when "90d"
-      return 90.days.ago
+      return 90.days.ago.at_beginning_of_day
     else
-      return 7.days.ago
+      return 7.days.ago.at_beginning_of_day
     end
   end
 

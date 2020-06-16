@@ -1,9 +1,12 @@
 class Domains::ShowPage < Domains::BasePage
   needs sessions : SessionQuery
   needs domains : DomainQuery
-  needs total_unique : String
-  needs total_sum : String
-  needs total_bounce : String
+  needs total_unique : Int64
+  needs total_sum : Int64
+  needs total_bounce : Int64
+  needs total_unique_previous : Int64
+  needs total_previous : Int64
+  needs total_bounce_previous : Int64
   needs period_string : String
   needs share_page : Bool = false
   quick_def page_title, @domain.address
@@ -22,7 +25,7 @@ class Domains::ShowPage < Domains::BasePage
   end
 
   def render_total
-    mount TotalRowComponent.new(@total_unique, @total_sum, @total_bounce)
+    mount TotalRowComponent.new(@total_unique, @total_sum, @total_bounce, @total_unique_previous, @total_previous, @total_bounce_previous)
   end
 
   def render_canvas
