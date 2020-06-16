@@ -1,13 +1,13 @@
 module DomainMetrics
-  def unique_query(domain) : String
+  def unique_query(domain) : Int64
     metrics(domain).unique_query
   end
 
-  def total_query(domain) : String
+  def total_query(domain) : Int64
     metrics(domain).total_query
   end
 
-  def bounce_query(domain) : String
+  def bounce_query(domain) : Int64
     metrics(domain).bounce_query
   end
 
@@ -15,15 +15,15 @@ module DomainMetrics
     @metrics ||= Metrics.new(domain, period)
   end
 
-  def unique_query_previous(domain)
+  def unique_query_previous(domain) : Int64
     previous_metric(domain).unique_query
   end
 
-  def total_query_previous(domain)
+  def total_query_previous(domain) : Int64
     previous_metric(domain).total_query
   end
 
-  def bounce_query_previous(domain)
+  def bounce_query_previous(domain) : Int64
     previous_metric(domain).bounce_query
   end
 

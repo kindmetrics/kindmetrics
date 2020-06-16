@@ -1,13 +1,13 @@
 class Share::ShowPage < MainGuestLayout
   needs domain : Domain
   needs period : String
-  needs total_unique : String
-  needs total_sum : String
-  needs total_bounce : String
+  needs total_unique : Int64
+  needs total_sum : Int64
+  needs total_bounce : Int64
   needs period_string : String
-  needs total_unique_previous : String
-  needs total_previous : String
-  needs total_bounce_previous : String
+  needs total_unique_previous : Int64
+  needs total_previous : Int64
+  needs total_bounce_previous : Int64
   needs share_page : Bool = true
   quick_def page_title, @domain.address
 

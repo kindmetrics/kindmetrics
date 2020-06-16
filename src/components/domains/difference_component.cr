@@ -1,6 +1,6 @@
 class DifferenceComponent < BaseComponent
-  needs now : Int32
-  needs before : Int32
+  needs now : Int64
+  needs before : Int64
   needs reverse : Bool = false
 
   def render
