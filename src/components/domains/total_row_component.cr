@@ -7,18 +7,35 @@ class TotalRowComponent < BaseComponent
     div class: "big_letters" do
       div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0 grid grid-flow-col gap-6" do
         div class: "p-3" do
-          para @total_unique.to_s, class: "text-3xl strong"
-          para "Unique Visitors", class: "text-sm uppercase"
+          div class: "text-4xl strong flex items-center" do
+            para normalize_number(@total_unique.to_i), class: "text-4xl strong"
+            mount DifferenceComponent.new(now: 300, before: @total_unique.to_i)
+          end
+          para "Unique", class: "text-sm uppercase font-bold"
         end
         div class: "p-3" do
-          para @total_sum.to_s, class: "text-3xl strong"
-          para "Total Pageviews", class: "text-sm strong uppercase"
+          div class: "text-4xl strong flex items-center" do
+            para normalize_number(@total_sum.to_i), class: "text-4xl strong"
+            mount DifferenceComponent.new(now: @total_sum.to_i, before: 300)
+          end
+          para "Pageviews", class: "text-sm font-bold uppercase"
         end
         div class: "p-3" do
-          para "#{@total_bounce.to_s}%", class: "text-3xl strong"
-          para "Bounce rate", class: "text-sm strong uppercase"
+          div class: "text-4xl strong flex items-center" do
+            para "#{@total_bounce.to_s}%", class: "text-4xl strong"
+            mount DifferenceComponent.new(now: @total_bounce.to_i, before: 30, reverse: true)
+          end
+          para "Bounce", class: "text-sm font-bold uppercase"
         end
       end
+    end
+  end
+
+  private def normalize_number(number : Int32) : String
+    if number >= 1000
+      number.humanize(precision: 2, significant: false)
+    else
+      number.to_s
     end
   end
 end
