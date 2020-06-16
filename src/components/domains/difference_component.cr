@@ -38,12 +38,13 @@ class DifferenceComponent < BaseComponent
   end
 
   private def count_percentage : String
-    custom_now = now == 0 ? 1 : now
+    custom_now = now == 0 ? 0.1 : now
+    custom_before = before == 0 ? 0.1 : before
     if up?
-      increase = custom_now - before
-      ((increase.to_f / before)*100).format(decimal_places: 0, delimiter: "")
+      increase = custom_now - custom_before
+      ((increase.to_f / custom_before)*100).format(decimal_places: 0, delimiter: "")
     else
-      decrease = before - custom_now
+      decrease = custom_before - custom_now
       ((decrease.to_f / custom_now)*100).format(decimal_places: 0, delimiter: "")
     end
   end

@@ -27,8 +27,9 @@ class MetricsNew
     FROM sessions WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}';
     SQL
     bounce = AppDatabase.run do |db|
-      db.query_all sql, as: PG::Numeric
+      db.query_all sql, as: PG::Numeric | Nil
     end
+    return 0.to_s if bounce.first.nil?
     bounce.first.to_s
   end
 
