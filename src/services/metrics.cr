@@ -1,6 +1,6 @@
 class Metrics
   def initialize(@domain : Domain, @period : String)
-    @new_metrics = MetricsNew.new(@domain, period_days, Time.local)
+    @new_metrics = MetricsNew.new(@domain, period_days, Time.local.at_end_of_day)
   end
 
   delegate :current_query, :unique_query, :total_query, :bounce_query, :get_referrers, :get_pages, to: @new_metrics
