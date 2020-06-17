@@ -13,10 +13,10 @@ crystal: 0.35.0
 dependencies:
   lucky:
     github: luckyframework/lucky
-    version: ~> 0.21.0
+    version: ~> 0.22.0
   authentic:
     github: luckyframework/authentic
-    version: ~> 0.5.4
+    version: ~> 0.6
   carbon:
     github: luckyframework/carbon
     version: ~> 0.1.1
@@ -41,9 +41,6 @@ dependencies:
     version: 0.6.1
   markd:
     github: icyleaf/markd
-  baked_file_system:
-    github: schovi/baked_file_system
-    version: 0.9.8
   ip2country:
     github: confact/ip2country
   referer-parser:
