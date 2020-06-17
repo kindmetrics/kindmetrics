@@ -10,7 +10,6 @@ class SessionBox < Avram::Box
     operative_system "GNU/Linux"
     referrer_domain "www.test.com"
     browser_name "Chrome"
-    browser_version "81.0.4044.113"
     country "SE"
     length 0
     is_bounce 1

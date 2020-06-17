@@ -46,7 +46,7 @@ describe EventHandler do
 
     EventQuery.new.session_id(session.id).select_count.should eq(0)
 
-    EventHandler.add_event(session.user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", browser_version: "80.222", operative_system: "Android", domain_id: session.domain_id)
+    EventHandler.add_event(session.user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", domain_id: session.domain_id)
 
     EventQuery.new.session_id(session.id).select_count.should eq(1)
   end
