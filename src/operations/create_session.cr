@@ -20,7 +20,6 @@ class CreateSession < Session::SaveOperation
       referrer_domain: session.referrer_domain,
       device: session.device,
       browser_name: session.browser_name,
-      browser_version: session.browser_version,
       operative_system: session.operative_system,
       url: session.url,
       path: session.path,

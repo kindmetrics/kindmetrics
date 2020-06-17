@@ -10,7 +10,6 @@ class Session < BaseModel
     column operative_system : String?
     column referrer_domain : String?
     column browser_name : String?
-    column browser_version : String?
     column country : String?
     column length : Int64?
     column is_bounce : Int32
