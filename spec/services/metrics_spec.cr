@@ -7,7 +7,7 @@ describe Metrics do
 
     metrics = Metrics.new(domain, "7d")
     unique = metrics.unique_query
-    unique.should eq(2.to_s)
+    unique.should eq(2)
   end
 
   it "total calculation" do
@@ -16,7 +16,7 @@ describe Metrics do
 
     metrics = Metrics.new(domain, "7d")
     total_views = metrics.total_query
-    total_views.should eq(2.to_s)
+    total_views.should eq(2)
   end
 
   it "bounce calculation" do
@@ -25,7 +25,7 @@ describe Metrics do
 
     metrics = Metrics.new(domain, "7d")
     bounce_rate = metrics.bounce_query
-    bounce_rate.should eq("100")
+    bounce_rate.should eq(100)
   end
 
   it "bounce with 50/50 calculation" do
@@ -36,7 +36,7 @@ describe Metrics do
     metrics = Metrics.new(domain, "7d")
     bounce_rate = metrics.bounce_query
     # It push down the bounce_rate, that's why it is 30 and not 50.
-    bounce_rate.should eq("30")
+    bounce_rate.should eq(30)
   end
 
   it "7 days calculation" do
