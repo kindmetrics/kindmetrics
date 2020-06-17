@@ -54,6 +54,4 @@ jobs:
       run: crystal spec
       env:
           # The hostname used to communicate with the PostgreSQL service container
-          POSTGRES_HOST: postgres
-          # The default PostgreSQL port
-          POSTGRES_PORT: 5432
+          DB_HOST: postgres
