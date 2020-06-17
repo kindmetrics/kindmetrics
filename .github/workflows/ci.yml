@@ -42,7 +42,7 @@ jobs:
     - name: Add postgres to apt-get
       run: echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
     - name: Install postgres
-      run: apt-get update && apt-get install postgres-contrib
+      run: apt-get update && apt-get install -y postgresql-contrib libpq-dev
     - name: Install shards
       run: shards install
     - name: Cache Crystal
