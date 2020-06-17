@@ -29,6 +29,9 @@ dependencies:
   jwt:
     github: crystal-community/jwt
     version: 1.4.0
+  bindata:
+    github: spider-gazelle/bindata
+    version: 1.5.1
   kilt:
     github: jeromegn/kilt
   lucky_can:
@@ -48,6 +51,7 @@ dependencies:
     github: confact/ip2country
   referer-parser:
     github: confact/referer-parser.cr
+    version: ~> 0.1.0
   hashids:
     github: splattael/hashids.cr
   quoted_printable:
