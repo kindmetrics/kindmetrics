@@ -12,7 +12,6 @@ class Event < BaseModel
     column operative_system : String?
     column referrer_domain : String?
     column browser_name : String?
-    column browser_version : String?
     column country : String?
     belongs_to domain : Domain
     belongs_to session : Session?

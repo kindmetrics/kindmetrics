@@ -26,7 +26,6 @@ class EventHandler
     browser_data = {
       device:           browser.try { |b| b.device_type },
       browser_name:     browser.try { |b| b.browser_name },
-      browser_version:  browser.try { |b| b.browser_version },
       operative_system: browser.try { |b| b.os_name },
     }
 
