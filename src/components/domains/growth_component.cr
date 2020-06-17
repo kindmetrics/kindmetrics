@@ -1,10 +1,10 @@
-class DifferenceComponent < BaseComponent
+class GrowthComponent < BaseComponent
   needs now : Int64
   needs before : Int64
   needs reverse : Bool = false
 
   def render
-    div class: "flex items-center ml-4" do
+    div class: "flex items-center ml-1 md:ml-4" do
       if reverse?
         if up?
           img src: "/assets/svg/arrow-up-red.svg", class: "text-red-800 strong text-xs h-4 w-4 block mr-1"

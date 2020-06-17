@@ -10,23 +10,23 @@ class TotalRowComponent < BaseComponent
     div class: "big_letters" do
       div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0 grid grid-flow-col gap-6" do
         div class: "p-3" do
-          div class: "text-4xl strong flex items-center" do
+          div class: "text-4xl strong md:flex items-center" do
             para normalize_number(@total_unique), class: "text-4xl strong"
-            mount DifferenceComponent.new(now: @total_unique, before: @total_unique_previous)
+            mount GrowthComponent.new(now: @total_unique, before: @total_unique_previous)
           end
           para "Unique", class: "text-sm uppercase font-bold"
         end
         div class: "p-3" do
-          div class: "text-4xl strong flex items-center" do
+          div class: "text-4xl strong md:flex items-center" do
             para normalize_number(@total_sum), class: "text-4xl strong"
-            mount DifferenceComponent.new(now: @total_sum, before: @total_previous)
+            mount GrowthComponent.new(now: @total_sum, before: @total_previous)
           end
           para "Pageviews", class: "text-sm font-bold uppercase"
         end
         div class: "p-3" do
-          div class: "text-4xl strong flex items-center" do
+          div class: "text-4xl strong md:flex items-center" do
             para "#{@total_bounce.to_s}%", class: "text-4xl strong"
-            mount DifferenceComponent.new(now: @total_bounce, before: @total_bounce_previous, reverse: true)
+            mount GrowthComponent.new(now: @total_bounce, before: @total_bounce_previous, reverse: true)
           end
           para "Bounce", class: "text-sm font-bold uppercase"
         end
