@@ -21,9 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: crystallang/crystal:0.34.0
-    apt:
-      name:
-        - postgresql-contrib
     services:
       # Label used to access the service container
       postgres:
@@ -40,6 +37,8 @@ jobs:
           --health-retries 5
     steps:
     - uses: actions/checkout@v2
+    - name: Install postgres
+      run: sudo apt-get install postgres-contrib
     - name: Install shards
       run: shards install
     - name: Cache Crystal
