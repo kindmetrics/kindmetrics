@@ -1,6 +1,7 @@
-class Domains::ShowPage < Domains::BasePage
+class Domains::ShowPage < SecretGuestLayout
   needs sessions : SessionQuery
   needs domains : DomainQuery
+  needs domain : Domain
   needs total_unique : Int64
   needs total_sum : Int64
   needs total_bounce : Int64
@@ -8,6 +9,7 @@ class Domains::ShowPage < Domains::BasePage
   needs total_previous : Int64
   needs total_bounce_previous : Int64
   needs period_string : String
+  needs period : String
   needs share_page : Bool = false
   quick_def page_title, @domain.address
 
