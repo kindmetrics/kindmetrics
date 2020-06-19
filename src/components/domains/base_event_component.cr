@@ -15,5 +15,4 @@ class BaseEventComponent < BaseComponent
       end
     end
   end
-
 end

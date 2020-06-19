@@ -15,5 +15,4 @@ class ReferrerEventComponent < BaseComponent
       end
     end
   end
-
 end
