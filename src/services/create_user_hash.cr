@@ -5,8 +5,8 @@ class UserHash
     OpenSSL::HMAC.hexdigest(OpenSSL::Algorithm::SHA256, Lucky::Server.settings.secret_key_base, [address, ip_address, user_agent].join("/"))
   end
 
-  def self.create(address, ip_address, user_agent, created_at) : String
-    OpenSSL::HMAC.hexdigest(OpenSSL::Algorithm::SHA256, Lucky::Server.settings.secret_key_base, [address, ip_address, user_agent, created_at].join("/"))
+  def self.create(address, ip_address, user_agent) : String
+    OpenSSL::HMAC.hexdigest(OpenSSL::Algorithm::SHA256, Lucky::Server.settings.secret_key_base, [address, ip_address, user_agent, Random::Secure.urlsafe_base64].join("/"))
   end
 
   def self.get_browser(user_agent)

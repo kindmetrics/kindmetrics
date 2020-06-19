@@ -11,10 +11,8 @@ class CreateSession < Session::SaveOperation
 
   before_save do
     validate_required domain_id
-    created = Time.local
-    created_at.value = Time.local
     temp_address = DomainQuery.find(domain_id.value.not_nil!)
-    user_id.value = UserHash.create(temp_address.address, remote_ip, user_agent, created).to_s
+    user_id.value = UserHash.create(temp_address.address, remote_ip, user_agent).to_s
     validate_required user_id
   end
 
