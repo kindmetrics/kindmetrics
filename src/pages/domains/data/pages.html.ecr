@@ -7,7 +7,9 @@
   <div class="flex items-center justify-between my-1 h-10 text-sm subpixel-antialiased">
     <div class="w-full h-9" style="max-width: calc(100% - 4rem);">
       <div class="progress_bar" style="width: <%=(r.percentage || 0.001)*100%>%;height: 30px"></div>
-      <span class="block px-2" style="margin-top: -26px;"><%=r.address%></span>
+      <a href="/domains/<%=@domain.id%>/paths/<%=r.address%>" class="block px-2", style="margin-top: -26px;">
+        <%=r.address%>
+      </a>
     </div>
     <span>
       <%=r.count%>

@@ -1,9 +1,0 @@
-<div class="flex items-center justify-between my-1 text-sm">
-  <div class="w-full h-8" style="max-width: calc(100% - 4rem);">
-    <div class="bg-blue-200 rounded" style="width: <%=(event.percentage || 0.001)*100%>%;height: 30px"></div>
-    <a class="block px-2 text-black" style="margin-top: -26px;" href="<%=event.referrer_domain%>"><%=event.referrer_domain%></a>
-  </div>
-  <span>
-    <%=((event.percentage || 0.001)*100).to_i%>%
-  </span>
-</div>

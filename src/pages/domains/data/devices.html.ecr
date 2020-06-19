@@ -3,14 +3,6 @@
   <span>Percentage</span>
 </div>
   <% @devices.each do |r| %>
-  <div class="flex items-center justify-between my-1 text-sm subpixel-antialiased">
-    <div class="w-full h-8" style="max-width: calc(100% - 4rem);">
-      <div class="progress_bar" style="width: <%=(r.percentage || 0.001)*100%>%;height: 30px"></div>
-      <span class="block px-2" style="margin-top: -26px;"><%=r.device%></span>
-    </div>
-    <span>
-      <%=((r.percentage || 0.001)*100).to_i%>%
-    </span>
-  </div>
+  <% mount BaseEventComponent.new(name: r.device, percentage: r.percentage) %>
   <% end %>
 </div>

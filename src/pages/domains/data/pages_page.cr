@@ -1,6 +1,7 @@
 class Domains::Data::PagesPage
   include Lucky::HTMLPage
   needs pages : Array(StatsPages)
+  needs domain : Domain
 
   def render
     if pages.empty?
