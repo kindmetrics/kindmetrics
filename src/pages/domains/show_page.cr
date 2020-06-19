@@ -10,7 +10,6 @@ class Domains::ShowPage < MainGuestLayout
   needs total_bounce_previous : Int64
   needs period : String
   needs period_string : String
-  needs period : String
   needs share_page : Bool = false
   quick_def page_title, @domain.address
 

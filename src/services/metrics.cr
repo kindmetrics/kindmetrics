@@ -4,6 +4,7 @@ class Metrics
   end
 
   delegate :current_query, :unique_query, :total_query, :bounce_query, :get_referrers, :get_pages, to: @new_metrics
+  delegate :path_total_query, :path_unique_query, :path_bounce_query, to: @new_metrics
 
   def get_days
     return [nil, nil, nil] if EventQuery.new.domain_id(@domain.id).select_count == 0
