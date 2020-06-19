@@ -1,6 +1,7 @@
 class Session < BaseModel
   table do
     column user_id : String
+    column temp_user_id : String?
     column referrer : String?
     column url : String?
     column referrer_source : String?

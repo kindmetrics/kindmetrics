@@ -4,16 +4,23 @@ class CreateSession < Session::SaveOperation
   #
   # permit_columns column_1, column_2
 
+  needs remote_ip : String
+  needs user_agent : String
+
   after_save :create_event
 
   before_save do
-    validate_required user_id
     validate_required domain_id
+    created = Time.local
+    created_at.value = Time.local
+    temp_address = DomainQuery.find(domain_id.value.not_nil!)
+    user_id.value = UserHash.create(temp_address.address, remote_ip, user_agent, created).to_s
+    validate_required user_id
   end
 
   def create_event(session : Session)
     SaveEvent.create!(
-      user_id: session.user_id,
+      user_id: session.user_id || "",
       name: "pageview",
       referrer: session.referrer,
       country: session.country,

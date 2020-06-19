@@ -10,7 +10,7 @@ class EventHandler
     country = IPCOUNTRY.lookup_cc(remote_ip)
 
     browser = UserHash.get_browser(user_agent) if user_agent.present?
-    user_id = UserHash.create(address, remote_ip, user_agent).to_s
+    temp_user_id = UserHash.temp_create(address, remote_ip, user_agent).to_s
 
     if user_agent.present? && !browser.nil?
       return if browser.not_nil!.bot?
@@ -29,9 +29,12 @@ class EventHandler
       operative_system: browser.try { |b| b.os_name },
     }
 
-    unless is_current_session?(user_id)
+    unless is_current_session?(temp_user_id)
       create_session(
         **browser_data,
+        temp_user_id: temp_user_id,
+        remote_ip: remote_ip,
+        user_agent: user_agent,
         referrer: referrer.to_s,
         referrer_domain: referrer.host,
         country: country,
@@ -39,13 +42,12 @@ class EventHandler
         path: url.path,
         referrer_source: source,
         domain_id: domain.id,
-        user_id: user_id,
         is_bounce: 0,
         length: nil
       )
     else
       add_event(
-        user_id,
+        temp_user_id,
         **browser_data,
         name: "pageview",
         referrer: referrer.to_s,
@@ -59,8 +61,8 @@ class EventHandler
     end
   end
 
-  def self.is_current_session?(user_id : String)
-    session = get_session(user_id)
+  def self.is_current_session?(temp_user_id : String)
+    session = get_session(temp_user_id)
     return false unless session
     events = EventQuery.new.session_id(session.id).created_at.desc_order
     return false if events.results.size == 0 && session.created_at < SESSION_TIMEOUT.ago
@@ -68,10 +70,10 @@ class EventHandler
     return events.first.created_at > SESSION_TIMEOUT.ago
   end
 
-  def self.add_event(user_id : String, **params)
-    session = get_session(user_id)
+  def self.add_event(temp_user_id : String, **params)
+    session = get_session(temp_user_id)
     if session
-      SaveEvent.create(**params, user_id: user_id, session_id: session.not_nil!.id) do |operation, event|
+      SaveEvent.create(**params, session_id: session.not_nil!.id) do |operation, event|
         unless event
           raise Avram::InvalidOperationError.new(operation)
         end
@@ -100,8 +102,8 @@ class EventHandler
     uri.sub(/^www./i, "")
   end
 
-  private def self.get_session(user_id : String)
-    SessionQuery.new.user_id(user_id).length.is_nil.first
+  private def self.get_session(temp_user_id : String)
+    SessionQuery.new.temp_user_id(temp_user_id).length.is_nil.first
   rescue Avram::RecordNotFoundError
     nil
   end

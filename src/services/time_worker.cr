@@ -36,7 +36,7 @@ class TimeWorker
 
     is_bounce = events.results.size == 1 ? 1 : 0
     L.info { "saving session #{session.id} on domain: #{session.domain!.not_nil!.address}" }
-    SaveSession.update!(session, length: timespent_seconds, is_bounce: is_bounce)
+    SaveSession.update!(session, length: timespent_seconds, is_bounce: is_bounce, temp_user_id: nil)
   end
 
   def self.get_sessions
