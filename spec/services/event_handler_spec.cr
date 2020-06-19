@@ -2,9 +2,10 @@ require "../spec_helper"
 
 describe EventHandler do
   it "is current session" do
-    session = SessionBox.create &.user_id("test_id").length(nil)
+    temp_id = "test_id"
+    session = SessionBox.create &.temp_user_id(temp_id).length(nil)
 
-    response = EventHandler.is_current_session?(session.user_id)
+    response = EventHandler.is_current_session?(temp_id)
     response.should eq(true)
   end
 
@@ -15,14 +16,14 @@ describe EventHandler do
     SaveSession.update!(event.session!.not_nil!, length: nil)
     event = event.reload
 
-    response = EventHandler.is_current_session?(event.session!.not_nil!.user_id)
+    response = EventHandler.is_current_session?(event.session!.not_nil!.temp_user_id.not_nil!)
     response.should eq(true)
   end
 
   it "is old session" do
     session = SessionBox.create &.created_at(80.minutes.ago).length(nil)
 
-    response = EventHandler.is_current_session?(session.user_id)
+    response = EventHandler.is_current_session?(session.temp_user_id.not_nil!)
     response.should eq(false)
   end
 
@@ -37,7 +38,7 @@ describe EventHandler do
   it "already done session" do
     session = SessionBox.create &.created_at(80.minutes.ago).length(23.to_i64)
 
-    response = EventHandler.is_current_session?(session.user_id)
+    response = EventHandler.is_current_session?(session.temp_user_id.not_nil!)
     response.should eq(false)
   end
 
@@ -46,7 +47,7 @@ describe EventHandler do
 
     EventQuery.new.session_id(session.id).select_count.should eq(0)
 
-    EventHandler.add_event(session.user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", domain_id: session.domain_id)
+    EventHandler.add_event(session.temp_user_id.not_nil!, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", domain_id: session.domain_id)
 
     EventQuery.new.session_id(session.id).select_count.should eq(1)
   end

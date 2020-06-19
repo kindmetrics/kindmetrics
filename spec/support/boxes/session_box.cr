@@ -1,6 +1,7 @@
 class SessionBox < Avram::Box
   def initialize
-    user_id sequence("event")
+    user_id sequence("secret-session")
+    temp_user_id sequence("session")
     referrer "https://www.test.com/best-analytics"
     url "https://kindmetrics.io/help/test"
     referrer_source nil
