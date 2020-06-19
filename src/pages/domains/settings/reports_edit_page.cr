@@ -1,4 +1,4 @@
-class Domains::EditReportsPage < MainLayout
+class Domains::EditReportsPage < AdminLayout
   needs operation : SaveReportUser
   needs domain : Domain
   needs user_list : ReportUserQuery

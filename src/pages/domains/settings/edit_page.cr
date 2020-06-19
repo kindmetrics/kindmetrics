@@ -1,4 +1,4 @@
-class Domains::EditPage < MainLayout
+class Domains::EditPage < AdminLayout
   needs operation : UpdateDomain
   needs domain : Domain
   needs hashid : String
