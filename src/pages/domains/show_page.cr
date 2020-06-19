@@ -1,12 +1,14 @@
-class Domains::ShowPage < Domains::BasePage
-  needs sessions : SessionQuery
-  needs domains : DomainQuery
+class Domains::ShowPage < MainGuestLayout
+  needs sessions : SessionQuery?
+  needs domains : DomainQuery?
+  needs domain : Domain
   needs total_unique : Int64
   needs total_sum : Int64
   needs total_bounce : Int64
   needs total_unique_previous : Int64
   needs total_previous : Int64
   needs total_bounce_previous : Int64
+  needs period : String
   needs period_string : String
   needs share_page : Bool = false
   quick_def page_title, @domain.address
@@ -37,6 +39,10 @@ class Domains::ShowPage < Domains::BasePage
   end
 
   def render_header
-    render_template "domains/header"
+    if share_page?
+      render_template "shares/header"
+    else
+      render_template "domains/header"
+    end
   end
 end
