@@ -1,7 +1,7 @@
 class Domains::Data::Pages < DomainPublicBaseAction
   include Auth::AllowGuests
   get "/domains/:domain_id/data/pages" do
-    html PagesPage, domain: domain, pages: get_pages(domain)
+    html PagesPage, domain: domain, pages: get_pages(domain), period: period
   end
 
   def get_pages(domain)

@@ -16,7 +16,6 @@ class Domains::Paths::ShowPage < Share::BasePage
     render_header
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
       render_total
-      h2 path, class: "text-2xl"
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
         h3 "Referrers", class: "text-2xl"
         referrers.each do |event|
