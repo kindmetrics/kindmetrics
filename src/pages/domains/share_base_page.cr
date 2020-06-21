@@ -1,4 +1,4 @@
-abstract class Share::BasePage < MainGuestLayout
+abstract class Share::BasePage < SecretGuestLayout
   needs domain : Domain
   needs period : String
 

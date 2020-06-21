@@ -5,5 +5,6 @@ class UserBox < Avram::Box
     encrypted_password Authentic.generate_encrypted_password("password")
     confirmed_token Random::Secure.hex(32)
     confirmed_at Time.utc
+    admin false
   end
 end

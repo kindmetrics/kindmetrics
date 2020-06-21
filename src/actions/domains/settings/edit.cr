@@ -1,6 +1,6 @@
 class Domains::Edit < BrowserAction
   include Hashid
-  route do
+  get "/domins/:domain_id/settings" do
     domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
     DomainPolicy.update_not_found?(domain, current_user, context)
     html EditPage,

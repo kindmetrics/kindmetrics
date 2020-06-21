@@ -1,4 +1,4 @@
-class Domains::NewPage < MainLayout
+class Domains::NewPage < AdminLayout
   needs operation : SaveDomain
   quick_def page_title, "New Domain"
 

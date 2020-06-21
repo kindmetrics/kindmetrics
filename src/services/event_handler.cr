@@ -12,6 +12,10 @@ class EventHandler
     browser = UserHash.get_browser(user_agent) if user_agent.present?
     user_id = UserHash.create(address, remote_ip, user_agent).to_s
 
+    if user_agent.present? && !browser.nil?
+      return if browser.not_nil!.bot?
+    end
+
     temp_source = params.get?(:source)
     source = if !temp_source.nil? && !temp_source.empty?
                temp_source
@@ -19,17 +23,14 @@ class EventHandler
                parse_referer_data(referrer)
              end
 
-    Log.debug { {source: source} }
-
     browser_data = {
       device:           browser.try { |b| b.device_type },
       browser_name:     browser.try { |b| b.browser_name },
-      browser_version:  browser.try { |b| b.browser_version },
       operative_system: browser.try { |b| b.os_name },
     }
 
-    unless EventHandler.is_current_session?(user_id)
-      EventHandler.create_session(
+    unless is_current_session?(user_id)
+      create_session(
         **browser_data,
         referrer: referrer.to_s,
         referrer_domain: referrer.host,
@@ -39,21 +40,23 @@ class EventHandler
         referrer_source: source,
         domain_id: domain.id,
         user_id: user_id,
-        is_bounce: 0
+        is_bounce: 0,
+        length: nil
+      )
+    else
+      add_event(
+        user_id,
+        **browser_data,
+        name: "pageview",
+        referrer: referrer.to_s,
+        country: country,
+        referrer_domain: referrer.host,
+        url: url.to_s,
+        path: url.path,
+        referrer_source: source,
+        domain_id: domain.id
       )
     end
-    EventHandler.add_event(
-      user_id,
-      **browser_data,
-      name: "pageview",
-      referrer: referrer.to_s,
-      country: country,
-      referrer_domain: referrer.host,
-      url: url.to_s,
-      path: url.path,
-      referrer_source: source,
-      domain_id: domain.id
-    )
   end
 
   def self.is_current_session?(user_id : String)
@@ -79,7 +82,7 @@ class EventHandler
   end
 
   def self.create_session(**params)
-    SaveSession.create!(**params)
+    CreateSession.create!(**params)
   end
 
   def self.parse_referer_data(referrer : URI)
@@ -94,7 +97,7 @@ class EventHandler
   end
 
   private def self.remove_www(uri : String)
-    uri.lstrip("www.")
+    uri.sub(/^www./i, "")
   end
 
   private def self.get_session(user_id : String)

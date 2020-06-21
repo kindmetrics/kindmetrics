@@ -12,6 +12,6 @@ class Share::Show < BrowserAction
     domain = DomainQuery.find(ids.first)
     DomainPolicy.show_share_not_found?(domain, current_user, context)
 
-    html ShowPage, domain: domain, share_page: true, total_unique: unique_query(domain), total_bounce: bounce_query(domain), total_sum: total_query(domain), period: period, period_string: period_string
+    html ShowPage, domain: domain, share_page: true, total_unique: unique_query(domain), total_unique_previous: unique_query_previous(domain), total_bounce: bounce_query(domain), total_bounce_previous: bounce_query_previous(domain), total_sum: total_query(domain), total_previous: total_query_previous(domain), period: period, period_string: period_string
   end
 end

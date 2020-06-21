@@ -33,6 +33,9 @@ dependencies:
     github: jeromegn/kilt
   lucky_can:
     github: confact/lucky_can
+  bindata:
+    github: spider-gazelle/bindata
+    version: 1.5.5
   device_detector:
     github: confact/device_detector
     commit: 92355cc32dc992ad6c11772445ee7bbb69d9ac84
@@ -45,7 +48,10 @@ dependencies:
     github: confact/ip2country
   referer-parser:
     github: confact/referer-parser.cr
+    version: ~> 0.1.0
   hashids:
     github: splattael/hashids.cr
   quoted_printable:
     github: arcage/crystal-quotedprintable
+  cron_scheduler:
+    github: kostya/cron_scheduler

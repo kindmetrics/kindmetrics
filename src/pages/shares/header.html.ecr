@@ -1,7 +1,10 @@
 <div class="gradient-color">
   <div class="flex justify-between items-center mt-4 mb-4 max-w-6xl mx-auto py-6 px-2 sm:px-0">
-    <div class="flex items-center">
-      <h1 class="text-xl">Analytics for <%=@domain.address%></h1>
+    <div class="w-2/3">
+      <h1 class="text-xl block w-full">Analytics for <%=@domain.address%></h1>
+      <div class="current-counter-container" data-controller="current-refresh" data-current-refresh-url="/domains/<%=@domain.id%>/data/current" data-current-refresh-refresh-interval="10000">
+        <span class="current-counter" data-target="current-refresh.counter">0</span> current active users
+      </div>
     </div>
     <div class="">
       <div class="text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900">

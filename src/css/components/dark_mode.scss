@@ -13,6 +13,9 @@
     a {
       @apply text-gray-200;
     }
+    .dropdown > a {
+      @apply text-gray-900;
+    }
   }
 
   .card {
@@ -52,5 +55,14 @@
     @apply text-xs;
     @apply font-bold;
     @apply mt-2;
+  }
+  .current-counter-container {
+    @apply text-sm;
+    @apply text-gray-300;
+    .current-counter {
+      @apply text-sm;
+      @apply text-gray-300;
+      @apply font-bold;
+    }
   }
 }
