@@ -4,6 +4,7 @@ class Metrics
   end
 
   delegate :current_query, :unique_query, :total_query, :bounce_query, :get_referrers, :get_pages, to: @new_metrics
+  delegate :path_total_query, :path_unique_query, :path_bounce_query, to: @new_metrics
 
   def get_days
     return [nil, nil, nil] if EventQuery.new.domain_id(@domain.id).select_count == 0
@@ -62,6 +63,21 @@ class Metrics
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
+    GROUP BY referrer_source
+    ORDER BY COUNT(DISTINCT user_id) desc;
+    SQL
+    pages = AppDatabase.run do |db|
+      db.query_all sql, as: StatsReferrer
+    end
+    pages.reject! { |r| r.referrer_source.nil? }
+    pages = count_percentage(pages)
+    return pages
+  end
+
+  def get_path_referrers(path : String) : Array(StatsReferrer)
+    sql = <<-SQL
+    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}' AND (path='#{path}' OR path='/#{path}')
     GROUP BY referrer_source
     ORDER BY COUNT(DISTINCT user_id) desc;
     SQL
