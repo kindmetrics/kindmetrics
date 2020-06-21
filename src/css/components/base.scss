@@ -31,7 +31,8 @@ body {
 
 .gradient-color {
   //background-color: #E2EDF3;
-  @apply bg-gray-300;
+  @apply bg-white;
+  @apply shadow-md;
 }
 
 .stats-bg {

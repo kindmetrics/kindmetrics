@@ -7,8 +7,9 @@ class Domains::Referrer::ShowPage < Share::BasePage
   quick_def page_title, "#{source} for #{@domain.address}"
 
   def content
+    mount HeaderComponent.new(domain: @domain, domains: nil, total_sum: 1, share_page: @share_page, period_string: period_string, period: @period, active: "Referrers")
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
-      render_template "domains/referrers/header"
+      sub_header
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
         para "Got #{total} Visitors from #{source} the last #{period_string}", class: "text-xl mb-2"
         events.each do |event|
@@ -20,7 +21,6 @@ class Domains::Referrer::ShowPage < Share::BasePage
 
   def sub_header
     h1 source.to_s, class: "text-xl clear-both"
-    link "See All referrers", to: Domains::Referrer::Index.with(@domain, period: period), class: "block clear-both"
   end
 
   def header_url(period)

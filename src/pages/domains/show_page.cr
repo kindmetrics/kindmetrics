@@ -39,10 +39,6 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_header
-    if share_page?
-      render_template "shares/header"
-    else
-      render_template "domains/header"
-    end
+    mount HeaderComponent.new(domain: @domain, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, share_page: @share_page)
   end
 end
