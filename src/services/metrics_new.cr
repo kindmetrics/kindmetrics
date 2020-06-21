@@ -10,11 +10,9 @@ class MetricsNew
     sql = <<-SQL
     SELECT COUNT(DISTINCT user_id) FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}';
     SQL
-    pp! sql
     unique = AppDatabase.run do |db|
       db.query_all sql, as: Int64
     end
-    pp! unique
     unique.first
   end
 
@@ -22,11 +20,9 @@ class MetricsNew
     sql = <<-SQL
     SELECT COUNT(DISTINCT user_id) FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}' AND (path='#{path}' OR path='/#{path}');
     SQL
-    pp! sql
     unique = AppDatabase.run do |db|
       db.query_all sql, as: Int64
     end
-    pp! unique
     unique.first
   end
 
