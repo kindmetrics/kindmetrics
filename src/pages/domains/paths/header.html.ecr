@@ -1,7 +1,7 @@
 <div class="gradient-color">
   <div class="flex justify-between items-center mt-4 max-w-6xl mx-auto py-6 px-2 sm:px-0">
     <div class="w-2/3">
-      <h1 class="text-xl block w-full"><%=@path%></h1>
+      <h1 class="text-xl block w-full"><%=@path.empty? ? "/" : @path%></h1>
       <div>
         <%=@domain.address%>
       </div>

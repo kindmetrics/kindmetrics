@@ -43,5 +43,4 @@ class Share::Paths::Show < BrowserAction
   private def get_previous_bounce(domain : Domain)
     previous_metric(domain).path_bounce_query(path)
   end
-
 end

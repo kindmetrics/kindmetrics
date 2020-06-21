@@ -35,5 +35,4 @@ class Domains::Paths::Show < DomainBaseAction
   private def get_previous_bounce
     previous_metric(domain).path_bounce_query(path)
   end
-
 end
