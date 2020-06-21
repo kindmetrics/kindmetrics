@@ -18,6 +18,10 @@ class Domains::Paths::ShowPage < Share::BasePage
       render_total
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
         h2 "Top Referrer", class: "text-xl"
+        div class: "flex justify-between text-xs uppercase mt-3" do
+          span "Referrer"
+          span "Percentage"
+        end
         referrers.each do |event|
           mount ReferrerEventComponent.new(domain: event.referrer_domain, percentage: event.percentage)
         end
