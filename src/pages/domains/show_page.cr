@@ -1,4 +1,4 @@
-class Domains::ShowPage < MainGuestLayout
+class Domains::ShowPage < SecretGuestLayout
   needs sessions : SessionQuery?
   needs domains : DomainQuery?
   needs domain : Domain
