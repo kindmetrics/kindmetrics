@@ -10,7 +10,7 @@ jobs:
   check_format:
     runs-on: ubuntu-latest
     container:
-      image: crystallang/crystal:0.34.0
+      image: crystallang/crystal:0.35.1
     steps:
       - uses: actions/checkout@v1
       - name: Install shards
@@ -20,7 +20,7 @@ jobs:
   specs:
     runs-on: ubuntu-latest
     container:
-      image: crystallang/crystal:0.34.0
+      image: crystallang/crystal:0.35.1
     services:
       # Label used to access the service container
       postgres:
