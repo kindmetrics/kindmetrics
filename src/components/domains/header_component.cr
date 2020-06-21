@@ -7,6 +7,7 @@ class HeaderComponent < BaseComponent
   needs total_sum : Int64 = 0
   needs period : String = "7d"
   needs period_string : String = "7 days"
+  needs show_period : Bool = true
 
   def links
     if share_page?
@@ -47,13 +48,14 @@ class HeaderComponent < BaseComponent
             end
           end
           div do
-            if @total_sum > 0
+            if show_period?
               render_template "domains/period_dropdown"
             end
           end
         end
+
         div class: "clear-both w-full pt-2 mt-2" do
-          mount TabMenu.new(links: links, active: @active)
+          mount TabMenu.new(links: links, active: @active) if @total_sum > 0
         end
       end
     end

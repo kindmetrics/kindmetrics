@@ -15,7 +15,7 @@ class Domains::ShowPage < SecretGuestLayout
 
   def content
     render_header
-    if total_sum == "0"
+    if total_sum == 0
       mount AddTrackingComponent.new(domain: @domain)
     else
       render_total
@@ -39,6 +39,6 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_header
-    mount HeaderComponent.new(domain: @domain, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, share_page: @share_page)
+    mount HeaderComponent.new(domain: @domain, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, show_period: total_sum > 0, share_page: @share_page)
   end
 end
