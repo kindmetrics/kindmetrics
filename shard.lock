@@ -42,7 +42,7 @@ shards:
 
   device_detector:
     git: https://github.com/confact/device_detector.git
-    version: 0.3.3+git.commit.92355cc32dc992ad6c11772445ee7bbb69d9ac84
+    version: 0.4.0
 
   dexter:
     git: https://github.com/luckyframework/dexter.git
