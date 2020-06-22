@@ -8,11 +8,11 @@
     </div>
     <div data-target="dropdown.menu" class="absolute right-0 mt-2 w-full hidden z-10">
       <div class="bg-white shadow-lg rounded overflow-hidden">
-        <% link "7 days", to: Domains::Show.with(@domain.id, period: "7d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
-        <% link "14 days", to: Domains::Show.with(@domain.id, period: "14d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
-        <% link "30 days", to: Domains::Show.with(@domain.id, period: "30d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
-        <% link "60 days", to: Domains::Show.with(@domain.id, period: "60d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
-        <% link "90 days", to: Domains::Show.with(@domain.id, period: "90d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+        <% a "7 days", href: period_url("7d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+        <% a "14 days", href: period_url("14d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+        <% a "30 days", href: period_url("30d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+        <% a "60 days", href: period_url("60d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+        <% a "90 days", href: period_url("90d"), class: "no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
       </div>
     </div>
   </div>

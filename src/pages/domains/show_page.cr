@@ -39,6 +39,6 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_header
-    mount HeaderComponent.new(domain: @domain, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, show_period: total_sum > 0, share_page: @share_page)
+    mount HeaderComponent.new(domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, show_period: total_sum > 0, share_page: @share_page)
   end
 end

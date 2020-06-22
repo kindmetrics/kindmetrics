@@ -1,5 +1,4 @@
 class HeaderComponent < BaseComponent
-
   needs active : String = "Dashboard"
   needs domain : Domain
   needs domains : DomainQuery?
@@ -8,13 +7,14 @@ class HeaderComponent < BaseComponent
   needs period : String = "7d"
   needs period_string : String = "7 days"
   needs show_period : Bool = true
+  needs current_url : String
 
   def links
     if share_page?
       [
         {"link" => Share::Show.url(@domain.hashid, period: period), "name" => "Dashboard"},
         {"link" => Share::Referrer::Index.url(@domain.hashid, period: period), "name" => "Referrers"},
-        {"link" => Share::Countries::Index.url(@domain.hashid, period: period), "name" => "Countries"}
+        {"link" => Share::Countries::Index.url(@domain.hashid, period: period), "name" => "Countries"},
       ]
     else
       [
@@ -22,9 +22,13 @@ class HeaderComponent < BaseComponent
         {"link" => Domains::Referrer::Index.url(@domain, period: period), "name" => "Referrers"},
         {"link" => Domains::Countries::Index.url(@domain, period: period), "name" => "Countries"},
         {"link" => Domains::Edit.url(@domain), "name" => "Settings"},
-        {"link" => Domains::EditReports.url(@domain), "name" => "Reports"}
+        {"link" => Domains::EditReports.url(@domain), "name" => "Reports"},
       ]
     end
+  end
+
+  def period_url(period : String)
+    @current_url + "?period=" + period
   end
 
   def render
