@@ -60,7 +60,7 @@ class HeaderComponent < BaseComponent
         end
 
         div class: "clear-both w-full pt-2 mt-2" do
-          mount TabMenu.new(links: links, active: @active) if @total_sum > 0
+          mount TabMenu.new(links: links, active: @active, domain: @domain) if @total_sum > 0
         end
       end
     end
