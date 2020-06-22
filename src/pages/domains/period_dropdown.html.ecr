@@ -1,0 +1,19 @@
+<div class="text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900">
+  <div class="relative" data-controller="dropdown">
+    <div data-action="click->dropdown#toggle click@window->dropdown#hide" role="button" class="inline-block select-none rounded-md p-3 text-md bg-gray-200">
+      <span class="appearance-none flex items-center inline-block text-xl">
+        <%=@period_string%>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-4 w-4 ml-2"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
+      </span>
+    </div>
+    <div data-target="dropdown.menu" class="absolute right-0 mt-2 w-full hidden z-10">
+      <div class="bg-white shadow-lg rounded overflow-hidden border">
+        <% a "7 days", href: period_url("7d"), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+        <% a "14 days", href: period_url("14d"), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+        <% a "30 days", href: period_url("30d"), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+        <% a "60 days", href: period_url("60d"), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+        <% a "90 days", href: period_url("90d"), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-gray-300 whitespace-no-wrap" %>
+      </div>
+    </div>
+  </div>
+</div>

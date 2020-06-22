@@ -3,8 +3,12 @@ class Domains::NewPage < AdminLayout
   quick_def page_title, "New Domain"
 
   def content
+    div class: "gradient-color" do
+      div class: "mt-4 max-w-6xl mx-auto py-6 px-2 sm:px-0 border-t" do
+        h1 "New Domain", class: "text-xl"
+      end
+    end
     div class: "mt-20 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
-      h1 "New Domain", class: "text-xl"
       div class: "my-3 card" do
         render_domain_form(@operation)
       end

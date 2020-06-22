@@ -31,7 +31,8 @@ body {
 
 .gradient-color {
   //background-color: #E2EDF3;
-  @apply bg-gray-300;
+  @apply bg-white;
+  @apply shadow-md;
 }
 
 .stats-bg {
@@ -44,6 +45,10 @@ body {
 
 .transister {
   transition: ease background 0.2s;
+}
+
+.transister-menu {
+  transition: border-color .2s ease-in;
 }
 
 .card {

@@ -6,7 +6,7 @@ class Domains::EditReportsPage < AdminLayout
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
 
   def content
-    render_header
+    mount HeaderComponent.new(domain: @domain, current_url: "#", domains: nil, total_sum: 1, share_page: false, period_string: "7 days", show_period: false, active: "Reports")
     div class: "mt-10 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       div class: "my-3 card" do
         h1 "Reports", class: "text-xl"

@@ -3,8 +3,9 @@ class Domains::Countries::IndexPage < Share::BasePage
   needs share_page : Bool = false
 
   def content
+    mount HeaderComponent.new(domain: @domain, current_url: context.request.path, domains: nil, total_sum: 1, share_page: @share_page, period_string: period_string, period: @period, active: "Countries")
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
-      render_template "domains/countries/header"
+      sub_header
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
         render_template "domains/countries/main"
       end
