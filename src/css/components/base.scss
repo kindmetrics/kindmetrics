@@ -47,6 +47,10 @@ body {
   transition: ease background 0.2s;
 }
 
+.transister-menu {
+  transition: border-color .2s ease-in;
+}
+
 .card {
   @apply rounded-md;
   @apply shadow-md;
