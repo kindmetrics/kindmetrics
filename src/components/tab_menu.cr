@@ -3,7 +3,7 @@ class TabMenu < BaseComponent
   needs active : String
 
   def render
-    ul class: "flex border-b" do
+    ul class: "flex" do
       links.each do |l|
         if l["name"] == active
           li class: "-mb" do
