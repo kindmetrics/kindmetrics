@@ -76,7 +76,7 @@ class Metrics
 
   def get_path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
+    SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
     WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}' AND (path='#{path}' OR path='/#{path}')
     GROUP BY referrer_source
     ORDER BY COUNT(DISTINCT user_id) desc;

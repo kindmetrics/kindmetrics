@@ -5,8 +5,8 @@ class ReferrerEventComponent < BaseComponent
   def render
     div class: "flex items-center justify-between my-1 text-sm" do
       div class: "w-full h-8", style: "max-width: calc(100% - 4rem);" do
-        div class: "bg-blue-200 rounded", style: "width: #{(percentage || 0.001)*100};height: 30px"
-        a href: domain || "#", class: "block px-2 text-black", style: "margin-top: -26px;" do
+        div class: "bg-blue-200 rounded", style: "width: #{(percentage || 0.001)*100}%;height: 30px"
+        a href: domain || "#", class: "block px-2 text-black", style: "margin-top: -26px;", rel: "noreferrer" do
           raw (domain || "").to_s
         end
       end
