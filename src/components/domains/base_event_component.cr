@@ -5,7 +5,7 @@ class BaseEventComponent < BaseComponent
   def render
     div class: "flex items-center justify-between my-1 h-10 text-sm subpixel-antialiased" do
       div class: "w-full h-8", style: "max-width: calc(100% - 4rem);" do
-        div class: "bg-blue-200 rounded", style: "width: #{(percentage || 0.001)*100}%;height: 30px"
+        div class: "progress_bar", style: "width: #{(percentage || 0.001)*100}%;height: 30px"
         span class: "block px-2", style: "margin-top: -26px" do
           raw (name || "").to_s
         end

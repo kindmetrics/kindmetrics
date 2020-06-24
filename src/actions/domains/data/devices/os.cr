@@ -1,4 +1,5 @@
 class Domains::Data::Devices::Os < DomainPublicBaseAction
+  include Auth::AllowGuests
   get "/domains/:domain_id/data/devices/os" do
     html OsPage, domain: domain, os: get_os(domain)
   end
