@@ -28,10 +28,11 @@ class EventHandler
       operative_system: browser.try { |b| b.os_name },
     }
     screen_device = screen_width(params.get?(:screen_width))
-    device = if !screen_device.nil? && screen_device != "Unknown"
+    browser_device = browser_device(browser)
+    device = if screen_device != "Unknown"
                 screen_device
-              elsif !browser.nil?
-                browser.not_nil!.device_type
+              elsif !browser_device.nil?
+                browser_device
               else
                 "Unknown"
               end
@@ -107,6 +108,14 @@ class EventHandler
 
   private def self.remove_www(uri : String)
     uri.sub(/^www./i, "")
+  end
+
+  private def self.browser_device(browser)
+    if !browser.nil? && browser.mobile_device?
+      "Mobile"
+    else
+      nil
+    end
   end
 
   private def self.screen_width(width : String?) : String
