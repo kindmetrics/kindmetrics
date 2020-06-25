@@ -30,12 +30,12 @@ class EventHandler
     screen_device = screen_width(params.get?(:screen_width))
     browser_device = browser_device(browser)
     device = if screen_device != "Unknown"
-                screen_device
-              elsif !browser_device.nil?
-                browser_device
-              else
-                "Unknown"
-              end
+               screen_device
+             elsif !browser_device.nil?
+               browser_device
+             else
+               "Unknown"
+             end
 
     unless is_current_session?(user_id)
       create_session(
