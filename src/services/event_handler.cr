@@ -24,14 +24,22 @@ class EventHandler
              end
 
     browser_data = {
-      device:           browser.try { |b| b.device_type },
       browser_name:     browser.try { |b| b.browser_name },
       operative_system: browser.try { |b| b.os_name },
     }
+    screen_device = screen_width(params.get?(:screen_width))
+    device = if !screen_device.nil? && screen_device != "Unknown"
+                screen_device
+              elsif !browser.nil?
+                browser.not_nil!.device_type
+              else
+                "Unknown"
+              end
 
     unless is_current_session?(user_id)
       create_session(
         **browser_data,
+        device: device,
         referrer: referrer.to_s,
         referrer_domain: referrer.host,
         country: country,
@@ -47,6 +55,7 @@ class EventHandler
       add_event(
         user_id,
         **browser_data,
+        device: device,
         name: "pageview",
         referrer: referrer.to_s,
         country: country,
@@ -98,6 +107,23 @@ class EventHandler
 
   private def self.remove_www(uri : String)
     uri.sub(/^www./i, "")
+  end
+
+  private def self.screen_width(width : String?) : String
+    return "Unknown" if width.nil?
+    return "Unknown" if width.empty?
+    widthi = width.not_nil!.to_i
+    if widthi.to_i < 576
+      return "Mobile"
+    elsif widthi.to_i < 992
+      return "Tablet"
+    elsif widthi.to_i < 1440
+      return "Laptop"
+    elsif widthi.to_i >= 1440
+      return "Desktop"
+    else
+      return "Unknown"
+    end
   end
 
   private def self.get_session(user_id : String)
