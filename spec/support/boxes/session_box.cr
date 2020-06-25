@@ -4,7 +4,6 @@ class SessionBox < Avram::Box
     referrer "https://www.test.com/best-analytics"
     url "https://kindmetrics.io/help/test"
     referrer_source nil
-    screen_width nil
     path "/help/test"
     device "desktop"
     operative_system "GNU/Linux"

@@ -41,6 +41,7 @@
         url: getUrl(),
         domain: domain || trackLocation.hostname,
         referrer: trackDocument.referrer || null,
+        screen_width: window.innerWidth,
         source: getSource(),
         user_agent: window.navigator.userAgent
       }
