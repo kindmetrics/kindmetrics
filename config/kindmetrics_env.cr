@@ -4,5 +4,4 @@ module KindEnv
   def env(key : String)
     ENV[key]?.try(&.strip)
   end
-
 end
