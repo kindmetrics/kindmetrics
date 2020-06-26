@@ -11,6 +11,9 @@ abstract class BaseEmail < Carbon::Email
 
   #
   def default_from
-    Carbon::Address.new("Håkan Nylén", "hakan@kindmetrics.io")
+    if KindEnv.env("EMAIL_FROM_NAME").nil? || KindEnv.env("EMAIL_FROM").nil?
+      raise "EMAIL_FROM_NAME and EMAIL_FROM need to be set"
+    end
+    Carbon::Address.new(KindEnv.env("EMAIL_FROM_NAME").not_nil!, KindEnv.env("EMAIL_FROM").not_nil!)
   end
 end
