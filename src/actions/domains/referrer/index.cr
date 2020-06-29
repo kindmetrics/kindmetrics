@@ -1,6 +1,7 @@
 class Domains::Referrer::Index < DomainBaseAction
   get "/domains/:domain_id/referrers" do
-    html IndexPage, events: get_referrals, domain: domain, period: period
+    domains = DomainQuery.new.user_id(current_user.id)
+    html IndexPage, events: get_referrals, domain: domain, period: period, domains: domains
   end
 
   def get_referrals

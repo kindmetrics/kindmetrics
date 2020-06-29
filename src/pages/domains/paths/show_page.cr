@@ -1,5 +1,6 @@
 class Domains::Paths::ShowPage < Share::BasePage
   needs path : String
+  needs domains : DomainQuery?
   needs referrers : Array(StatsReferrer)
   needs share_page : Bool = false
   needs unique : Int64
