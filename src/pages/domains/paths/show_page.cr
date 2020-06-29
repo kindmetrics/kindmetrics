@@ -1,5 +1,6 @@
 class Domains::Paths::ShowPage < Share::BasePage
   needs path : String
+  needs domains : DomainQuery?
   needs referrers : Array(StatsReferrer)
   needs share_page : Bool = false
   needs unique : Int64
@@ -15,6 +16,7 @@ class Domains::Paths::ShowPage < Share::BasePage
   def content
     render_header
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
+      h1 @path.empty? ? "/" : @path, class: "text-2xl"
       render_total
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
         h2 "Top Referrer", class: "text-xl"
@@ -30,7 +32,7 @@ class Domains::Paths::ShowPage < Share::BasePage
   end
 
   def render_header
-    render_template "domains/paths/header"
+    mount HeaderComponent.new(domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1, share_page: @share_page, period_string: period_string, period: @period, active: "Dashboard")
   end
 
   def sub_header
