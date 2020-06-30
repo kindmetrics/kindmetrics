@@ -1,7 +1,7 @@
 class AddClickhouse
 
   def self.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id)
-    client = Clickhouse.new
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
     created_at = Time.local
     id = Random.new.rand(UInt64)
@@ -31,7 +31,7 @@ class AddClickhouse
   end
 
   def self.session_insert(user_id, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id)
-    client = Clickhouse.new
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
     created_at = Time.local
     id = Random.new.rand(UInt64)
@@ -62,7 +62,7 @@ class AddClickhouse
   end
 
   def self.get_session(user_id) : Int64
-    client = Clickhouse.new
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
     SELECT id FROM kindmetrics.sessions WHERE user_id='#{user_id}' AND length IS NULL ORDER BY created_at DESC
     SQL
@@ -72,7 +72,7 @@ class AddClickhouse
   end
 
   def self.get_last_event(session_id) : Array(NamedTuple(id: UInt64, created_at: Time))
-    client = Clickhouse.new
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
     SELECT id, created_at FROM kindmetrics.events WHERE session_id=#{session_id} ORDER BY created_at DESC
     SQL

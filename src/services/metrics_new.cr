@@ -1,31 +1,29 @@
 class MetricsNew
   def initialize(@domain : Domain, @from_date : Time, @to_date : Time)
+    @client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
   end
 
   def current_query : Int64
-    client = Clickhouse.new
     sql = <<-SQL
       SELECT COUNT(*) FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND length IS NULL
     SQL
-    res = client.execute(sql)
+    res = @client.execute(sql)
     res.map(current: UInt64).first["current"].to_i64
   end
 
   def unique_query : Int64
-    client = Clickhouse.new
     sql = <<-SQL
     SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{@from_date.to_s("%Y-%m-%d %H:%M:%S")}') AND created_at < toDateTime('#{@to_date.to_s("%Y-%m-%d %H:%M:%S")}')
     SQL
-    res = client.execute(sql)
+    res = @client.execute(sql)
     res.map(unique: UInt64).first["unique"].to_i64
   end
 
   def path_unique_query(path : String) : Int64
-    client = Clickhouse.new
     sql = <<-SQL
     SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events WHERE domain_id='#{@domain.id}' AND created_at > toDateTime('#{@from_date.to_s("%Y-%m-%d %H:%M:%S")}') AND created_at < toDateTime('#{@to_date.to_s("%Y-%m-%d %H:%M:%S")}') AND (path='#{path}' OR path='/#{path}');
     SQL
-    res = client.execute(sql)
+    res = @client.execute(sql)
     res.map(unique: Int64).first["unique"]
   end
 
@@ -62,11 +60,10 @@ class MetricsNew
   end
 
   def total_query : Int64
-    client = Clickhouse.new
     sql = <<-SQL
     SELECT COUNT(*) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{@from_date.to_s("%Y-%m-%d %H:%M:%S")}') AND created_at < toDateTime('#{@to_date.to_s("%Y-%m-%d %H:%M:%S")}')
     SQL
-    res = client.execute(sql)
+    res = @client.execute(sql)
     res.map(total: UInt64).first["total"].to_i64
   end
 
