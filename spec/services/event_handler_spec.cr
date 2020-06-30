@@ -9,13 +9,13 @@ describe EventHandler do
   end
 
   it "is current session with events" do
-    event = EventBox.create &.user_id("test_id")
-    event.domain_id = event.session!.not_nil!.domain_id
+    domain = DomainBox.create
+    id = Random.new.rand(Int64)
+    user_id = "event12332112"
+    EventHandler.create_session(user_id: user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: nil, is_bounce: 0, domain_id: domain.id)
 
-    SaveSession.update!(event.session!.not_nil!, length: nil)
-    event = event.reload
 
-    response = EventHandler.is_current_session?(event.session!.not_nil!.user_id)
+    response = EventHandler.is_current_session?(user_id)
     response.should eq(true)
   end
 
@@ -42,12 +42,14 @@ describe EventHandler do
   end
 
   it "add event to current session" do
-    session = SessionBox.create &.length(nil)
+    domain = DomainBox.create
+    id = Random.new.rand(Int64)
+    user_id = "event12332112"
 
-    EventQuery.new.session_id(session.id).select_count.should eq(0)
+    EventHandler.create_session(user_id: user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: nil, is_bounce: 0, domain_id: domain.id)
 
-    EventHandler.add_event(session.user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", domain_id: session.domain_id)
-
-    EventQuery.new.session_id(session.id).select_count.should eq(1)
+    events = AddClickhouse.get_last_event(id)
+    pp! events
+    events.size.should eq(1)
   end
 end

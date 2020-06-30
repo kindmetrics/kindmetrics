@@ -2,28 +2,31 @@ class MetricsNew
   def initialize(@domain : Domain, @from_date : Time, @to_date : Time)
   end
 
-  def current_query : String
-    SessionQuery.new.domain_id(@domain.id).length.is_nil.select_count.to_s
+  def current_query : Int64
+    client = Clickhouse.new
+    sql = <<-SQL
+      SELECT COUNT(*) FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND length IS NULL
+    SQL
+    res = client.execute(sql)
+    res.map(current: UInt64).first["current"].to_i64
   end
 
   def unique_query : Int64
+    client = Clickhouse.new
     sql = <<-SQL
-    SELECT COUNT(DISTINCT user_id) FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}';
+    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{@from_date.to_s("%Y-%m-%d %H:%M:%S")}') AND created_at < toDateTime('#{@to_date.to_s("%Y-%m-%d %H:%M:%S")}')
     SQL
-    unique = AppDatabase.run do |db|
-      db.query_all sql, as: Int64
-    end
-    unique.first
+    res = client.execute(sql)
+    res.map(unique: UInt64).first["unique"].to_i64
   end
 
   def path_unique_query(path : String) : Int64
+    client = Clickhouse.new
     sql = <<-SQL
-    SELECT COUNT(DISTINCT user_id) FROM events WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}' AND (path='#{path}' OR path='/#{path}');
+    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events WHERE domain_id='#{@domain.id}' AND created_at > toDateTime('#{@from_date.to_s("%Y-%m-%d %H:%M:%S")}') AND created_at < toDateTime('#{@to_date.to_s("%Y-%m-%d %H:%M:%S")}') AND (path='#{path}' OR path='/#{path}');
     SQL
-    unique = AppDatabase.run do |db|
-      db.query_all sql, as: Int64
-    end
-    unique.first
+    res = client.execute(sql)
+    res.map(unique: Int64).first["unique"]
   end
 
   def path_total_query(path : String) : Int64
@@ -59,7 +62,12 @@ class MetricsNew
   end
 
   def total_query : Int64
-    EventQuery.new.domain_id(@domain.id).created_at.gt(@from_date).created_at.lt(@to_date).select_count
+    client = Clickhouse.new
+    sql = <<-SQL
+    SELECT COUNT(*) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{@from_date.to_s("%Y-%m-%d %H:%M:%S")}') AND created_at < toDateTime('#{@to_date.to_s("%Y-%m-%d %H:%M:%S")}')
+    SQL
+    res = client.execute(sql)
+    res.map(total: UInt64).first["total"].to_i64
   end
 
   def bounce_query : Int64
