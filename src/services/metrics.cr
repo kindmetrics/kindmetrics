@@ -3,44 +3,8 @@ class Metrics
     @new_metrics = MetricsNew.new(@domain, period_days, Time.local.at_end_of_day)
   end
 
-  delegate :current_query, :unique_query, :total_query, :bounce_query, :get_referrers, :get_pages, to: @new_metrics
-  delegate :path_total_query, :path_unique_query, :path_bounce_query, to: @new_metrics
-
-  def get_days
-    return [nil, nil, nil] if EventQuery.new.domain_id(@domain.id).select_count == 0
-    past_time = period_days
-    time_zone = @domain.time_zone
-    today_date = Time.utc
-    sql = <<-SQL
-    SELECT DATE_TRUNC('day', created_at) AT TIME ZONE '#{time_zone}' as date, COUNT(id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{past_time}'
-    GROUP BY DATE_TRUNC('day', created_at) AT TIME ZONE '#{time_zone}'
-    ORDER BY DATE_TRUNC('day', created_at) AT TIME ZONE '#{time_zone}' asc;
-    SQL
-    grouped = AppDatabase.run do |db|
-      db.query_all sql, as: StatsDays
-    end
-    grouped2 = [] of StatsDays
-    range = (past_time..today_date)
-    range.each do |e|
-      date = nil
-      grouped.each do |g|
-        if e.day == g.date.day && e.month == g.date.month
-          date = StatsDays.new(date: e, count: g.count.not_nil!)
-        end
-      end
-      date = StatsDays.new(date: e, count: 0) if date.nil?
-      grouped2 << date.not_nil! unless date.nil?
-    end
-    days = grouped2.map { |d| d.date }
-    data = grouped2.map { |d| d.count }
-    today = data.clone
-    data.pop
-    today_data = today[today.size - 2..today.size]
-    today = today[0..today.size - 3].fill { |i| nil }
-    today_data.each { |t| today.push t }
-    return days, today, data
-  end
+  delegate :current_query, :unique_query, :total_query, :bounce_query, :get_referrers, :get_source_referrers, :get_pages, to: @new_metrics
+  delegate :path_total_query, :path_unique_query, :get_all_referrers, :get_path_referrers, :path_bounce_query, :get_days, to: @new_metrics
 
   def get_countries_map : Array(StatsCountry)?
     return nil if EventQuery.new.domain_id(@domain.id).select_count == 0
@@ -57,51 +21,6 @@ class Metrics
       db.query_all sql, as: StatsCountry
     end
     country
-  end
-
-  def get_all_referrers : Array(StatsReferrer)
-    sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}'
-    GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc;
-    SQL
-    pages = AppDatabase.run do |db|
-      db.query_all sql, as: StatsReferrer
-    end
-    pages.reject! { |r| r.referrer_source.nil? }
-    pages = count_percentage(pages)
-    return pages
-  end
-
-  def get_path_referrers(path : String) : Array(StatsReferrer)
-    sql = <<-SQL
-    SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}' AND (path='#{path}' OR path='/#{path}')
-    GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc;
-    SQL
-    pages = AppDatabase.run do |db|
-      db.query_all sql, as: StatsReferrer
-    end
-    pages.reject! { |r| r.referrer_source.nil? }
-    pages = count_percentage(pages)
-    return pages
-  end
-
-  def get_source_referrers(source : String) : Array(StatsReferrer)
-    sql = <<-SQL
-    SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{period_days}' AND referrer_source='#{source}'
-    GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc;
-    SQL
-    pages = AppDatabase.run do |db|
-      db.query_all sql, as: StatsReferrer
-    end
-    pages.reject! { |r| r.referrer_source.nil? }
-    pages = count_percentage(pages)
-    return pages
   end
 
   def get_source_referrers_total(source : String) : String

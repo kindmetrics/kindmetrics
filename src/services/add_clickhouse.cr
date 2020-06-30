@@ -67,7 +67,7 @@ class AddClickhouse
     SQL
     res = client.execute sql
     maps = res.map(id: UInt64)
-    maps.first["id"].to_i64
+    maps.first["id"].not_nil!.to_i64
   end
 
   def self.get_last_event(session_id) : Array(NamedTuple(id: UInt64, created_at: Time))

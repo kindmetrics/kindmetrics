@@ -8,12 +8,12 @@ class MetricsNew
       SELECT COUNT(*) FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND length IS NULL
     SQL
     res = @client.execute(sql)
-    res.map(current: UInt64).first["current"].to_i64
+    res.map(current: UInt64).first["current"].not_nil!.to_i64
   end
 
   def unique_query : Int64
     sql = <<-SQL
-    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{@from_date.to_s("%Y-%m-%d %H:%M:%S")}') AND created_at < toDateTime('#{@to_date.to_s("%Y-%m-%d %H:%M:%S")}')
+    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}')
     SQL
     res = @client.execute(sql)
     res.map(unique: UInt64).first["unique"].to_i64
@@ -21,10 +21,10 @@ class MetricsNew
 
   def path_unique_query(path : String) : Int64
     sql = <<-SQL
-    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events WHERE domain_id='#{@domain.id}' AND created_at > toDateTime('#{@from_date.to_s("%Y-%m-%d %H:%M:%S")}') AND created_at < toDateTime('#{@to_date.to_s("%Y-%m-%d %H:%M:%S")}') AND (path='#{path}' OR path='/#{path}');
+    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}') AND (path='#{path}' OR path='/#{path}')
     SQL
     res = @client.execute(sql)
-    res.map(unique: Int64).first["unique"]
+    res.map(unique: UInt64).first["unique"].to_i64
   end
 
   def path_total_query(path : String) : Int64
@@ -32,28 +32,28 @@ class MetricsNew
   end
 
   def path_bounce_query(path : String) : Int64
-    return 0.to_i64 if SessionQuery.new.domain_id(@domain.id).select_count == 0
+    return 0.to_i64 if total_query == 0
     sql = <<-SQL
     SELECT round(sum(is_bounce * id) / sum(id) * 100) as bounce_rate
-    FROM sessions WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}' AND (path='#{path}' OR path='/#{path}');
+    FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}')
     SQL
-    bounce = AppDatabase.run do |db|
-      db.query_all sql, as: PG::Numeric | Nil
-    end
-    return 0.to_i64 if bounce.first.nil?
-    bounce.first.not_nil!.to_s.to_i64
+    res = @client.execute(sql)
+    bounce = res.data.first.first.as_f?
+    return 0.to_i64 if bounce.nil?
+    bounce.not_nil!.to_i64
   end
 
   def path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}' AND (path='#{path}' OR path='/#{path}')
+    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}')
     GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10;
+    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10
     SQL
-    pages = AppDatabase.run do |db|
-      db.query_all sql, as: StatsReferrer
-    end
+    res = @client.execute(sql)
+    json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
+    return [] of StatsReferrer if json.nil?
+    pages = Array(StatsReferrer).from_json(json)
     pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
     return pages
@@ -61,38 +61,119 @@ class MetricsNew
 
   def total_query : Int64
     sql = <<-SQL
-    SELECT COUNT(*) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{@from_date.to_s("%Y-%m-%d %H:%M:%S")}') AND created_at < toDateTime('#{@to_date.to_s("%Y-%m-%d %H:%M:%S")}')
+    SELECT COUNT(*) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}')
     SQL
     res = @client.execute(sql)
     res.map(total: UInt64).first["total"].to_i64
   end
 
   def bounce_query : Int64
-    return 0.to_i64 if SessionQuery.new.domain_id(@domain.id).select_count == 0
     sql = <<-SQL
     SELECT round(sum(is_bounce * id) / sum(id) * 100) as bounce_rate
-    FROM sessions WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}';
+    FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     SQL
-    bounce = AppDatabase.run do |db|
-      db.query_all sql, as: PG::Numeric | Nil
-    end
-    return 0.to_i64 if bounce.first.nil?
-    bounce.first.not_nil!.to_s.to_i64
+    res = @client.execute(sql)
+    bounce = res.data.first.first.as_f?
+    return 0.to_i64 if bounce.nil?
+    bounce.not_nil!.to_i64
   end
 
-  def get_referrers(limit : Int32 = 10) : Array(StatsReferrer)
+  def get_referrers(limit : Int32 = 10)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}'
+    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc LIMIT #{limit};
+    ORDER BY COUNT(DISTINCT user_id) desc LIMIT #{limit}
     SQL
-    pages = AppDatabase.run do |db|
-      db.query_all sql, as: StatsReferrer
-    end
+    res = @client.execute(sql)
+    json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
+    return [] of StatsReferrer if json.nil?
+    pages = Array(StatsReferrer).from_json(json)
     pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
     return pages
+  end
+
+  def get_source_referrers(source : String)
+    sql = <<-SQL
+    SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source}'
+    GROUP BY referrer_source
+    ORDER BY COUNT(DISTINCT user_id) desc
+    SQL
+    res = @client.execute(sql)
+    json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
+    return [] of StatsReferrer if json.nil?
+    pages = Array(StatsReferrer).from_json(json)
+    pages.reject! { |r| r.referrer_source.nil? }
+    pages = count_percentage(pages)
+    return pages
+  end
+
+  def get_all_referrers
+    sql = <<-SQL
+    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    GROUP BY referrer_source
+    ORDER BY COUNT(DISTINCT user_id) desc
+    SQL
+    res = @client.execute(sql)
+    json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
+    return [] of StatsReferrer if json.nil?
+    pages = Array(StatsReferrer).from_json(json)
+    pages.reject! { |r| r.referrer_source.nil? }
+    pages = count_percentage(pages)
+    return pages
+  end
+
+  def get_path_referrers(path : String)
+    sql = <<-SQL
+    SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}')
+    GROUP BY referrer_source
+    ORDER BY COUNT(DISTINCT user_id) desc
+    SQL
+    res = @client.execute(sql)
+    json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
+    return [] of StatsReferrer if json.nil?
+    pages = Array(StatsReferrer).from_json(json)
+    pages.reject! { |r| r.referrer_source.nil? }
+    pages = count_percentage(pages)
+    return pages
+  end
+
+  def get_days
+    return [nil, nil, nil] if total_query == 0
+    sql = <<-SQL
+    SELECT toDate(created_at) as date, COUNT(id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    GROUP BY toDate(created_at)
+    ORDER BY toDate(created_at) asc
+    SQL
+    res = @client.execute(sql)
+    pp! res
+    grouped_json = res.map_nil(date: Time, count: UInt64).to_json
+    grouped = Array(StatsDays).from_json(grouped_json)
+    grouped2 = [] of StatsDays
+    range = (@from_date..@to_date)
+    range.each do |e|
+      date = nil
+      grouped.each do |g|
+        if e.day == g.date.day && e.month == g.date.month
+          date = StatsDays.new(date: e, count: g.count.not_nil!)
+        end
+      end
+      date = StatsDays.new(date: e, count: 0) if date.nil?
+      grouped2 << date.not_nil! unless date.nil?
+    end
+    days = grouped2.map { |d| d.date }
+    data = grouped2.map { |d| d.count }
+    today = data.clone
+    data.pop
+    today_data = today[today.size - 2..today.size]
+    today = today[0..today.size - 3].fill { |i| nil }
+    today_data.each { |t| today.push t }
+    return days, today, data
   end
 
   def get_pages : Array(StatsPages)
@@ -107,6 +188,14 @@ class MetricsNew
     end
     pages = count_percentage(pages)
     return pages
+  end
+
+  private def slim_from_date
+    @from_date.to_s("%Y-%m-%d %H:%M:%S")
+  end
+
+  private def slim_to_date
+    @to_date.to_s("%Y-%m-%d %H:%M:%S")
   end
 
   private def count_percentage(array)
