@@ -1,5 +1,4 @@
 class AddClickhouse
-
   def self.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
@@ -7,20 +6,20 @@ class AddClickhouse
     id = Random.new.rand(UInt64)
 
     json_object = {
-      id: id,
-      user_id: user_id,
-      name: name,
-      url: url,
-      referrer_source: referrer_source,
-      path: path,
-      device: device,
+      id:               id,
+      user_id:          user_id,
+      name:             name,
+      url:              url,
+      referrer_source:  referrer_source,
+      path:             path,
+      device:           device,
       operative_system: operative_system,
-      referrer_domain: referrer_domain,
-      browser_name: browser_name,
-      country: country,
-      domain_id: domain_id,
-      session_id: session_id,
-      created_at: created_at.to_s("%Y-%m-%d %H:%M:%S")
+      referrer_domain:  referrer_domain,
+      browser_name:     browser_name,
+      country:          country,
+      domain_id:        domain_id,
+      session_id:       session_id,
+      created_at:       created_at.to_s("%Y-%m-%d %H:%M:%S"),
     }
 
     buf = <<-SQL
@@ -37,20 +36,20 @@ class AddClickhouse
     id = Random.new.rand(UInt64)
 
     json_object = {
-      id: id,
-      user_id: user_id,
-      length: length,
-      is_bounce: is_bounce,
-      url: url,
-      referrer_source: referrer_source,
-      path: path,
-      device: device,
+      id:               id,
+      user_id:          user_id,
+      length:           length,
+      is_bounce:        is_bounce,
+      url:              url,
+      referrer_source:  referrer_source,
+      path:             path,
+      device:           device,
       operative_system: operative_system,
-      referrer_domain: referrer_domain,
-      browser_name: browser_name,
-      country: country,
-      domain_id: domain_id,
-      created_at: created_at.to_s("%Y-%m-%d %H:%M:%S")
+      referrer_domain:  referrer_domain,
+      browser_name:     browser_name,
+      country:          country,
+      domain_id:        domain_id,
+      created_at:       created_at.to_s("%Y-%m-%d %H:%M:%S"),
     }
 
     buf = <<-SQL

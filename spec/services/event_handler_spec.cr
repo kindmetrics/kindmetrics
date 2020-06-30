@@ -14,7 +14,6 @@ describe EventHandler do
     user_id = "event12332112"
     EventHandler.create_session(user_id: user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: nil, is_bounce: 0, domain_id: domain.id)
 
-
     response = EventHandler.is_current_session?(user_id)
     response.should eq(true)
   end
