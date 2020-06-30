@@ -22,7 +22,11 @@ shards:
 
   carbon:
     git: https://github.com/luckyframework/carbon.git
-    version: 0.1.1
+    version: 0.1.2
+
+  clickhouse:
+    git: https://github.com/confact/clickhouse.cr.git
+    version: 0.5.6+git.commit.49e2731ad32463a59b5d8a21d717b27549728421
 
   cron_parser:
     git: https://github.com/kostya/cron_parser.git
@@ -66,7 +70,7 @@ shards:
 
   habitat:
     git: https://github.com/luckyframework/habitat.git
-    version: 0.4.3
+    version: 0.4.4
 
   hashids:
     git: https://github.com/splattael/hashids.cr.git
@@ -75,6 +79,10 @@ shards:
   ip2country:
     git: https://github.com/confact/ip2country.git
     version: 0.1.5
+
+  jq:
+    git: https://github.com/maiha/jq.cr.git
+    version: 0.8.0
 
   jwt:
     git: https://github.com/crystal-community/jwt.git
@@ -94,7 +102,7 @@ shards:
 
   lucky_cli:
     git: https://github.com/luckyframework/lucky_cli.git
-    version: 0.22.0
+    version: 0.22.1
 
   lucky_flow:
     git: https://github.com/luckyframework/lucky_flow.git
@@ -116,6 +124,10 @@ shards:
     git: https://github.com/will/crystal-pg.git
     version: 0.21.1
 
+  pretty:
+    git: https://github.com/maiha/pretty.cr.git
+    version: 0.9.11
+
   quoted_printable:
     git: https://github.com/arcage/crystal-quotedprintable.git
     version: 0.1.0
@@ -135,6 +147,10 @@ shards:
   teeplate:
     git: https://github.com/luckyframework/teeplate.git
     version: 0.8.2
+
+  var:
+    git: https://github.com/maiha/var.cr.git
+    version: 1.2.0
 
   wordsmith:
     git: https://github.com/luckyframework/wordsmith.git
