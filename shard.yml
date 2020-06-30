@@ -7,6 +7,7 @@ authors:
 targets:
   kindmetrics:
     main: src/kindmetrics.cr
+    worker: src/start_worker.cr
 
 crystal: 0.35.1
 

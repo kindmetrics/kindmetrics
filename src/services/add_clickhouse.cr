@@ -70,6 +70,15 @@ class AddClickhouse
     maps.first["id"].not_nil!.to_i64
   end
 
+  def self.get_active_sessions
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+    SELECT id FROM kindmetrics.sessions WHERE length IS NULL
+    SQL
+    res = client.execute sql
+    res.map(id: UInt64)
+  end
+
   def self.get_last_event(session_id) : Array(NamedTuple(id: UInt64, created_at: Time))
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
@@ -77,5 +86,22 @@ class AddClickhouse
     SQL
     res = client.execute sql
     res.map(id: UInt64, created_at: Time)
+  end
+
+  def self.get_events(session_id) : Array(NamedTuple(id: UInt64, created_at: Time))
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+    SELECT id, created_at FROM kindmetrics.events WHERE session_id=#{session_id} ORDER BY created_at ASC
+    SQL
+    res = client.execute sql
+    res.map(id: UInt64, created_at: Time)
+  end
+
+  def self.update_session(session_id : Int64, length : Int64, is_bounce : Int32)
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+    ALTER TABLE kindmetrics.sessions UPDATE length = #{length}, is_bounce = #{is_bounce} WHERE id=#{session_id}
+    SQL
+    client.execute sql
   end
 end

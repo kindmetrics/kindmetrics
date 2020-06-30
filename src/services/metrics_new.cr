@@ -151,7 +151,6 @@ class MetricsNew
     ORDER BY toDate(created_at) asc
     SQL
     res = @client.execute(sql)
-    pp! res
     grouped_json = res.map_nil(date: Time, count: UInt64).to_json
     grouped = Array(StatsDays).from_json(grouped_json)
     grouped2 = [] of StatsDays
@@ -176,16 +175,18 @@ class MetricsNew
     return days, today, data
   end
 
-  def get_pages : Array(StatsPages)
+  def get_pages
     sql = <<-SQL
-    SELECT path as address, COUNT(DISTINCT user_id) as count FROM sessions
-    WHERE domain_id=#{@domain.id} AND created_at > '#{@from_date}' AND created_at < '#{@to_date}'
+    SELECT path as address, COUNT(DISTINCT user_id) as count FROM kindmetrics.sessions
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY path
-    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10;
+    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10
     SQL
-    pages = AppDatabase.run do |db|
-      db.query_all sql, as: StatsPages
-    end
+    res = @client.execute(sql)
+    pp! res
+    json = res.map_nil(address: String, count: UInt64).to_json
+    return [] of StatsPages if json.nil?
+    pages = Array(StatsPages).from_json(json)
     pages = count_percentage(pages)
     return pages
   end
