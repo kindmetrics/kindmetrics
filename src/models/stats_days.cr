@@ -3,7 +3,7 @@ class StatsDays
 
   property date : Time
   property count : Int64?
-  
+
   def initialize(@date : Time, @count : Int64)
   end
 end
