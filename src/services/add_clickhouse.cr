@@ -1,9 +1,8 @@
 class AddClickhouse
-  def self.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id)
+  def self.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id, created_at : Time = Time.utc)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
-    created_at = Time.local
-    id = Random.new.rand(Int64)
+    id = Random.new.rand(0.to_i64..Int64::MAX)
 
     json_object = {
       id:               id,
@@ -29,11 +28,10 @@ class AddClickhouse
     client.insert buf
   end
 
-  def self.session_insert(user_id, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id)
+  def self.session_insert(user_id, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
-    created_at = Time.local
-    id = Random.new.rand(Int64)
+    id = Random.new.rand(0.to_i64..Int64::MAX)
 
     json_object = {
       id:               id,
@@ -56,8 +54,7 @@ class AddClickhouse
     INSERT INTO kindmetrics.sessions FORMAT JSONEachRow #{json_object.to_json}
     SQL
 
-    result = client.insert buf
-    result
+    client.insert buf
   end
 
   def self.get_session(user_id) : ClickSession
@@ -100,8 +97,23 @@ class AddClickhouse
   def self.update_session(session_id : Int64, length : Int64, is_bounce : Int32)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
-    ALTER TABLE kindmetrics.sessions UPDATE length = #{length}, is_bounce = #{is_bounce} WHERE id=#{session_id}
+    ALTER TABLE kindmetrics.sessions UPDATE length=#{length}, is_bounce=#{is_bounce} WHERE id=#{session_id}
     SQL
-    client.execute sql
+    res = client.execute sql
+    res
+  end
+
+  def self.clean_database
+    return unless Lucky::Env.test?
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+    ALTER TABLE kindmetrics.events DELETE WHERE user_id IS NOT NULL
+    SQL
+    res = client.insert sql
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+    ALTER TABLE kindmetrics.events DELETE WHERE user_id IS NOT NULL
+    SQL
+    res = client.insert sql
   end
 end
