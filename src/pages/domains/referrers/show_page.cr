@@ -1,7 +1,7 @@
 class Domains::Referrer::ShowPage < Share::BasePage
   needs source : String
   needs events : Array(StatsReferrer)
-  needs total : String
+  needs total : Int64
   needs share_page : Bool = false
   needs domains : DomainQuery?
 
@@ -12,7 +12,7 @@ class Domains::Referrer::ShowPage < Share::BasePage
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
       sub_header
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
-        para "Got #{total} Visitors from #{source} the last #{period_string}", class: "text-xl mb-2"
+        para "Got #{total.to_s} Visitors from #{source} the last #{period_string}", class: "text-xl mb-2"
         events.each do |event|
           mount ReferrerEventComponent.new(domain: event.referrer_domain, percentage: event.percentage)
         end

@@ -72,16 +72,18 @@ class EventHandler
 
   def self.is_current_session?(user_id : String)
     session = get_session(user_id)
+    pp! session
     return false unless session
     events = AddClickhouse.get_last_event(session)
+    pp! events
     return false if events.size == 0
-    return events.first["created_at"] > SESSION_TIMEOUT.ago
+    return events.first.created_at > SESSION_TIMEOUT.ago
   end
 
   def self.add_event(user_id : String, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id)
     session = get_session(user_id)
     if session
-      AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!)
+      AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id)
     else
       puts "session not found?"
     end
@@ -90,7 +92,7 @@ class EventHandler
   def self.create_session(user_id : String, length, name, is_bounce, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id)
     AddClickhouse.session_insert(user_id, length, is_bounce, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id)
     session = get_session(user_id)
-    AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session)
+    AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id)
   end
 
   def self.parse_referer_data(referrer : URI)
@@ -133,7 +135,7 @@ class EventHandler
     end
   end
 
-  private def self.get_session(user_id : String) : Int64?
+  private def self.get_session(user_id : String) : ClickSession?
     AddClickhouse.get_session(user_id)
   rescue Exception
     nil

@@ -28,7 +28,11 @@ class MetricsNew
   end
 
   def path_total_query(path : String) : Int64
-    EventQuery.new.domain_id(@domain.id).created_at.gt(@from_date).created_at.lt(@to_date).where("path='#{path}' or path='/#{path}'").select_count
+    sql = <<-SQL
+    SELECT COUNT(*) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}') AND (path='#{path}' OR path='/#{path}')
+    SQL
+    res = @client.execute(sql)
+    res.map(total: UInt64).first["total"].to_i64
   end
 
   def path_bounce_query(path : String) : Int64
@@ -76,6 +80,17 @@ class MetricsNew
     bounce = res.data.first.first.as_f?
     return 0.to_i64 if bounce.nil?
     bounce.not_nil!.to_i64
+  end
+
+  def get_source_referrers_total(source : String) : Int64
+    sql = <<-SQL
+    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source}'
+    GROUP BY referrer_source
+    ORDER BY COUNT(DISTINCT user_id) desc
+    SQL
+    res = @client.execute(sql)
+    res.map(total: UInt64).first["total"].to_i64
   end
 
   def get_referrers(limit : Int32 = 10)
@@ -126,7 +141,7 @@ class MetricsNew
     return pages
   end
 
-  def get_path_referrers(path : String)
+  def get_path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}')
@@ -175,20 +190,90 @@ class MetricsNew
     return days, today, data
   end
 
-  def get_pages
+  def get_pages : Array(StatsPages)
     sql = <<-SQL
     SELECT path as address, COUNT(DISTINCT user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY path
     ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10
     SQL
-    res = @client.execute(sql)
-    pp! res
-    json = res.map_nil(address: String, count: UInt64).to_json
-    return [] of StatsPages if json.nil?
-    pages = Array(StatsPages).from_json(json)
+    res = @client.execute_as_json(sql)
+    return [] of StatsPages if res.nil?
+    pages = Array(StatsPages).from_json(res)
     pages = count_percentage(pages)
     return pages
+  end
+
+  def get_countries : Array(StatsCountry)
+    sql = <<-SQL
+    SELECT country, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    GROUP BY country
+    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10
+    SQL
+    res = @client.execute_as_json(sql)
+    return [] of StatsCountry if res.nil?
+    countries = Array(StatsCountry).from_json(res)
+    cc2country = IP2Country::CC2Country.new
+    countries = count_percentage(countries)
+    countries.map! do |c|
+      next c if c.country.nil?
+      c.country_name = cc2country.lookup(c.country.not_nil!, "en")
+      next c
+    end
+    return countries
+  end
+
+  def get_countries_map : Array(StatsCountry)?
+    return nil if total_query == 0
+    sql = <<-SQL
+    SELECT country, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    GROUP BY country
+    ORDER BY COUNT(DISTINCT user_id) asc
+    SQL
+    res = @client.execute_as_json(sql)
+    return [] of StatsCountry if res.nil?
+    Array(StatsCountry).from_json(res)
+  end
+
+  def get_devices : Array(StatsDevice)
+    sql = <<-SQL
+    SELECT device, COUNT(id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    GROUP BY device
+    ORDER BY COUNT(id) desc LIMIT 10
+    SQL
+    res = @client.execute_as_json(sql)
+    return [] of StatsDevice if res.nil?
+    devices = Array(StatsDevice).from_json(res)
+    count_percentage(devices)
+  end
+
+  def get_browsers : Array(StatsBrowser)
+    sql = <<-SQL
+    SELECT browser_name as browser, COUNT(id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    GROUP BY browser_name
+    ORDER BY COUNT(id) desc LIMIT 10
+    SQL
+    res = @client.execute_as_json(sql)
+    return [] of StatsBrowser if res.nil?
+    browsers = Array(StatsBrowser).from_json(res)
+    count_percentage(browsers)
+  end
+
+  def get_os : Array(StatsOS)
+    sql = <<-SQL
+    SELECT operative_system, COUNT(id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    GROUP BY operative_system
+    ORDER BY COUNT(id) desc LIMIT 10
+    SQL
+    res = @client.execute_as_json(sql)
+    return [] of StatsOS if res.nil?
+    os = Array(StatsOS).from_json(res)
+    count_percentage(os)
   end
 
   private def slim_from_date
