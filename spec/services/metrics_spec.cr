@@ -24,7 +24,6 @@ describe Metrics do
 
     EventHandler.add_event(user_id: user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", domain_id: domain.id)
 
-
     metrics = Metrics.new(domain, "7d")
     total_views = metrics.total_query
     total_views.should eq(2)
@@ -40,7 +39,7 @@ describe Metrics do
     bounce_rate.should eq(100)
   end
 
-  #it "bounce with 50/50 calculation" do
+  # it "bounce with 50/50 calculation" do
   #  domain = DomainBox.create
   #
   #  EventHandler.create_session(user_id: "1573435124370987", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
@@ -50,13 +49,12 @@ describe Metrics do
   #  bounce_rate = metrics.bounce_query
   #  # It push down the bounce_rate, that's why it is 30 and not 50.
   #  bounce_rate.should eq(30)
-  #end
+  # end
 
   it "7 days calculation" do
     domain = DomainBox.create
     EventHandler.create_session(user_id: "dsfdsfdsf", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
     EventHandler.create_session(user_id: "f32532ewfds", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
-
 
     metrics = Metrics.new(domain, "7d")
     days, today, data = metrics.get_days
@@ -97,7 +95,6 @@ describe Metrics do
     domain = DomainBox.create
     EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
     EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
-
 
     metrics = Metrics.new(domain, "14d")
     days, today, data = metrics.get_days
