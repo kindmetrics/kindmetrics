@@ -54,7 +54,11 @@ jobs:
         path: ~/.cache/crystal
         key: ${{ runner.os }}-crystal
     - name: migrate clickhouse
-      run: lucky kind:clickhouse
+      run: crystal run ./tasks.cr -- kind.clickhouse
+      env:
+          # The hostname used to communicate with the PostgreSQL service container
+          DB_HOST: postgres
+          CLICKHOUSE_HOST: clickhouse
     - name: Run tests
       run: crystal spec
       env:
