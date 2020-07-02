@@ -3,7 +3,7 @@ class AddClickhouseTable < LuckyCli::Task
   name "kind.clickhouse"
 
   def initialize
-    @client = Clickhouse.new
+    @client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
   end
 
   def call
