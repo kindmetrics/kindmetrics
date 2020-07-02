@@ -17,7 +17,6 @@ class AddClickhouseTable < LuckyCli::Task
     CREATE DATABASE IF NOT EXISTS kindmetrics
     SQL
     res = @client.execute(sql)
-    pp! res
   end
 
   def add_events
@@ -43,7 +42,6 @@ class AddClickhouseTable < LuckyCli::Task
     ENGINE = MergeTree PARTITION BY toYYYYMM(created_at) ORDER BY (user_id, created_at)
     SQL
     create = @client.execute buf
-    pp! create
   end
 
   def add_sessions
@@ -69,6 +67,5 @@ class AddClickhouseTable < LuckyCli::Task
     ENGINE = MergeTree PARTITION BY toYYYYMM(created_at) ORDER BY (user_id, created_at)
     SQL
     create = @client.execute buf
-    pp! create
   end
 end

@@ -14,8 +14,10 @@ class ClickSession
   property referrer_domain : String?
   property browser_name : String?
   property country : String?
-  property length : Int64?
   property is_bounce : Int32
+
+  @[JSON::Field(converter: JSON::IntConverter)]
+  property length : Int64?
 
   @[JSON::Field(converter: JSON::IntConverter)]
   property domain_id : Int64

@@ -57,13 +57,14 @@ class AddClickhouse
     client.insert buf
   end
 
-  def self.get_session(user_id) : ClickSession
+  def self.get_session(user_id) : ClickSession?
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
-    SELECT *, toDateTime(created_at) as created_at FROM kindmetrics.sessions WHERE user_id='#{user_id}' AND length IS NULL ORDER BY created_at DESC
+    SELECT *, toDateTime(created_at) as created_at FROM kindmetrics.sessions WHERE user_id='#{user_id}' ORDER BY created_at DESC
     SQL
     res = client.execute_as_json(sql)
     sessions = Array(ClickSession).from_json(res)
+    return nil if sessions.empty?
     sessions.first
   end
 
@@ -94,6 +95,24 @@ class AddClickhouse
     Array(ClickEvent).from_json(res)
   end
 
+  def self.get_domain_events(domain_id : Int64) : Array(ClickEvent)
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+    SELECT * FROM kindmetrics.events WHERE domain_id=#{domain_id}
+    SQL
+    res = client.execute_as_json(sql)
+    Array(ClickEvent).from_json(res)
+  end
+
+  def self.get_domain_sessions(domain_id : Int64) : Array(ClickSession)
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+    SELECT * FROM kindmetrics.sessions WHERE domain_id=#{domain_id}
+    SQL
+    res = client.execute_as_json(sql)
+    Array(ClickSession).from_json(res)
+  end
+
   def self.update_session(session_id : Int64, length : Int64, is_bounce : Int32)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
@@ -110,9 +129,8 @@ class AddClickhouse
     ALTER TABLE kindmetrics.events DELETE WHERE user_id IS NOT NULL
     SQL
     res = client.insert sql
-    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
-    ALTER TABLE kindmetrics.events DELETE WHERE user_id IS NOT NULL
+    ALTER TABLE kindmetrics.sessions DELETE WHERE user_id IS NOT NULL
     SQL
     res = client.insert sql
   end

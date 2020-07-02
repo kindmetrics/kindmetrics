@@ -1,46 +1,21 @@
 require "../spec_helper"
 
 describe TimeWorker do
+  after_each do
+    AddClickhouse.clean_database
+  end
   it "no events attached to session" do
-    session = SessionBox.create &.user_id("test_id").length(nil)
+    user_id = "evwesafsafas"
+    AddClickhouse.session_insert(user_id: user_id, length: nil, is_bounce: 1, referrer: "indiehacker.com", url: "https://kindmetrics.com/aaadsad", referrer_source: "indiehacker.com", path: "/asadasd", device: "Desktop", operative_system: "Mac OS", referrer_domain: "indiehacker.com", browser_name: "Chrome", country: "SE", domain_id: DomainBox.create.id)
+    session = AddClickhouse.get_session(user_id)
+    session.not_nil!.length.should eq(nil)
+    session.not_nil!.is_bounce.should eq(1)
 
-    session.length.should eq(nil)
-    session.is_bounce.should eq(1)
+    TimeWorker.session_time_check(session.not_nil!.id)
 
-    TimeWorker.timedout(session)
+    session = AddClickhouse.get_session(user_id)
 
-    session = session.reload
-    session.length.should eq(nil)
-    session.is_bounce.should eq(1)
-  end
-
-  it "has one event attached" do
-    session = SessionBox.create &.user_id("test_id").length(nil)
-    event = EventBox.create &.user_id("test_id").session_id(session.id).domain_id(session.domain_id).created_at(Time.utc - 34.minutes)
-
-    session.length.should eq(nil)
-    session.is_bounce.should eq(1)
-
-    TimeWorker.timedout(session)
-
-    session = session.reload
-    session.length.should eq(0)
-    session.is_bounce.should eq(1)
-  end
-
-  it "has two event attached" do
-    session = SessionBox.create &.user_id("test_id").length(nil)
-
-    event1 = EventBox.create &.session_id(session.id).domain_id(session.domain_id).created_at(Time.utc - 34.minutes)
-    event2 = EventBox.create &.session_id(session.id).domain_id(session.domain_id).created_at(Time.utc - 32.minutes)
-
-    session.length.should eq(nil)
-    session.is_bounce.should eq(1)
-
-    TimeWorker.timedout(session)
-
-    session = session.reload
-    session.length.should eq(120)
-    session.is_bounce.should eq(0)
+    session.not_nil!.length.should eq(nil)
+    session.not_nil!.is_bounce.should eq(1)
   end
 end

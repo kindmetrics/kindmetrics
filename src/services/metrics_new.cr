@@ -77,7 +77,7 @@ class MetricsNew
     FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     SQL
     res = @client.execute(sql)
-    bounce = res.data.first.first.as_f?
+    bounce = res.data.first.first.as_i64?
     return 0.to_i64 if bounce.nil?
     bounce.not_nil!.to_i64
   end

@@ -36,6 +36,7 @@ class TimeWorker
 
     is_bounce = events.size == 1 ? 1 : 0
     L.info { "saving session #{session_id}" }
+
     AddClickhouse.update_session(session_id.to_i64, length: time_spent_seconds, is_bounce: is_bounce)
   end
 
