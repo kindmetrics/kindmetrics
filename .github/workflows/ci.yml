@@ -53,6 +53,8 @@ jobs:
       with:
         path: ~/.cache/crystal
         key: ${{ runner.os }}-crystal
+    - name: migrate clickhouse
+      run: lucky kind:clickhouse
     - name: Run tests
       run: crystal spec
       env:
