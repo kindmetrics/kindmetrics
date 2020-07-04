@@ -88,10 +88,10 @@ class EventHandler
     end
   end
 
-  def self.create_session(user_id : String, length : Int64?, name : String, is_bounce : Int32, referrer : String?, url : String?, referrer_source : String?, path : String?, device : String?, operative_system : String?, referrer_domain : String?, browser_name : String?, country : String?, domain_id : Int64)
-    AddClickhouse.session_insert(user_id, length, is_bounce, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id)
+  def self.create_session(user_id : String, length : Int64?, name : String, is_bounce : Int32, referrer : String?, url : String?, referrer_source : String?, path : String?, device : String?, operative_system : String?, referrer_domain : String?, browser_name : String?, country : String?, domain_id : Int64, created_at : Time = Time.utc)
+    AddClickhouse.session_insert(user_id, length, is_bounce, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at.to_utc)
     session = get_session(user_id)
-    AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id)
+    AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id, created_at: created_at.to_utc)
   end
 
   def self.parse_referer_data(referrer : URI)

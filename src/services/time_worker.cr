@@ -22,8 +22,10 @@ class TimeWorker
     time_spent = last_event.created_at - first_event.created_at
     time_spent_seconds = time_spent.total_seconds.to_i64
 
+    time_check = Time.utc - SESSION_TIMEOUT
+
     not_done = if events.size > 0
-                 last_event.created_at > SESSION_TIMEOUT.ago
+                 last_event.created_at > time_check
                else
                  true
                end
@@ -38,6 +40,7 @@ class TimeWorker
     L.info { "saving session #{session_id}" }
 
     AddClickhouse.update_session(session_id.to_i64, length: time_spent_seconds, is_bounce: is_bounce)
+    AddClickhouse.update_session(session_id, length: time_spent_seconds, is_bounce: is_bounce)
   end
 
   def self.get_sessions

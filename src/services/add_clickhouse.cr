@@ -89,7 +89,7 @@ class AddClickhouse
   def self.get_events(session_id) : Array(ClickEvent)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
-    SELECT *, toDateTime(created_at) as created_at FROM kindmetrics.events WHERE session_id=#{session_id} ORDER BY created_at ASC
+    SELECT * FROM kindmetrics.events WHERE session_id=#{session_id} ORDER BY created_at ASC
     SQL
     res = client.execute_as_json(sql)
     Array(ClickEvent).from_json(res)
@@ -118,8 +118,7 @@ class AddClickhouse
     sql = <<-SQL
     ALTER TABLE kindmetrics.sessions UPDATE length=#{length}, is_bounce=#{is_bounce} WHERE id=#{session_id}
     SQL
-    res = client.execute sql
-    res
+    client.execute sql
   end
 
   def self.clean_database
@@ -132,6 +131,6 @@ class AddClickhouse
     sql = <<-SQL
     ALTER TABLE kindmetrics.sessions DELETE WHERE user_id IS NOT NULL
     SQL
-    res = client.insert sql
+    client.insert sql
   end
 end
