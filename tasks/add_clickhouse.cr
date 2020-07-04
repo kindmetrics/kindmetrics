@@ -25,7 +25,6 @@ class AddClickhouseTable < LuckyCli::Task
       `id` UInt64,
       `user_id` String,
       `name` String,
-      `referrer` String,
       `domain` String,
       `url` String,
       `referrer_source` Nullable(String),
@@ -33,6 +32,7 @@ class AddClickhouseTable < LuckyCli::Task
       `device` Nullable(String),
       `operative_system` Nullable(String),
       `referrer_domain` Nullable(String),
+      `referrer` Nullable(String),
       `browser_name` Nullable(String),
       `country` Nullable(String),
       `domain_id` UInt64,
@@ -48,8 +48,8 @@ class AddClickhouseTable < LuckyCli::Task
     buf = <<-SQL
     CREATE TABLE IF NOT EXISTS kindmetrics.sessions (
       `id` UInt64,
+      `mark` UInt8,
       `user_id` String,
-      `referrer` String,
       `domain` String,
       `url` String,
       `referrer_source` Nullable(String),
@@ -57,6 +57,7 @@ class AddClickhouseTable < LuckyCli::Task
       `device` Nullable(String),
       `operative_system` Nullable(String),
       `referrer_domain` Nullable(String),
+      `referrer` Nullable(String),
       `browser_name` Nullable(String),
       `country` Nullable(String),
       `domain_id` UInt64,

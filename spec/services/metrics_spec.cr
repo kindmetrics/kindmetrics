@@ -39,17 +39,21 @@ describe Metrics do
     bounce_rate.should eq(100)
   end
 
-  # it "bounce with 50/50 calculation" do
-  #  domain = DomainBox.create
-  #
-  #  EventHandler.create_session(user_id: "1573435124370987", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
-  #  EventHandler.create_session(user_id: "12441241565512", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 234, is_bounce: 0, domain_id: domain.id)
-  #
-  #  metrics = Metrics.new(domain, "7d")
-  #  bounce_rate = metrics.bounce_query
-  #  # It push down the bounce_rate, that's why it is 30 and not 50.
-  #  bounce_rate.should eq(30)
-  # end
+  it "bounce with 50/50 calculation" do
+    domain = DomainBox.create
+
+    EventHandler.create_session(user_id: "1573435124370987", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id, created_at: 1.minutes.ago)
+    EventHandler.create_session(user_id: "12441241565512", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 234, is_bounce: 0, domain_id: domain.id, created_at: 3.minutes.ago)
+
+    sessions = AddClickhouse.get_domain_sessions(domain.id)
+    events = AddClickhouse.get_domain_events(domain.id)
+    sessions.size.should eq(2)
+    events.size.should eq(2)
+
+    metrics = Metrics.new(domain, "7d")
+    bounce_rate = metrics.bounce_query
+    bounce_rate.should eq(50)
+  end
 
   it "7 days calculation" do
     domain = DomainBox.create

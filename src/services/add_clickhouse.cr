@@ -35,6 +35,7 @@ class AddClickhouse
 
     json_object = {
       id:               id,
+      mark:             0,
       user_id:          user_id,
       length:           length,
       is_bounce:        is_bounce,
@@ -116,7 +117,7 @@ class AddClickhouse
   def self.update_session(session_id : Int64, length : Int64, is_bounce : Int32)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
-    ALTER TABLE kindmetrics.sessions UPDATE length=#{length}, is_bounce=#{is_bounce} WHERE id=#{session_id}
+    ALTER TABLE kindmetrics.sessions UPDATE length=#{length}, is_bounce=#{is_bounce}, mark=1 WHERE id=#{session_id}
     SQL
     client.execute sql
   end
