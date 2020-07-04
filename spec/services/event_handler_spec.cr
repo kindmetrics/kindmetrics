@@ -1,6 +1,9 @@
 require "../spec_helper"
 
 describe EventHandler do
+  before_each do
+    AddClickhouse.clean_database
+  end
   after_each do
     AddClickhouse.clean_database
   end

@@ -4,6 +4,9 @@ describe Metrics do
   before_each do
     AddClickhouse.clean_database
   end
+  after_each do
+    AddClickhouse.clean_database
+  end
   it "unique calculation" do
     domain = DomainBox.create
 
