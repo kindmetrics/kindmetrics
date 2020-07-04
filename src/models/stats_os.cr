@@ -1,7 +1,10 @@
 class StatsOS
-  DB.mapping({
-    operative_system: String?,
-    count:            Int64,
-    percentage:       Float32?,
-  })
+  include JSON::Serializable
+
+  property operative_system : String?
+
+  @[JSON::Field(converter: JSON::IntConverter)]
+  property count : Int64
+
+  property percentage : Float32?
 end

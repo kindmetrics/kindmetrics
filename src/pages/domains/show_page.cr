@@ -1,5 +1,4 @@
 class Domains::ShowPage < SecretGuestLayout
-  needs sessions : SessionQuery?
   needs domains : DomainQuery?
   needs domain : Domain
   needs total_unique : Int64

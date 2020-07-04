@@ -1,7 +1,10 @@
 class StatsDevice
-  DB.mapping({
-    device:     String?,
-    count:      Int64,
-    percentage: Float32?,
-  })
+  include JSON::Serializable
+
+  property device : String?
+
+  @[JSON::Field(converter: JSON::IntConverter)]
+  property count : Int64
+
+  property percentage : Float32?
 end

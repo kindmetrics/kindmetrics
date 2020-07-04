@@ -35,6 +35,9 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      clickhouse:
+        # Docker Hub image
+        image: yandex/clickhouse-server
     steps:
     - uses: actions/checkout@v2
     - name: Add postgres key
@@ -50,8 +53,15 @@ jobs:
       with:
         path: ~/.cache/crystal
         key: ${{ runner.os }}-crystal
+    - name: migrate clickhouse
+      run: crystal run ./tasks.cr -- kind.clickhouse
+      env:
+          # The hostname used to communicate with the PostgreSQL service container
+          DB_HOST: postgres
+          CLICKHOUSE_HOST: clickhouse
     - name: Run tests
       run: crystal spec
       env:
           # The hostname used to communicate with the PostgreSQL service container
           DB_HOST: postgres
+          CLICKHOUSE_HOST: clickhouse

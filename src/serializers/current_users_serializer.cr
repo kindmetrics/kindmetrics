@@ -1,5 +1,5 @@
 class CurrentUsersSerializer < BaseSerializer
-  def initialize(@current : String)
+  def initialize(@current : Int64)
   end
 
   def render
