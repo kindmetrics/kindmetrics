@@ -4,6 +4,9 @@ describe TimeWorker do
   before_each do
     AddClickhouse.clean_database
   end
+  after_each do
+    AddClickhouse.clean_database
+  end
   it "no events attached to session" do
     user_id = "evwesafsafas"
     AddClickhouse.session_insert(user_id: user_id, length: nil, is_bounce: 1, referrer: "indiehacker.com", url: "https://kindmetrics.com/aaadsad", referrer_source: "indiehacker.com", path: "/asadasd", device: "Desktop", operative_system: "Mac OS", referrer_domain: "indiehacker.com", browser_name: "Chrome", country: "SE", domain_id: DomainBox.create.id)

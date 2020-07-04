@@ -73,7 +73,7 @@ class MetricsNew
 
   def bounce_query : Int64
     sql = <<-SQL
-    SELECT round(sum(is_bounce * id) / sum(id) * 100) as bounce_rate
+    SELECT round(sum(is_bounce * mark) / sum(mark) * 100) as bounce_rate
     FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     SQL
     res = @client.execute(sql)

@@ -28,13 +28,14 @@ class AddClickhouse
     client.insert buf
   end
 
-  def self.session_insert(user_id, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc)
+  def self.session_insert(user_id, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc, mark : Int8 = 0)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
     id = Random.new.rand(0.to_i64..Int64::MAX)
 
     json_object = {
       id:               id,
+      mark:             mark,
       user_id:          user_id,
       length:           length,
       is_bounce:        is_bounce,
@@ -116,7 +117,7 @@ class AddClickhouse
   def self.update_session(session_id : Int64, length : Int64, is_bounce : Int32)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
-    ALTER TABLE kindmetrics.sessions UPDATE length=#{length}, is_bounce=#{is_bounce} WHERE id=#{session_id}
+    ALTER TABLE kindmetrics.sessions UPDATE length=#{length}, is_bounce=#{is_bounce}, mark=1 WHERE id=#{session_id}
     SQL
     client.execute sql
   end
