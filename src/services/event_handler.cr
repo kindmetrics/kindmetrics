@@ -23,11 +23,11 @@ class EventHandler
              else
                referer_source(referrer)
              end
-     medium = if !temp_medium.nil? && !temp_medium.empty?
-                temp_medium
-              else
-                referer_medium(referrer)
-              end
+    medium = if !temp_medium.nil? && !temp_medium.empty?
+               temp_medium
+             else
+               referer_medium(referrer)
+             end
 
     browser_data = {
       browser_name:     browser.try { |b| b.browser_name },
@@ -113,7 +113,7 @@ class EventHandler
   end
 
   def self.referer_parser(referrer : URI)
-    @@response ||= REFERERPARSER.parse(referrer.to_s)
+    REFERERPARSER.parse(referrer.to_s)
   end
 
   private def self.use_host(referrer)
