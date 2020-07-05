@@ -14,7 +14,7 @@ class Domains::Referrer::ShowPage < Share::BasePage
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
         para "Got #{total.to_s} Visitors from #{source} the last #{period_string}", class: "text-xl mb-2"
         events.each do |event|
-          mount ReferrerEventComponent.new(domain: event.referrer_domain, percentage: event.percentage)
+          mount ReferrerEventComponent.new(domain: event.referrer_domain, real_domain: @domain.address, percentage: event.percentage)
         end
       end
     end

@@ -25,7 +25,7 @@ class Domains::Paths::ShowPage < Share::BasePage
           span "Percentage"
         end
         referrers.each do |event|
-          mount ReferrerEventComponent.new(domain: event.referrer_domain, percentage: event.percentage)
+          mount ReferrerEventComponent.new(domain: event.referrer_domain, real_domain: @domain.address, percentage: event.percentage)
         end
       end
     end
