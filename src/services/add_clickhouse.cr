@@ -1,5 +1,5 @@
 class AddClickhouse
-  def self.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id, created_at : Time = Time.utc)
+  def self.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id, created_at : Time = Time.utc)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
     id = Random.new.rand(0.to_i64..Int64::MAX)
@@ -10,6 +10,7 @@ class AddClickhouse
       name:             name,
       url:              url,
       referrer_source:  referrer_source,
+      referrer_medium:  referrer_medium,
       path:             path,
       device:           device,
       operative_system: operative_system,
@@ -28,7 +29,7 @@ class AddClickhouse
     client.insert buf
   end
 
-  def self.session_insert(user_id, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc, mark : Int8 = 0)
+  def self.session_insert(user_id, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc, mark : Int8 = 0)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
     id = Random.new.rand(0.to_i64..Int64::MAX)
@@ -41,6 +42,7 @@ class AddClickhouse
       is_bounce:        is_bounce,
       url:              url,
       referrer_source:  referrer_source,
+      referrer_medium:  referrer_medium,
       path:             path,
       device:           device,
       operative_system: operative_system,
