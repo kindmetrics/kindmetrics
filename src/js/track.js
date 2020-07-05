@@ -1,8 +1,6 @@
 (function(window, kindmetricsURL){
   'use strict';
 
-  const kindUrl = kindmetricsURL ? kindmetricsURL : 'https://app.kindmetrics.io'
-
   const trackDocument = window.document
   const trackLocation = window.location
   const dnt = window.doNotTrack || navigator.doNotTrack || navigator.msDoNotTrack
@@ -54,7 +52,7 @@
         user_agent: window.navigator.userAgent
       }
 
-      const url = kindUrl + '/api/track'
+      const url = kindmetricsURL + '/api/track'
       let response = fetch(url, {
         method: 'POST',
         headers: {
