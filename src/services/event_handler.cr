@@ -17,11 +17,17 @@ class EventHandler
     end
 
     temp_source = params.get?(:source)
+    temp_medium = params.get?(:medium)
     source = if !temp_source.nil? && !temp_source.empty?
                temp_source
              else
-               parse_referer_data(referrer)
+               referer_source(referrer)
              end
+     medium = if !temp_medium.nil? && !temp_medium.empty?
+                temp_medium
+              else
+                referer_medium(referrer)
+              end
 
     browser_data = {
       browser_name:     browser.try { |b| b.browser_name },
@@ -49,6 +55,7 @@ class EventHandler
         country: country,
         url: url.to_s,
         path: url.path,
+        referrer_medium: medium,
         referrer_source: source,
         domain_id: domain.id,
         user_id: user_id,
@@ -64,6 +71,7 @@ class EventHandler
         referrer_domain: referrer.host,
         url: url.to_s,
         path: url.path,
+        referrer_medium: medium,
         referrer_source: source,
         domain_id: domain.id
       )
@@ -94,9 +102,18 @@ class EventHandler
     AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id, created_at: created_at.to_utc)
   end
 
-  def self.parse_referer_data(referrer : URI)
-    response = REFERERPARSER.parse(referrer.to_s)
+  def self.referer_source(referrer : URI) : String
+    response = referer_parser(referrer)
     response[:source]? || use_host(referrer)
+  end
+
+  def self.referer_medium(referrer : URI) : String?
+    response = referer_parser(referrer)
+    response[:medium]?
+  end
+
+  def self.referer_parser(referrer : URI)
+    @@response ||= REFERERPARSER.parse(referrer.to_s)
   end
 
   private def self.use_host(referrer)

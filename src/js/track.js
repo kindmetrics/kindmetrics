@@ -1,6 +1,8 @@
 (function(window, kindmetricsURL){
   'use strict';
 
+  const kindUrl = kindmetricsURL ? kindmetricsURL : 'https://app.kindmetrics.io'
+
   const trackDocument = window.document
   const trackLocation = window.location
   const dnt = window.doNotTrack || navigator.doNotTrack || navigator.msDoNotTrack
@@ -14,7 +16,12 @@
     }
 
     function getSource() {
-      const result = trackLocation.search.match(/[?&](ref|source|utm_source)=([^?&]+)/);
+      const result = trackLocation.search.match(/[?&](ref|source|utm_source)=([^?&]+)/)
+      return result ? result[2] : null
+    }
+
+    function getMedium() {
+      const result = trackLocation.search.match(/[?&](utm_medium)=([^?&]+)/)
       return result ? result[2] : null
     }
 
@@ -43,10 +50,11 @@
         referrer: trackDocument.referrer || null,
         screen_width: window.innerWidth,
         source: getSource(),
+        medium: getMedium(),
         user_agent: window.navigator.userAgent
       }
 
-      const url = kindmetricsURL + '/api/track'
+      const url = kindUrl + '/api/track'
       let response = fetch(url, {
         method: 'POST',
         headers: {
