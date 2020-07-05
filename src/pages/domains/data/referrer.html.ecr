@@ -7,11 +7,13 @@
   <div class="flex items-center justify-between my-1 h-10 text-sm subpixel-antialiased">
     <div class="w-full h-9" style="max-width: calc(100% - 4rem);">
       <div class="progress_bar" style="width: <%=(r.percentage || 0.001)*100%>%;height: 35px"></div>
-
+      <% if !r.referrer_domain.nil? && r.referrer_domain.not_nil! == @domain.address %>
+        (direct)
+      <% else %>
       <a class="block px-2 hover:underline" style="margin-top: -28px;", href="<%=(current_user.nil? ? Share::Referrer::Show.with(@domain.hashid, r.referrer_source.to_s, @period.to_s) : Domains::Referrer::Show.with(@domain.id, r.referrer_source.to_s, @period.to_s)).url%>">
-        <img src="https://api.faviconkit.com/<%=r.referrer_domain%>/16" class="inline align-middle mr-1 h-4 w-4 -mt-px" />
-        <%=r.referrer_source%>
+        <img src="https://api.faviconkit.com/<%=r.referrer_domain%>/16" class="inline align-middle mr-2 h-4 w-4 -mt-px" /><%=r.referrer_source%>
       </a>
+      <% end %>
     </div>
     <span>
       <%=r.count%>
