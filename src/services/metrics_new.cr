@@ -49,7 +49,7 @@ class MetricsNew
 
   def path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}')
     GROUP BY referrer_source
     ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10
@@ -95,13 +95,13 @@ class MetricsNew
 
   def get_referrers(limit : Int32 = 10)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, MIN(referrer_medium) as referrer_medium, COUNT(DISTINCT user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY referrer_source
     ORDER BY COUNT(DISTINCT user_id) desc LIMIT #{limit}
     SQL
     res = @client.execute(sql)
-    json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
+    json = res.map_nil(referrer_source: String, referrer_domain: String, referrer_medium: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
     pages.reject! { |r| r.referrer_source.nil? }

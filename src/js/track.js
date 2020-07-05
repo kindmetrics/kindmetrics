@@ -14,7 +14,12 @@
     }
 
     function getSource() {
-      const result = trackLocation.search.match(/[?&](ref|source|utm_source)=([^?&]+)/);
+      const result = trackLocation.search.match(/[?&](ref|source|utm_source)=([^?&]+)/)
+      return result ? result[2] : null
+    }
+
+    function getMedium() {
+      const result = trackLocation.search.match(/[?&](utm_medium)=([^?&]+)/)
       return result ? result[2] : null
     }
 
@@ -43,6 +48,7 @@
         referrer: trackDocument.referrer || null,
         screen_width: window.innerWidth,
         source: getSource(),
+        medium: getMedium(),
         user_agent: window.navigator.userAgent
       }
 
