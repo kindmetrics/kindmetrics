@@ -102,7 +102,7 @@ class EventHandler
     AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id, created_at: created_at.to_utc)
   end
 
-  def self.referer_source(referrer : URI) : String
+  def self.referer_source(referrer : URI) : String?
     response = referer_parser(referrer)
     response[:source]? || use_host(referrer)
   end
