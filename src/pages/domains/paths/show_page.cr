@@ -20,12 +20,25 @@ class Domains::Paths::ShowPage < Share::BasePage
       render_total
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
         h2 "Top Referrer", class: "text-xl"
-        div class: "flex justify-between text-xs uppercase mt-3" do
-          span "Referrer"
-          span "Percentage"
-        end
-        referrers.each do |event|
-          mount ReferrerEventComponent.new(domain: event.referrer_domain, real_domain: @domain.address, percentage: event.percentage)
+        table class: "w-full" do
+          thead class:"border-b border-gray-300" do
+            tr do
+              th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                raw "Referrer"
+              end
+              th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                raw "Bounce"
+              end
+              th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                raw "Visitors"
+              end
+            end
+          end
+          tbody do
+            @referrers.each_with_index do |event, i|
+              mount ReferrerMainComponent.new(event: event, index: i, current_user: current_user, period: @period, current_domain: @domain)
+            end
+          end
         end
       end
     end

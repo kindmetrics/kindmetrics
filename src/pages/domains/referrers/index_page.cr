@@ -9,8 +9,25 @@ class Domains::Referrer::IndexPage < Share::BasePage
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
       sub_header
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
-        events.each do |event|
-          render_template "domains/referrers/index_event"
+        table class: "w-full" do
+          thead class:"border-b border-gray-300" do
+            tr do
+              th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                raw "Referrer"
+              end
+              th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                raw "Bounce"
+              end
+              th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                raw "Visitors"
+              end
+            end
+          end
+          tbody do
+            events.each_with_index do |event, i|
+              mount ReferrerMainComponent.new(event: event, index: i, current_user: current_user, period: @period, current_domain: @domain)
+            end
+          end
         end
       end
     end

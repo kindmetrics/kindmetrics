@@ -82,9 +82,20 @@ class MetricsNew
     bounce.not_nil!.to_i64
   end
 
+  def bounce_query_referrer(referrer_source : String) : Int64
+    sql = <<-SQL
+    SELECT round(sum(is_bounce * mark) / sum(mark) * 100) as bounce_rate
+    FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{referrer_source}'
+    SQL
+    res = @client.execute(sql)
+    bounce = res.data.first.first.as_i64?
+    return 0.to_i64 if bounce.nil?
+    bounce.not_nil!.to_i64
+  end
+
   def get_source_referrers_total(source : String) : Int64
     sql = <<-SQL
-    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events
+    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source}'
     GROUP BY referrer_source
     ORDER BY COUNT(DISTINCT user_id) desc
@@ -95,7 +106,7 @@ class MetricsNew
 
   def get_referrers(limit : Int32 = 10)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, MIN(referrer_medium) as referrer_medium, COUNT(DISTINCT user_id) as count FROM kindmetrics.sessions
+    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, MIN(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY referrer_source
     ORDER BY COUNT(DISTINCT user_id) desc LIMIT #{limit}
@@ -111,8 +122,8 @@ class MetricsNew
 
   def get_source_referrers(source : String)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source}'
+    SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(id) as count FROM kindmetrics.sessions
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source}' AND referrer IS NOT NULL
     GROUP BY referrer_source
     ORDER BY COUNT(DISTINCT user_id) desc
     SQL
@@ -122,6 +133,7 @@ class MetricsNew
     pages = Array(StatsReferrer).from_json(json)
     pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
+    pages = count_bounce_rate(pages)
     return pages
   end
 
@@ -138,13 +150,14 @@ class MetricsNew
     pages = Array(StatsReferrer).from_json(json)
     pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
+    pages = count_bounce_rate(pages)
     return pages
   end
 
   def get_path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}')
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}') AND referrer IS NOT NULL
     GROUP BY referrer_source
     ORDER BY COUNT(DISTINCT user_id) desc
     SQL
@@ -154,6 +167,7 @@ class MetricsNew
     pages = Array(StatsReferrer).from_json(json)
     pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
+    pages = count_bounce_rate(pages)
     return pages
   end
 
@@ -253,7 +267,7 @@ class MetricsNew
   def get_browsers : Array(StatsBrowser)
     sql = <<-SQL
     SELECT browser_name as browser, COUNT(id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND browser_name IS NOT NULL
     GROUP BY browser_name
     ORDER BY COUNT(id) desc LIMIT 10
     SQL
@@ -266,7 +280,7 @@ class MetricsNew
   def get_os : Array(StatsOS)
     sql = <<-SQL
     SELECT operative_system, COUNT(id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND operative_system IS NOT NULL
     GROUP BY operative_system
     ORDER BY COUNT(id) desc LIMIT 10
     SQL
@@ -288,6 +302,13 @@ class MetricsNew
     total = array.sum { |p| p.count }
     array.map do |p|
       p.percentage = p.count / total.to_f32
+      p
+    end
+  end
+  private def count_bounce_rate(array)
+    array.map do |p|
+      next p if p.referrer_source.nil?
+      p.bounce_rate = bounce_query_referrer(p.referrer_source.not_nil!)
       p
     end
   end
