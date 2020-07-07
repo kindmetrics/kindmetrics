@@ -32,7 +32,9 @@ class Domains::Referrer::ShowPage < Share::BasePage
             end
           end
         else
-          text "No referrers"
+          span class: "text-center block" do
+            text "No referrers"
+          end
         end
       end
     end

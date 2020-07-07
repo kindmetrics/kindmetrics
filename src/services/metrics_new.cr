@@ -93,6 +93,17 @@ class MetricsNew
     bounce.not_nil!.to_i64
   end
 
+  def bounce_query_medium(referrer_medium : String) : Int64
+    sql = <<-SQL
+    SELECT round(sum(is_bounce * mark) / sum(mark) * 100) as bounce_rate
+    FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_medium='#{referrer_medium}'
+    SQL
+    res = @client.execute(sql)
+    bounce = res.data.first.first.as_i64?
+    return 0.to_i64 if bounce.nil?
+    bounce.not_nil!.to_i64
+  end
+
   def get_source_referrers_total(source : String) : Int64
     sql = <<-SQL
     SELECT COUNT(DISTINCT user_id) FROM kindmetrics.sessions
@@ -137,7 +148,7 @@ class MetricsNew
     return pages
   end
 
-  def get_all_referrers
+  def get_all_referrers : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
@@ -168,6 +179,40 @@ class MetricsNew
     pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
     pages = count_bounce_rate(pages)
+    return pages
+  end
+
+  def get_all_medium_referrers : Array(StatsMediumReferrer)
+    sql = <<-SQL
+    SELECT referrer_medium, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    GROUP BY referrer_medium
+    ORDER BY COUNT(DISTINCT user_id) desc
+    SQL
+    res = @client.execute(sql)
+    json = res.map_nil(referrer_medium: String, count: UInt64).to_json
+    return [] of StatsMediumReferrer if json.nil?
+    pages = Array(StatsMediumReferrer).from_json(json)
+    pages.reject! { |r| r.referrer_medium.nil? }
+    pages = count_percentage(pages)
+    pages = count_medium_bounce_rate(pages)
+    return pages
+  end
+
+  def get_path_medium_referrers(path : String) : Array(StatsMediumReferrer)
+    sql = <<-SQL
+    SELECT referrer_medium, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}') AND referrer IS NOT NULL
+    GROUP BY referrer_medium
+    ORDER BY COUNT(DISTINCT user_id) desc
+    SQL
+    res = @client.execute(sql)
+    json = res.map_nil(referrer_source: String, count: UInt64).to_json
+    return [] of StatsMediumReferrer if json.nil?
+    pages = Array(StatsMediumReferrer).from_json(json)
+    pages.reject! { |r| r.referrer_medium.nil? }
+    pages = count_percentage(pages)
+    pages = count_medium_bounce_rate(pages)
     return pages
   end
 
@@ -305,10 +350,19 @@ class MetricsNew
       p
     end
   end
+
   private def count_bounce_rate(array)
     array.map do |p|
       next p if p.referrer_source.nil?
       p.bounce_rate = bounce_query_referrer(p.referrer_source.not_nil!)
+      p
+    end
+  end
+
+  private def count_medium_bounce_rate(array)
+    array.map do |p|
+      next p if p.referrer_medium.nil?
+      p.bounce_rate = bounce_query_medium(p.referrer_medium.not_nil!)
       p
     end
   end

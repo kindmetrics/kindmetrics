@@ -18,10 +18,10 @@ class ReferrerMainComponent < BaseComponent
         end
       end
       td class: "w-1/6 py-2" do
-        text event.bounce_rate.to_s + "%"
+        text event.count.to_s
       end
       td class: "w-1/6 py-2" do
-        text event.count.to_s
+        text event.bounce_rate.to_s + "%"
       end
     end
   end
