@@ -12,7 +12,7 @@ class Domains::Paths::ShowPage < Share::BasePage
   needs bounce_previous : Int64
   needs period_string : String
 
-  quick_def page_title, "#{path} for #{@domain.address}"
+  quick_def page_title, "#{@path} at #{@domain.address} last #{period_string}"
 
   def content
     render_header

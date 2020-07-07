@@ -5,7 +5,7 @@ class Domains::Referrer::ShowPage < Share::BasePage
   needs share_page : Bool = false
   needs domains : DomainQuery?
 
-  quick_def page_title, "#{source} for #{@domain.address}"
+  quick_def page_title, "#{source} for #{@domain.address} last #{period_string}"
 
   def content
     mount HeaderComponent.new(domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1, share_page: @share_page, period_string: period_string, period: @period, active: "Referrers")

@@ -1,7 +1,7 @@
 class Domains::Referrer::IndexPage < Share::BasePage
   needs referrers : Array(StatsReferrer)
   needs mediums : Array(StatsMediumReferrer)
-  quick_def page_title, "Referrers for #{@domain.address}"
+  quick_def page_title, "Referrers to #{@domain.address} last #{period_string}"
   needs share_page : Bool = false
   needs domains : DomainQuery?
 

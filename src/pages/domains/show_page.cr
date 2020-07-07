@@ -10,7 +10,7 @@ class Domains::ShowPage < SecretGuestLayout
   needs period : String
   needs period_string : String
   needs share_page : Bool = false
-  quick_def page_title, @domain.address
+  quick_def page_title, "Analytics for " + @domain.address
 
   def content
     render_header
