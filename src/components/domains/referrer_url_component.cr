@@ -6,7 +6,7 @@ class ReferrerUrlComponent < BaseComponent
   def render
     tr class: index.odd? ? "bg-gray-200" : "bg-white" do
       td do
-        a href: domain || "#", class: "block px-2 text-black truncate", style: "margin-top: -26px;", rel: "noreferrer" do
+        a href: domain || "#", class: "block px-2 text-black truncate", rel: "noreferrer" do
           raw (domain || "").to_s
         end
       end
