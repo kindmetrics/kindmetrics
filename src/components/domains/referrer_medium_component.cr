@@ -4,13 +4,13 @@ class ReferrerMediumComponent < BaseComponent
 
   def render
     tr class: index.odd? ? "bg-gray-200" : "bg-white" do
-      td class: "w-4/6 py-2" do
+      td class: "w-4/6 p-2" do
         text event.referrer_medium.to_s
       end
-      td class: "w-1/6 py-2" do
+      td class: "w-1/6 p-2" do
         text event.count.to_s
       end
-      td class: "w-1/6 py-2" do
+      td class: "w-1/6 p-2" do
         text event.bounce_rate.to_s + "%"
       end
     end
