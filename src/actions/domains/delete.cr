@@ -6,7 +6,9 @@ class Domains::Delete < BrowserAction
       if current_domain_id == domain.id
         SaveUser.update!(domain.user, current_domain_id: nil)
       end
+      temp_domain_id = domain.id
       domain.delete
+      AddClickhouse.delete(temp_domain_id)
       flash.success = "Deleted the record"
     end
     redirect Home::Index
