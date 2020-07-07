@@ -13,7 +13,7 @@ class MetricsNew
 
   def unique_query : Int64
     sql = <<-SQL
-    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}')
+    SELECT uniq(user_id) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}')
     SQL
     res = @client.execute(sql)
     res.map(unique: UInt64).first["unique"].to_i64
@@ -21,7 +21,7 @@ class MetricsNew
 
   def path_unique_query(path : String) : Int64
     sql = <<-SQL
-    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}') AND (path='#{path}' OR path='/#{path}')
+    SELECT uniq(user_id) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}') AND (path='#{path}' OR path='/#{path}')
     SQL
     res = @client.execute(sql)
     res.map(unique: UInt64).first["unique"].to_i64
@@ -49,10 +49,10 @@ class MetricsNew
 
   def path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.sessions
+    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}')
     GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10
+    ORDER BY count desc LIMIT 10
     SQL
     res = @client.execute(sql)
     json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
@@ -106,12 +106,13 @@ class MetricsNew
 
   def get_source_referrers_total(source : String) : Int64
     sql = <<-SQL
-    SELECT COUNT(DISTINCT user_id) FROM kindmetrics.sessions
+    SELECT uniq(user_id) as total FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source}'
     GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc
+    ORDER BY total desc
     SQL
     res = @client.execute(sql)
+    return 0_i64 if res.records.size == 0
     res.map(total: UInt64).first["total"].to_i64
   end
 
@@ -120,7 +121,7 @@ class MetricsNew
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, MIN(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc LIMIT #{limit}
+    ORDER BY count desc LIMIT #{limit}
     SQL
     res = @client.execute(sql)
     json = res.map_nil(referrer_source: String, referrer_domain: String, referrer_medium: String, count: UInt64).to_json
@@ -136,7 +137,7 @@ class MetricsNew
     SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source}' AND referrer IS NOT NULL
     GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc
+    ORDER BY uniq(user_id) desc
     SQL
     res = @client.execute(sql)
     json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
@@ -150,10 +151,10 @@ class MetricsNew
 
   def get_all_referrers : Array(StatsReferrer)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, uniq(user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc
+    ORDER BY count desc
     SQL
     res = @client.execute(sql)
     json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
@@ -167,10 +168,10 @@ class MetricsNew
 
   def get_path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer) as referrer_domain, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    SELECT referrer_source, MIN(referrer) as referrer_domain, uniq(user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}') AND referrer IS NOT NULL
     GROUP BY referrer_source
-    ORDER BY COUNT(DISTINCT user_id) desc
+    ORDER BY count desc
     SQL
     res = @client.execute(sql)
     json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
@@ -184,10 +185,10 @@ class MetricsNew
 
   def get_all_medium_referrers : Array(StatsMediumReferrer)
     sql = <<-SQL
-    SELECT referrer_medium, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    SELECT referrer_medium, uniq(user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY referrer_medium
-    ORDER BY COUNT(DISTINCT user_id) desc
+    ORDER BY count desc
     SQL
     res = @client.execute(sql)
     json = res.map_nil(referrer_medium: String, count: UInt64).to_json
@@ -201,10 +202,10 @@ class MetricsNew
 
   def get_path_medium_referrers(path : String) : Array(StatsMediumReferrer)
     sql = <<-SQL
-    SELECT referrer_medium, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    SELECT referrer_medium, uniq(user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}') AND referrer IS NOT NULL
     GROUP BY referrer_medium
-    ORDER BY COUNT(DISTINCT user_id) desc
+    ORDER BY count desc
     SQL
     res = @client.execute(sql)
     json = res.map_nil(referrer_source: String, count: UInt64).to_json
@@ -219,7 +220,7 @@ class MetricsNew
   def get_days
     return [nil, nil, nil] if total_query == 0
     sql = <<-SQL
-    SELECT toDate(created_at) as date, COUNT(id) as count FROM kindmetrics.events
+    SELECT toDate(created_at) as date, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY toDate(created_at)
     ORDER BY toDate(created_at) asc
@@ -251,10 +252,10 @@ class MetricsNew
 
   def get_pages : Array(StatsPages)
     sql = <<-SQL
-    SELECT path as address, COUNT(DISTINCT user_id) as count FROM kindmetrics.sessions
+    SELECT path as address, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY path
-    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10
+    ORDER BY count desc LIMIT 10
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsPages if res.nil?
@@ -265,10 +266,10 @@ class MetricsNew
 
   def get_countries : Array(StatsCountry)
     sql = <<-SQL
-    SELECT country, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    SELECT country, uniq(user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY country
-    ORDER BY COUNT(DISTINCT user_id) desc LIMIT 10
+    ORDER BY count desc LIMIT 10
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsCountry if res.nil?
@@ -286,10 +287,10 @@ class MetricsNew
   def get_countries_map : Array(StatsCountry)?
     return nil if total_query == 0
     sql = <<-SQL
-    SELECT country, COUNT(DISTINCT user_id) as count FROM kindmetrics.events
+    SELECT country, uniq(user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY country
-    ORDER BY COUNT(DISTINCT user_id) asc
+    ORDER BY count asc
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsCountry if res.nil?
