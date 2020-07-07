@@ -10,7 +10,7 @@
       <% if !r.referrer_domain.nil? && r.referrer_domain.not_nil! == @domain.address %>
       <span class="block px-2" style="margin-top: -26px;">(direct)</span>
       <% else %>
-      <a class="block px-2 hover:underline" style="margin-top: -26px;", href="<%=(current_user.nil? ? Share::Referrer::Show.with(@domain.hashid, r.referrer_source.to_s, @period.to_s) : Domains::Referrer::Show.with(@domain.id, r.referrer_source.to_s, @period.to_s)).url%>">
+      <a class="block px-2 hover:underline truncate" style="margin-top: -26px;", href="<%=(current_user.nil? ? Share::Referrer::Show.with(@domain.hashid, r.referrer_source.to_s, @period.to_s) : Domains::Referrer::Show.with(@domain.id, r.referrer_source.to_s, @period.to_s)).url%>">
         <img src="https://api.faviconkit.com/<%=r.referrer_domain%>/16" class="inline align-middle mr-2 h-4 w-4 -mt-px" /><%=r.referrer_source%><%=!r.referrer_medium.nil? ? " / " + r.referrer_medium.not_nil! : nil %>
       </a>
       <% end %>

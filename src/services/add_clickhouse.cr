@@ -124,6 +124,18 @@ class AddClickhouse
     client.execute sql
   end
 
+  def self.delete(domain_id : Int64)
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+    ALTER TABLE kindmetrics.events DELETE WHERE domain_id=#{domain_id}
+    SQL
+    res = client.insert sql
+    sql = <<-SQL
+    ALTER TABLE kindmetrics.sessions DELETE WHERE domain_id=#{domain_id}
+    SQL
+    client.insert sql
+  end
+
   def self.clean_database
     return unless Lucky::Env.test?
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)

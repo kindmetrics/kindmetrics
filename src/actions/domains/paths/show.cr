@@ -5,7 +5,11 @@ class Domains::Paths::Show < DomainBaseAction
   get "/domains/:domain_id/paths/:path" do
     referrers = get_paths_referrers
     domains = DomainQuery.new.user_id(current_user.id)
-    html ShowPage, period_string: period_string, domain: domain, referrers: referrers, period: period, path: path, unique: get_unique, total: get_total, bounce: get_bounce, unique_previous: get_previous_unique, total_previous: get_previous_total, bounce_previous: get_previous_bounce, domains: domains
+    html ShowPage, period_string: period_string, domain: domain, referrers: referrers, mediums: get_paths_mediums, period: period, path: path, unique: get_unique, total: get_total, bounce: get_bounce, unique_previous: get_previous_unique, total_previous: get_previous_total, bounce_previous: get_previous_bounce, domains: domains
+  end
+
+  private def get_paths_mediums
+    metrics(domain).get_path_medium_referrers(path)
   end
 
   private def get_paths_referrers

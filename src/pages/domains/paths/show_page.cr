@@ -2,6 +2,7 @@ class Domains::Paths::ShowPage < Share::BasePage
   needs path : String
   needs domains : DomainQuery?
   needs referrers : Array(StatsReferrer)
+  needs mediums : Array(StatsMediumReferrer)
   needs share_page : Bool = false
   needs unique : Int64
   needs total : Int64
@@ -11,21 +12,71 @@ class Domains::Paths::ShowPage < Share::BasePage
   needs bounce_previous : Int64
   needs period_string : String
 
-  quick_def page_title, "#{path} for #{@domain.address}"
+  quick_def page_title, "#{@path} at #{@domain.address} last #{period_string}"
 
   def content
     render_header
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
       h1 @path.empty? ? "/" : @path, class: "text-2xl"
       render_total
-      div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
-        h2 "Top Referrer", class: "text-xl"
-        div class: "flex justify-between text-xs uppercase mt-3" do
-          span "Referrer"
-          span "Percentage"
+      div class: "w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
+        div class: "card" do
+          h2 "Top Referrers", class: "text-xl"
+          if @referrers.size > 0
+            table class: "w-full" do
+              thead class: "border-b border-gray-300" do
+                tr do
+                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                    raw "Referrer"
+                  end
+                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                    raw "Visitors"
+                  end
+                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                    raw "Bounce"
+                  end
+                end
+              end
+              tbody do
+                @referrers.each_with_index do |event, i|
+                  mount ReferrerMainComponent.new(event: event, index: i, current_user: current_user, period: @period, current_domain: @domain)
+                end
+              end
+            end
+          else
+            span class: "text-center block" do
+              text "No referrers"
+            end
+          end
         end
-        referrers.each do |event|
-          mount ReferrerEventComponent.new(domain: event.referrer_domain, real_domain: @domain.address, percentage: event.percentage)
+        div class: "card" do
+          h2 "Top Mediums", class: "text-xl"
+          if @mediums.size > 0
+            table class: "w-full" do
+              thead class: "border-b border-gray-300" do
+                tr do
+                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                    raw "Medium"
+                  end
+                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                    raw "Visitors"
+                  end
+                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
+                    raw "Bounce"
+                  end
+                end
+              end
+              tbody do
+                @mediums.each_with_index do |event, i|
+                  mount ReferrerMediumComponent.new(event: event, index: i)
+                end
+              end
+            end
+          else
+            span class: "text-center block" do
+              text "No mediums"
+            end
+          end
         end
       end
     end

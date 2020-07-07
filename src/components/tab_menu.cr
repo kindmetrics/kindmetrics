@@ -8,7 +8,7 @@ class TabMenu < BaseComponent
       links.each do |l|
         if l["name"] == active
           li class: "-mb" do
-            a class: "inline-block border-b-2 border-blue-800 py-2 px-4 text-blue-800 font-semibold", href: l["link"].to_s do
+            a class: "inline-block border-b-2 border-blue-800 py-2 px-4 text-blue-800 hover:no-underline font-semibold", href: l["link"].to_s do
               raw l["name"].to_s
             end
           end

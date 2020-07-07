@@ -1,5 +1,5 @@
 class Domains::Countries::IndexPage < Share::BasePage
-  quick_def page_title, "Countries for #{@domain.address}"
+  quick_def page_title, "Countries for #{@domain.address} last #{period_string}"
   needs share_page : Bool = false
   needs domains : DomainQuery?
 
