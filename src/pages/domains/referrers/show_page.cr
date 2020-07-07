@@ -15,7 +15,7 @@ class Domains::Referrer::ShowPage < Share::BasePage
         para "Got #{pluralize(total, "visitor")} from #{source} the last #{period_string}", class: "text-xl mb-2"
         if @events.size > 0
           table class: "w-full" do
-            thead class:"border-b border-gray-300" do
+            thead class: "border-b border-gray-300" do
               tr do
                 th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
                   raw "Referrer"

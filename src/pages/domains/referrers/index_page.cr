@@ -14,7 +14,7 @@ class Domains::Referrer::IndexPage < Share::BasePage
           h2 "Referrers", class: "text-xl mb-2"
           if referrers.size > 0
             table class: "w-full" do
-              thead class:"border-b border-gray-300" do
+              thead class: "border-b border-gray-300" do
                 tr do
                   th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
                     raw "Referrer"
@@ -43,7 +43,7 @@ class Domains::Referrer::IndexPage < Share::BasePage
           h2 "Mediums", class: "text-xl mb-2"
           if mediums.size > 0
             table class: "w-full" do
-              thead class:"border-b border-gray-300" do
+              thead class: "border-b border-gray-300" do
                 tr do
                   th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
                     raw "Medium"

@@ -24,7 +24,7 @@ class Domains::Paths::ShowPage < Share::BasePage
           h2 "Top Referrers", class: "text-xl"
           if @referrers.size > 0
             table class: "w-full" do
-              thead class:"border-b border-gray-300" do
+              thead class: "border-b border-gray-300" do
                 tr do
                   th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
                     raw "Referrer"
@@ -53,7 +53,7 @@ class Domains::Paths::ShowPage < Share::BasePage
           h2 "Top Mediums", class: "text-xl"
           if @mediums.size > 0
             table class: "w-full" do
-              thead class:"border-b border-gray-300" do
+              thead class: "border-b border-gray-300" do
                 tr do
                   th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
                     raw "Medium"
