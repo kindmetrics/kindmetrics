@@ -27,7 +27,7 @@ class Domains::Referrer::ShowPage < Share::BasePage
             end
             tbody do
               @events.each_with_index do |event, i|
-                mount ReferrerUrlComponent.new(domain: event.referrer_domain, visitors: event.count, index: i)
+                mount ReferrerUrlComponent.new(event: event, index: i)
               end
             end
           end

@@ -32,16 +32,20 @@
       </div>
     </div>
     <div class="card">
-      <div data-controller="switcher" data-switcher-period="<%=@period%>" data-switcher-url="/domains/<%=@domain.id%>/data/devices" data-switcher-type="device">
-        <div class="flex items-center justify-between">
-        <h2 class="text-xl" data-target="switcher.title">Devices</h2>
-        <div class="inline-flex">
-          <a class="px-2 py-1 m-0 text-black text-xs hover:no-underline rounded-l border hover:shadow-inner hover:bg-gray-200 cursor-pointer" data-action="click->switcher#switch" data-switcher-type="device">Device</a>
-          <a class="px-2 py-1 m-0 text-black text-xs hover:no-underline border-t border-b hover:shadow-inner hover:bg-gray-200 cursor-pointer" data-action="click->switcher#switch" data-switcher-type="browser">Browser</a>
-          <a class="px-2 py-1 m-0 text-black text-xs hover:no-underline rounded-r border hover:shadow-inner hover:bg-gray-200 cursor-pointer" data-action="click->switcher#switch" data-switcher-type="os">OS</a>
-        </div>
+      <h2 class="text-xl">Devices</h2>
+      <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/devices/device">
       </div>
-        <div data-target="switcher.content"></div>
+    </div>
+  </div>
+  <div class="w-full mt-6 grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row <% if current_user.nil? %> mb-12 pb-6<% end %>">
+    <div class="card">
+      <h2 class="text-xl">Browsers</h2>
+      <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/devices/browser">
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="text-xl">Operative Systems</h2>
+      <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/devices/os">
       </div>
     </div>
   </div>

@@ -17,7 +17,7 @@ class Domains::Paths::ShowPage < Share::BasePage
   def content
     render_header
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
-      h1 @path.empty? ? "/" : @path, class: "text-2xl"
+      h1 @path.empty? ? "/" : @path.starts_with?("/") ? @path.to_s : "/" + @path, class: "text-2xl"
       render_total
       div class: "w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
         div class: "card" do

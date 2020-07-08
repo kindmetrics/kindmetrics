@@ -9,7 +9,9 @@ class ReferrerMainComponent < BaseComponent
     tr class: index.odd? ? "bg-gray-200" : "bg-white" do
       td class: "w-4/6 py-2" do
         if !event.referrer_domain.nil? && event.referrer_domain.not_nil! == current_domain.address
-          text "(direct)"
+          span class: "px-2" do
+            text "(direct)"
+          end
         else
           a class: "block px-2 hover:underline truncate", href: current_user.nil? ? Share::Referrer::Show.with(current_domain.hashid, event.referrer_source.to_s, period.to_s).url : Domains::Referrer::Show.with(current_domain.id, event.referrer_source.to_s, period.to_s).url do
             img src: "https://api.faviconkit.com/#{event.referrer_domain}/16", class: "inline align-middle mr-2 h-4 w-4 -mt-px"
