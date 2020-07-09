@@ -331,6 +331,7 @@ class MetricsNew
     res = @client.execute_as_json(sql)
     return [] of StatsBrowser if res.nil?
     browsers = Array(StatsBrowser).from_json(res)
+    browsers.reject! { |r| r.browser.nil? }
     count_percentage(browsers)
   end
 
@@ -344,6 +345,7 @@ class MetricsNew
     res = @client.execute_as_json(sql)
     return [] of StatsOS if res.nil?
     os = Array(StatsOS).from_json(res)
+    os.reject! { |r| r.operative_system.nil? }
     count_percentage(os)
   end
 
