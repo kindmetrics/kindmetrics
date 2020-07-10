@@ -11,7 +11,6 @@ class Domains::Referrer::IndexPage < Share::BasePage
       sub_header
       div class: "w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
         div class: "card" do
-          h2 "Referrers", class: "text-xl mb-2"
           if referrers.size > 0
             table class: "w-full" do
               thead class: "border-b border-gray-300" do
@@ -40,7 +39,6 @@ class Domains::Referrer::IndexPage < Share::BasePage
           end
         end
         div class: "card" do
-          h2 "Mediums", class: "text-xl mb-2"
           if mediums.size > 0
             table class: "w-full" do
               thead class: "border-b border-gray-300" do
