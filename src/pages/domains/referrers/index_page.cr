@@ -12,24 +12,9 @@ class Domains::Referrer::IndexPage < Share::BasePage
       div class: "w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
         div class: "card" do
           if referrers.size > 0
-            table class: "w-full" do
-              thead class: "border-b border-gray-300" do
-                tr do
-                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
-                    raw "Referrer"
-                  end
-                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
-                    raw "Visitors"
-                  end
-                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
-                    raw "Bounce"
-                  end
-                end
-              end
-              tbody do
-                referrers.each_with_index do |event, i|
-                  mount ReferrerMainComponent.new(event: event, index: i, current_user: current_user, period: @period, current_domain: @domain)
-                end
+            mount DetailTableComponent.new(first_header: "Referrer", second_header: "Visitors", third_header: "Bounce") do
+              referrers.each_with_index do |event, i|
+                mount ReferrerMainComponent.new(event: event, index: i, current_user: current_user, period: @period, current_domain: @domain)
               end
             end
           else
@@ -40,24 +25,9 @@ class Domains::Referrer::IndexPage < Share::BasePage
         end
         div class: "card" do
           if mediums.size > 0
-            table class: "w-full" do
-              thead class: "border-b border-gray-300" do
-                tr do
-                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
-                    raw "Medium"
-                  end
-                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
-                    raw "Visitors"
-                  end
-                  th class: "text-left uppercase text-gray-600 font-medium text-xs pb-1" do
-                    raw "Bounce"
-                  end
-                end
-              end
-              tbody do
-                mediums.each_with_index do |event, i|
-                  mount ReferrerMediumComponent.new(event: event, index: i)
-                end
+            mount DetailTableComponent.new(first_header: "Medium", second_header: "Visitors", third_header: "Bounce") do
+              mediums.each_with_index do |event, i|
+                mount ReferrerMediumComponent.new(event: event, index: i)
               end
             end
           else

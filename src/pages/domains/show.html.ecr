@@ -7,24 +7,20 @@
     <div class="card">
       <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/referrer">
       </div>
-      <div class="text-center w-full absolute bottom-0 left-0 py-2">
-        <% unless @share_page %>
-          <% link "Details", to: Domains::Referrer::Index.with(@domain, @period), class: "uppercase text-sm" %>
-        <% else %>
-          <% link "Details", to: Share::Referrer::Index.with(@domain.hashid, @period), class: "uppercase text-sm" %>
-        <% end %>
-      </div>
+      <% unless @share_page %>
+      <% mount DetailsLinkComponent.new(link: Domains::Referrer::Index.with(@domain, @period).url) %>
+      <% else %>
+      <% mount DetailsLinkComponent.new(link: Share::Referrer::Index.with(@domain.hashid, @period).url) %>
+      <% end %>
     </div>
     <div class="card">
       <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/countries" class="relative clear-both">
       </div>
-      <div class="text-center w-full relative bottom-0 left-0 pt-2 -pb-1">
-        <% unless @share_page %>
-        <% link "Details", to: Domains::Countries::Index.with(@domain, @period), class: "uppercase text-sm" %>
-        <% else %>
-        <% link "Details", to: Share::Countries::Index.with(@domain.hashid, @period), class: "uppercase text-sm" %>
-        <% end %>
-      </div>
+      <% unless @share_page %>
+      <% mount DetailsLinkComponent.new(link: Domains::Countries::Index.with(@domain, @period).url) %>
+      <% else %>
+      <% mount DetailsLinkComponent.new(link: Share::Countries::Index.with(@domain.hashid, @period).url) %>
+      <% end %>
     </div>
     <div class="card">
       <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/devices/device">
