@@ -1,12 +1,10 @@
 <div class="max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6">
-  <div class="w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row">
+  <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
     <div class="card">
-      <h2 class="text-xl">Top Pages</h2>
       <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/pages">
       </div>
     </div>
     <div class="card">
-      <h2 class="text-xl">Top Referrer</h2>
       <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/referrer">
       </div>
       <div class="text-center w-full absolute bottom-0 left-0 py-2">
@@ -17,10 +15,7 @@
         <% end %>
       </div>
     </div>
-  </div>
-  <div class="w-full mt-6 grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row">
     <div class="card">
-      <h2 class="text-xl">Countries</h2>
       <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/countries" class="relative clear-both">
       </div>
       <div class="text-center w-full relative bottom-0 left-0 pt-2 -pb-1">
@@ -32,19 +27,14 @@
       </div>
     </div>
     <div class="card">
-      <h2 class="text-xl">Devices</h2>
       <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/devices/device">
       </div>
     </div>
-  </div>
-  <div class="w-full mt-6 grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row <% if current_user.nil? %> mb-12 pb-6<% end %>">
     <div class="card">
-      <h2 class="text-xl">Browsers</h2>
       <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/devices/browser">
       </div>
     </div>
     <div class="card">
-      <h2 class="text-xl">Operative Systems</h2>
       <div data-controller="loader" data-loader-period="<%=@period%>" data-loader-url="/domains/<%=@domain.id%>/data/devices/os">
       </div>
     </div>
