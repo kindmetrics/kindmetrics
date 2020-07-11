@@ -24,17 +24,17 @@ class Domains::Data::PagesPage
   end
 
   def render_row(row)
-    tr class: "h-10 text-sm subpixel-antialiased" do
-      td class: "w-5/6 py-2 h-10" do
-        div class: "w-full h-10" do
+    tr class: "h-9 text-sm subpixel-antialiased" do
+      td class: "w-5/6 py-1 h-9" do
+        div class: "w-full h-9" do
           div class: "progress_bar", style: "width: #{(row.percentage || 0.001)*100}%;height: 30px"
           a class: "block px-2 hover:underline truncate", style: "margin-top: -1.6rem;", href: get_url(row) do
             text row.address.to_s
           end
         end
       end
-      td class: "w-1/6 h-10 py-2" do
-        div class: "-mt-4 text-right" do
+      td class: "w-1/6 h-9 py-1" do
+        div class: "text-right" do
           text row.count
         end
       end

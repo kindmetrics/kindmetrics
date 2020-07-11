@@ -8,7 +8,7 @@ class Domains::Countries::IndexPage < Share::BasePage
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
       sub_header
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
-        render_template "domains/countries/main"
+        div data_controller: "country-chart", data_country_chart_period: @period, data_country_chart_url: "/domains/#{@domain.id}/data/countries_map"
       end
     end
   end

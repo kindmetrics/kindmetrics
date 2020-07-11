@@ -50,6 +50,7 @@ export default class extends Controller {
     fetch(this.data.get("url") + "?period=" + period).then(response => {
       return response.json()
     }).then(response => {
+      this.element.innerHTML = ""
       return this.createChart(this.element, response)
     })
   }
@@ -59,6 +60,7 @@ export default class extends Controller {
   }
 
   connect() {
+    this.element.innerHTML = this.loader()
     this.getData();
   }
 

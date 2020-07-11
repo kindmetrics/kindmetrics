@@ -4,13 +4,13 @@ class ReferrerUrlComponent < BaseComponent
 
   def render
     tr class: index.odd? ? "bg-gray-200" : "bg-white" do
-      td class: "w-4/6 p-2" do
-        a href: event.referrer_url || "#", class: "block px-2 text-black truncate", rel: "noreferrer" do
-          raw (event.referrer_url || event.referrer_domain || "").to_s
+      td class: "max-w-sm md:max-w-none md:w-4/6 p-2" do
+        a href: event.not_nil!.referrer_url || "#", class: "block px-2 text-black truncate", rel: "noreferrer" do
+          raw (event.not_nil!.referrer_url || event.not_nil!.referrer_domain || "").to_s
         end
       end
       td class: "w-2/6 p-2" do
-        text event.count.to_s
+        text event.not_nil!.count.to_s
       end
     end
   end

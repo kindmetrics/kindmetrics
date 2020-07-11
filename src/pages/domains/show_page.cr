@@ -30,11 +30,44 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_canvas
-    render_template "domains/canvas"
+    div style: "max-height:320px;" do
+      tag "canvas", data_controller: "days-chart", data_days_chart_period: @period, data_days_chart_url: "/domains/#{@domain.id}/data/days", height: "300", id: "days_chart", style: "max-height:300px;", width: "100%"
+    end
   end
 
   def render_the_rest
-    render_template "domains/show"
+    div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6" do
+      div class: "w-full grid grid-cols-1 md:grid-cols-3 gap-6" do
+        div class: "card" do
+          div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/pages"
+        end
+        div class: "card" do
+          div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/referrer"
+          unless @share_page
+            mount DetailsLinkComponent.new(link: Domains::Referrer::Index.with(@domain, @period).url)
+          else
+            mount DetailsLinkComponent.new(link: Share::Referrer::Index.with(@domain.hashid, @period).url)
+          end
+        end
+        div class: "card" do
+          div class: "relative clear-both", data_controller: "loader", data_loader_period: "<%=@period%>", data_loader_url: "/domains/#{@domain.id}/data/countries"
+          unless @share_page
+            mount DetailsLinkComponent.new(link: Domains::Countries::Index.with(@domain, @period).url)
+          else
+            mount DetailsLinkComponent.new(link: Share::Countries::Index.with(@domain.hashid, @period).url)
+          end
+        end
+        div class: "card" do
+          div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/devices/device"
+        end
+        div class: "card" do
+          div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/devices/browser"
+        end
+        div class: "card" do
+          div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/devices/os"
+        end
+      end
+    end
   end
 
   def render_header
