@@ -127,7 +127,7 @@ class MetricsNew
     res.map(total: UInt64).first["total"].to_i64
   end
 
-  def get_referrers(limit : Int32 = 10)
+  def get_referrers(limit : Int32 = 6)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, MIN(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
@@ -266,7 +266,7 @@ class MetricsNew
     SELECT path as address, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY path
-    ORDER BY count desc LIMIT 10
+    ORDER BY count desc LIMIT 6
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsPages if res.nil?
@@ -280,7 +280,7 @@ class MetricsNew
     SELECT country, uniq(user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY country
-    ORDER BY count desc LIMIT 10
+    ORDER BY count desc LIMIT 6
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsCountry if res.nil?
@@ -313,7 +313,7 @@ class MetricsNew
     SELECT device, COUNT(id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY device
-    ORDER BY COUNT(id) desc LIMIT 10
+    ORDER BY COUNT(id) desc LIMIT 6
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsDevice if res.nil?
@@ -324,9 +324,9 @@ class MetricsNew
   def get_browsers : Array(StatsBrowser)
     sql = <<-SQL
     SELECT browser_name as browser, COUNT(id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND browser_name IS NOT NULL
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND browser_name IS NOT NULL AND browser_name!=''
     GROUP BY browser_name
-    ORDER BY COUNT(id) desc LIMIT 10
+    ORDER BY COUNT(id) desc LIMIT 6
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsBrowser if res.nil?
@@ -338,9 +338,9 @@ class MetricsNew
   def get_os : Array(StatsOS)
     sql = <<-SQL
     SELECT operative_system, COUNT(id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND operative_system IS NOT NULL
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND operative_system IS NOT NULL AND operative_system!=''
     GROUP BY operative_system
-    ORDER BY COUNT(id) desc LIMIT 10
+    ORDER BY COUNT(id) desc LIMIT 6
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsOS if res.nil?
