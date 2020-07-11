@@ -130,7 +130,7 @@ class MetricsNew
   def get_referrers(limit : Int32 = 6)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, MIN(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source IS NOT NULL
     GROUP BY referrer_source
     ORDER BY count desc LIMIT #{limit}
     SQL
