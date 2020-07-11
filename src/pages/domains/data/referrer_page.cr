@@ -28,8 +28,8 @@ class Domains::Data::ReferrerPage
       td class: "w-5/6 py-1 h-9" do
         div class: "w-full h-9" do
           div class: "progress_bar", style: "width: #{(row.percentage || 0.001)*100}%;height: 30px"
-          if !row.referrer_domain.nil? && row.referrer_domain.not_nil! == domain.address
-            span class: "block px-2 -mt-5" do
+          if !row.referrer_domain.nil? && row.referrer_domain.not_nil! == "localhost"
+            span class: "block px-2", style: "margin-top: -1.6rem;" do
               text "(direct)"
             end
           else
