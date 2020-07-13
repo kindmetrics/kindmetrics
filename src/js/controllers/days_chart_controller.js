@@ -6,11 +6,15 @@ export default class extends Controller {
     console.log("inside create")
     console.log(response)
 
-    const { labels, today, data } = response
+    const { labels, today, data, pageviews, pageviews_today } = response
 
     var gradientFill = ctx.getContext("2d").createLinearGradient(0, 260, 0, 0);
     gradientFill.addColorStop(0, "rgba(255,255,255,0.1)");
     gradientFill.addColorStop(1, "rgba(48, 71, 94, 0.3)");
+
+    var pageviewGradientFill = ctx.getContext("2d").createLinearGradient(0, 260, 0, 0);
+    pageviewGradientFill.addColorStop(0, "rgba(255,255,255,0.1)");
+    pageviewGradientFill.addColorStop(1, "rgba(49, 130, 206, 0.3)");
 
     var chart = new Chart(ctx, {
         // The type of chart we want to create
@@ -29,11 +33,26 @@ export default class extends Controller {
             }, {
               backgroundColor: gradientFill,
               borderColor: 'rgba(48, 71, 94, 1)',
-              borderDash: [5, 15],
+              borderDash: [3, 12],
               lineTension: 0,
               pointBackgroundColor: 'rgba(48, 71, 94, 1)',
               label: 'Visitors',
               data: today
+            }, {
+              backgroundColor: pageviewGradientFill,
+              borderColor: 'rgba(49,130,206, 1)',
+              lineTension: 0,
+              pointBackgroundColor: 'rgba(49,130,206, 1)',
+              label: 'Pageviews',
+              data: pageviews
+            }, {
+              backgroundColor: pageviewGradientFill,
+              borderColor: 'rgba(49,130,206, 1)',
+              borderDash: [3, 12],
+              lineTension: 0,
+              pointBackgroundColor: 'rgba(49,130,206, 1)',
+              label: 'Pageviews',
+              data: pageviews_today
             }]
         },
 
@@ -41,6 +60,18 @@ export default class extends Controller {
         options: {
           legend: {
               display: false
+          },
+          scales: {
+              xAxes: [{
+                  gridLines: {
+                      display:false
+                  }
+              }],
+              yAxes: [{
+                  gridLines: {
+                      display:false
+                  }
+              }]
           },
           maintainAspectRatio: false
         }

@@ -2,6 +2,7 @@ class DetailTableComponent < BaseComponent
   needs first_header : String
   needs second_header : String
   needs third_header : String?
+
   def render
     table class: "w-full" do
       thead class: "border-b border-gray-300" do

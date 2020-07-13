@@ -1,6 +1,7 @@
 class DashboardTableComponent < BaseComponent
   needs first_header : String
   needs second_header : String
+
   def render
     table class: "w-full mb-3" do
       thead class: "border-b border-gray-300" do

@@ -50,7 +50,7 @@ class MetricsNew
   def path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, uniq(user_id) as count FROM kindmetrics.sessions
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}')
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}') AND referrer_source IS NOT NULL
     GROUP BY referrer_source
     ORDER BY count desc LIMIT 10
     SQL
@@ -58,7 +58,6 @@ class MetricsNew
     json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
-    pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
     return pages
   end
@@ -138,7 +137,6 @@ class MetricsNew
     json = res.map_nil(referrer_source: String, referrer_domain: String, referrer_medium: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
-    pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
     return pages
   end
@@ -154,7 +152,6 @@ class MetricsNew
     json = res.map_nil(referrer_source: String, referrer_url: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
-    pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
     pages = count_bounce_rate(pages)
     return pages
@@ -163,7 +160,7 @@ class MetricsNew
   def get_all_referrers : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, uniq(user_id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source IS NOT NULL
     GROUP BY referrer_source
     ORDER BY count desc
     SQL
@@ -171,7 +168,6 @@ class MetricsNew
     json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
-    pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
     pages = count_bounce_rate(pages)
     return pages
@@ -180,7 +176,7 @@ class MetricsNew
   def get_path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
     SELECT referrer_source, MIN(referrer_domain) as referrer_domain, MIN(referrer) as referrer_url, uniq(user_id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}') AND referrer IS NOT NULL
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}') AND referrer IS NOT NULL AND referrer_source IS NOT NULL
     GROUP BY referrer_source
     ORDER BY count desc
     SQL
@@ -188,7 +184,6 @@ class MetricsNew
     json = res.map_nil(referrer_source: String, referrer_domain: String, referrer_url: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
-    pages.reject! { |r| r.referrer_source.nil? }
     pages = count_percentage(pages)
     pages = count_path_bounce_rate(pages, path)
     return pages
@@ -197,7 +192,7 @@ class MetricsNew
   def get_all_medium_referrers : Array(StatsMediumReferrer)
     sql = <<-SQL
     SELECT referrer_medium, uniq(user_id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_medium IS NOT NULL
     GROUP BY referrer_medium
     ORDER BY count desc
     SQL
@@ -205,7 +200,6 @@ class MetricsNew
     json = res.map_nil(referrer_medium: String, count: UInt64).to_json
     return [] of StatsMediumReferrer if json.nil?
     pages = Array(StatsMediumReferrer).from_json(json)
-    pages.reject! { |r| r.referrer_medium.nil? }
     pages = count_percentage(pages)
     pages = count_medium_bounce_rate(pages)
     return pages
@@ -232,6 +226,39 @@ class MetricsNew
     return [nil, nil, nil] if total_query == 0
     sql = <<-SQL
     SELECT toDate(created_at) as date, uniq(user_id) as count FROM kindmetrics.sessions
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    GROUP BY toDate(created_at)
+    ORDER BY toDate(created_at) asc
+    SQL
+    res = @client.execute(sql)
+    grouped_json = res.map_nil(date: Time, count: UInt64).to_json
+    grouped = Array(StatsDays).from_json(grouped_json)
+    grouped2 = [] of StatsDays
+    range = (@from_date..@to_date)
+    range.each do |e|
+      date = nil
+      grouped.each do |g|
+        if e.day == g.date.day && e.month == g.date.month
+          date = StatsDays.new(date: e, count: g.count.not_nil!)
+        end
+      end
+      date = StatsDays.new(date: e, count: 0) if date.nil?
+      grouped2 << date.not_nil! unless date.nil?
+    end
+    days = grouped2.map { |d| d.date }
+    data = grouped2.map { |d| d.count }
+    today = data.clone
+    data.pop
+    today_data = today[today.size - 2..today.size]
+    today = today[0..today.size - 3].fill { |i| nil }
+    today_data.each { |t| today.push t }
+    return days, today, data
+  end
+
+  def get_pageviews_days
+    return [nil, nil, nil] if total_query == 0
+    sql = <<-SQL
+    SELECT toDate(created_at) as date, count(*) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     GROUP BY toDate(created_at)
     ORDER BY toDate(created_at) asc
@@ -331,7 +358,6 @@ class MetricsNew
     res = @client.execute_as_json(sql)
     return [] of StatsBrowser if res.nil?
     browsers = Array(StatsBrowser).from_json(res)
-    browsers.reject! { |r| r.browser.nil? }
     count_percentage(browsers)
   end
 
@@ -345,7 +371,6 @@ class MetricsNew
     res = @client.execute_as_json(sql)
     return [] of StatsOS if res.nil?
     os = Array(StatsOS).from_json(res)
-    os.reject! { |r| r.operative_system.nil? }
     count_percentage(os)
   end
 

@@ -27,13 +27,9 @@ class HeaderComponent < BaseComponent
     end
   end
 
-  def period_url(period : String)
-    @current_url + "?period=" + period
-  end
-
   def render
     div class: "gradient-color" do
-      div class: "mt-4 max-w-6xl mx-auto pt-6 px-2 sm:px-0 border-t" do
+      div class: "mt-4 max-w-6xl mx-auto pt-6 px-2 sm:px-0 border-t border-b" do
         div class: "flex justify-between items-center" do
           if @share_page
             div class: "w-2/3" do
@@ -45,7 +41,7 @@ class HeaderComponent < BaseComponent
             end
           else
             div class: "flex items-center" do
-              render_template "domains/dropdown"
+              mount DomainDropdownComponent.new(domain: @domain, domains: domains)
               div class: "md:mx-2 current-counter-container", data_controller: "current-refresh", data_current_refresh_url: "/domains/#{@domain.id}/data/current", data_current_refresh_refresh_interval: "10000" do
                 span "0", class: "current-counter", data_target: "current-refresh.counter"
                 raw " current active users"
@@ -54,12 +50,12 @@ class HeaderComponent < BaseComponent
           end
           div do
             if show_period?
-              render_template "domains/period_dropdown"
+              mount PeriodDropdownComponent.new(period_string, current_url)
             end
           end
         end
 
-        div class: "clear-both w-full pt-2 mt-2" do
+        div class: "clear-both w-full pt-2 mt-3" do
           mount TabMenu.new(links: links, active: @active, domain: @domain) if @total_sum > 0
         end
       end
