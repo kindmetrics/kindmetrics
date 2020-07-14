@@ -17,10 +17,14 @@ You would need this to run:
 Kindmetrics is running its instance on Kubernetes, you can find example how to set that up in `/script/kube`
 
 ## Want to uglify the track.js file?
-If you want to uglify the track.js file for your host. You have to set `APP_HOST` to the host the api endpoint. After that you can two one of two ways:
+To simplify and make it more straightforward Kindmetrics for self-hosting will return an non-uglify track.js file as default. Making it easy to change host later.
+
+If you want to uglify the track.js file for your host. You have to set `APP_HOST` to the host the api endpoint. After that you can do one of two ways:
 
 1. run `yarn prod` on docker run before running the server. You might need to install yarn on every run and this is not recommended.
 2. rebuild docker container with your own version with `APP_HOST` set. It will generate the track.js under `/public` directory - you should be able to get it from there if  you want to host it on a CDN or similar.
+
+2 is how we do for kindmetrics hosted version.
 
 If you don't want to do anything and just want it to load the uglified track.js file, you can tell track action to get the public file by setting `TRACK_PUBLIC` to 1.
 
@@ -35,7 +39,7 @@ example: `https://kindmetrics.io`
 
 ### APP_HOST
 should only be the hostname, `app.kindmetrics.io` as an example.
-This is used for redirects on wrong part. If used on localhost, write `localhost` here.
+This is used for redirects if the host is not correct, good if other domains are pointing at the same ip address. If used on localhost, write `localhost` here.
 
 ### APP_TRACK_HOST
 the host for the track, if you use cdn or another static hosting for the track javascript. if you don't, just set this as the same as `APP_HOST` or like we have done, on our landing page. Like `kindmetrics.io`
