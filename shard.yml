@@ -7,6 +7,7 @@ authors:
 targets:
   kindmetrics:
     main: src/kindmetrics.cr
+    worker: src/start_worker.cr
 
 crystal: 0.35.1
 
@@ -55,3 +56,6 @@ dependencies:
     github: arcage/crystal-quotedprintable
   cron_scheduler:
     github: kostya/cron_scheduler
+  clickhouse:
+    github: confact/clickhouse.cr
+    branch: master

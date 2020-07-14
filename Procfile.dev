@@ -1,3 +1,4 @@
 system_check: script/system_check && sleep 100000
 web: lucky watch --reload-browser
 assets: yarn watch
+worker: crystal run src/start_worker.cr

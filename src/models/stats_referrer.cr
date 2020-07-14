@@ -1,8 +1,11 @@
 class StatsReferrer
-  DB.mapping({
-    referrer_source: String?,
-    referrer_domain: String?,
-    count:           Int64,
-    percentage:      Float32?,
-  })
+  include JSON::Serializable
+
+  property referrer_source : String?
+  property referrer_domain : String?
+  property referrer_medium : String?
+  property referrer_url : String?
+  property count : Int64
+  property bounce_rate : Int64?
+  property percentage : Float32?
 end

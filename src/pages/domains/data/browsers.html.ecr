@@ -1,8 +1,0 @@
-<div class="flex justify-between text-xs uppercase mt-3 transister">
-  <span>Browser</span>
-  <span>Percentage</span>
-</div>
-  <% @browsers.each do |r| %>
-    <% mount BaseEventComponent.new(name: r.browser, percentage: r.percentage) %>
-  <% end %>
-</div>

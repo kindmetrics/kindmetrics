@@ -7,23 +7,25 @@ class TimeWorker
       L.info { "no sessions to check this time.." }
     end
     sessions.each do |s|
-      timedout(s)
+      spawn session_time_check(s.id)
     end
   end
 
-  def self.timedout(session : Session)
-    events = EventQuery.new.session_id(session.id).created_at.asc_order
+  def self.session_time_check(session_id : Int64)
+    events = AddClickhouse.get_events(session_id)
 
-    return false if events.results.size == 0
+    return false if events.size == 0
 
-    last_event = events.results.last
-    first_event = events.results.first
+    last_event = events.last
+    first_event = events.first
 
-    timespent = last_event.created_at - first_event.created_at
-    timespent_seconds = timespent.total_seconds.to_i64
+    time_spent = last_event.created_at - first_event.created_at
+    time_spent_seconds = time_spent.total_seconds.to_i64
 
-    not_done = if events.results.size > 0
-                 last_event.created_at > SESSION_TIMEOUT.ago
+    time_check = Time.utc - SESSION_TIMEOUT
+
+    not_done = if events.size > 0
+                 last_event.created_at > time_check
                else
                  true
                end
@@ -34,12 +36,14 @@ class TimeWorker
       return
     end
 
-    is_bounce = events.results.size == 1 ? 1 : 0
-    L.info { "saving session #{session.id} on domain: #{session.domain!.not_nil!.address}" }
-    SaveSession.update!(session, length: timespent_seconds, is_bounce: is_bounce)
+    is_bounce = events.size == 1 ? 1 : 0
+    L.info { "saving session #{session_id}" }
+
+    AddClickhouse.update_session(session_id.to_i64, length: time_spent_seconds, is_bounce: is_bounce)
+    AddClickhouse.update_session(session_id, length: time_spent_seconds, is_bounce: is_bounce)
   end
 
   def self.get_sessions
-    SessionQuery.new.preload_domain.length.is_nil
+    AddClickhouse.get_active_sessions
   end
 end

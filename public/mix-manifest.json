@@ -1,12 +1,17 @@
 {
-    "/js/app.js": "/js/app.js?id=1e34086cc224a2dd6da9",
-    "/css/app.css": "/css/app.css?id=7bccbc3edee261f0ec4d",
-    "/js/track.js": "/js/track.js?id=81070248b6499a118b25",
-    "/assets/images/36d461f4bb1ba5afd9192b775ed5fafa.ico.zip": "/assets/images/36d461f4bb1ba5afd9192b775ed5fafa.ico.zip?id=be5483f698c0b732693c",
+    "/js/app.js": "/js/app.js?id=b4232cf26645c02382bf",
+    "/css/app.css": "/css/app.css?id=1d24937493b42000df2f",
+    "/js/track.js": "/js/track.js?id=22488ad35e699637e3ae",
     "/assets/images/promo.jpg": "/assets/images/promo.jpg?id=71dd37811462b55d1782",
     "/assets/images/screenshot-window-min.png": "/assets/images/screenshot-window-min.png?id=84cc09d7c950156163a9",
     "/assets/images/screenshot-window.png": "/assets/images/screenshot-window.png?id=e7a7c155298f19ef115d",
-    "/assets/images/White on dark.png": "/assets/images/White on dark.png?id=45c32c618b5ef727adc3",
-    "/assets/svg/cogwheel-shape-svgrepo-com.svg": "/assets/svg/cogwheel-shape-svgrepo-com.svg?id=6a95d713958781e8e7d2",
-    "/assets/svg/logo.svg": "/assets/svg/logo.svg?id=8afce1d327f18005aa69"
+    "/assets/svg/arrow-down-green.svg": "/assets/svg/arrow-down-green.svg?id=227aa217eb36f6e9069c",
+    "/assets/svg/arrow-down-red.svg": "/assets/svg/arrow-down-red.svg?id=dd3d11dbfab2558506ac",
+    "/assets/svg/arrow-down.svg": "/assets/svg/arrow-down.svg?id=15251d3fbdce3b5d4251",
+    "/assets/svg/arrow-up-green.svg": "/assets/svg/arrow-up-green.svg?id=93a1fc0f99c384659e7c",
+    "/assets/svg/arrow-up-red.svg": "/assets/svg/arrow-up-red.svg?id=76464aac3a9e2ee05cb8",
+    "/assets/svg/arrow-up.svg": "/assets/svg/arrow-up.svg?id=b380d955cce39bf34b88",
+    "/assets/svg/check.svg": "/assets/svg/check.svg?id=10a5b071548379871a33",
+    "/assets/svg/cog.svg": "/assets/svg/cog.svg?id=a2376801c4706998fe23",
+    "/assets/svg/delete.svg": "/assets/svg/delete.svg?id=b0200bf7cbbb26c32989"
 }

@@ -17,10 +17,16 @@ class EventHandler
     end
 
     temp_source = params.get?(:source)
+    temp_medium = params.get?(:medium)
     source = if !temp_source.nil? && !temp_source.empty?
                temp_source
              else
-               parse_referer_data(referrer)
+               referer_source(referrer)
+             end
+    medium = if !temp_medium.nil? && !temp_medium.empty?
+               temp_medium
+             else
+               referer_medium(referrer)
              end
 
     browser_data = {
@@ -40,17 +46,19 @@ class EventHandler
     unless is_current_session?(user_id)
       create_session(
         **browser_data,
+        is_bounce: 0,
+        length: nil,
+        name: "pageview",
         device: device,
         referrer: referrer.to_s,
         referrer_domain: referrer.host,
         country: country,
         url: url.to_s,
         path: url.path,
+        referrer_medium: medium,
         referrer_source: source,
         domain_id: domain.id,
         user_id: user_id,
-        is_bounce: 0,
-        length: nil
       )
     else
       add_event(
@@ -63,6 +71,7 @@ class EventHandler
         referrer_domain: referrer.host,
         url: url.to_s,
         path: url.path,
+        referrer_medium: medium,
         referrer_source: source,
         domain_id: domain.id
       )
@@ -72,32 +81,39 @@ class EventHandler
   def self.is_current_session?(user_id : String)
     session = get_session(user_id)
     return false unless session
-    events = EventQuery.new.session_id(session.id).created_at.desc_order
-    return false if events.results.size == 0 && session.created_at < SESSION_TIMEOUT.ago
-    return true if events.results.size == 0
+    return false unless session.length.nil?
+    events = AddClickhouse.get_last_event(session)
+    return false if events.size == 0
     return events.first.created_at > SESSION_TIMEOUT.ago
   end
 
-  def self.add_event(user_id : String, **params)
+  def self.add_event(user_id : String, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id)
     session = get_session(user_id)
     if session
-      SaveEvent.create(**params, user_id: user_id, session_id: session.not_nil!.id) do |operation, event|
-        unless event
-          raise Avram::InvalidOperationError.new(operation)
-        end
-      end
+      AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id)
     else
       puts "session not found?"
     end
   end
 
-  def self.create_session(**params)
-    CreateSession.create!(**params)
+  def self.create_session(user_id : String, length : Int64?, name : String, is_bounce : Int32, referrer : String?, url : String?, referrer_source : String?, referrer_medium : String?, path : String?, device : String?, operative_system : String?, referrer_domain : String?, browser_name : String?, country : String?, domain_id : Int64, created_at : Time = Time.utc, mark : Int8 = 0)
+    AddClickhouse.session_insert(user_id, length, is_bounce, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at.to_utc, mark: mark)
+    session = get_session(user_id)
+    AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id, created_at: created_at.to_utc)
   end
 
-  def self.parse_referer_data(referrer : URI)
-    response = REFERERPARSER.parse(referrer.to_s)
+  def self.referer_source(referrer : URI) : String?
+    response = referer_parser(referrer)
     response[:source]? || use_host(referrer)
+  end
+
+  def self.referer_medium(referrer : URI) : String?
+    response = referer_parser(referrer)
+    response[:medium]?
+  end
+
+  def self.referer_parser(referrer : URI)
+    REFERERPARSER.parse(referrer.to_s)
   end
 
   private def self.use_host(referrer)
@@ -135,9 +151,9 @@ class EventHandler
     end
   end
 
-  private def self.get_session(user_id : String)
-    SessionQuery.new.user_id(user_id).length.is_nil.first
-  rescue Avram::RecordNotFoundError
+  private def self.get_session(user_id : String) : ClickSession?
+    AddClickhouse.get_session(user_id)
+  rescue Exception
     nil
   end
 end
