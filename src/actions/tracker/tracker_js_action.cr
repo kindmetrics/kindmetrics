@@ -1,4 +1,4 @@
-class Home::Index < BrowserAction
+class TrackerJsAction < BrowserAction
   include Auth::AllowGuests
 
   get "/js/track.js" do
