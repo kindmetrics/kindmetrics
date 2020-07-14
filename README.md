@@ -49,7 +49,7 @@ crystal spec
 And the code should be in `/src` and the tests in `/spec`
 
 ### Deployment
-You can find the deployment instructions in [deployment.md file](https://github.com/kindmetrics/kindmetrics/blob/master/deployment.md)
+You can find the deployment instructions in [deployment.md file](/deployment.md)
 
 ### Contribute
 I am all open for any help I can get with this project.
