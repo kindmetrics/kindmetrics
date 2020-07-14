@@ -59,9 +59,13 @@ jobs:
           # The hostname used to communicate with the PostgreSQL service container
           DB_HOST: postgres
           CLICKHOUSE_HOST: clickhouse
+          EMAIL_FROM: test@test.com
+          EMAIL_FROM_NAME: Kindmetrics
     - name: Run tests
       run: crystal spec
       env:
           # The hostname used to communicate with the PostgreSQL service container
           DB_HOST: postgres
           CLICKHOUSE_HOST: clickhouse
+          EMAIL_FROM: test@test.com
+          EMAIL_FROM_NAME: Kindmetrics
