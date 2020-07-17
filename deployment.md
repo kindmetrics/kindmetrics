@@ -52,7 +52,7 @@ If you don't want to do anything and just want it to load the uglified track.js 
 
 ## Error handling
 
-### track.js return 413
+### track.js return 414
 That means APP_HOST is not set correctly. Set that environment variable should solve that issue and many other issues as it is required for many things.
 
 ### I get other errors
