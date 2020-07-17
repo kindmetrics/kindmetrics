@@ -49,7 +49,7 @@ class MetricsNew
 
   def path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, uniq(user_id) as count FROM kindmetrics.sessions
+    SELECT referrer_source, any(referrer_domain) as referrer_domain, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}') AND referrer_source IS NOT NULL
     GROUP BY referrer_source
     ORDER BY count desc LIMIT 10
@@ -128,7 +128,7 @@ class MetricsNew
 
   def get_referrers(limit : Int32 = 6)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, MIN(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
+    SELECT referrer_source, any(referrer_domain) as referrer_domain, MIN(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source IS NOT NULL
     GROUP BY referrer_source
     ORDER BY count desc LIMIT #{limit}
@@ -143,15 +143,16 @@ class MetricsNew
 
   def get_source_referrers(source : String)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer) as referrer_url, COUNT(id) as count FROM kindmetrics.sessions
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source}' AND referrer IS NOT NULL
+    SELECT referrer_source, any(referrer) as referrer_url, COUNT(id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source.strip}'
     GROUP BY referrer_source
-    ORDER BY uniq(user_id) desc
+    ORDER BY count desc
     SQL
     res = @client.execute(sql)
     json = res.map_nil(referrer_source: String, referrer_url: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
+    pages.reject! { |r| r.referrer_url.nil? }
     pages = count_percentage(pages)
     pages = count_bounce_rate(pages)
     return pages
@@ -159,7 +160,7 @@ class MetricsNew
 
   def get_all_referrers : Array(StatsReferrer)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, uniq(user_id) as count FROM kindmetrics.events
+    SELECT referrer_source, any(referrer_domain) as referrer_domain, uniq(user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source IS NOT NULL
     GROUP BY referrer_source
     ORDER BY count desc
@@ -175,7 +176,7 @@ class MetricsNew
 
   def get_path_referrers(path : String) : Array(StatsReferrer)
     sql = <<-SQL
-    SELECT referrer_source, MIN(referrer_domain) as referrer_domain, MIN(referrer) as referrer_url, uniq(user_id) as count FROM kindmetrics.events
+    SELECT referrer_source, any(referrer_domain) as referrer_domain, MIN(referrer) as referrer_url, uniq(user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}') AND referrer IS NOT NULL AND referrer_source IS NOT NULL
     GROUP BY referrer_source
     ORDER BY count desc
@@ -375,11 +376,11 @@ class MetricsNew
   end
 
   private def slim_from_date
-    @from_date.to_s("%Y-%m-%d %H:%M:%S")
+    @from_date.to_utc.to_s("%Y-%m-%d %H:%M:%S")
   end
 
   private def slim_to_date
-    @to_date.to_s("%Y-%m-%d %H:%M:%S")
+    @to_date.to_utc.to_s("%Y-%m-%d %H:%M:%S")
   end
 
   private def count_percentage(array)
