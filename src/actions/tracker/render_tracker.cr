@@ -3,7 +3,7 @@ class RenderTracker < BrowserAction
 
   get "/js/track.js" do
     if KindEnv.env("APP_HOST").nil?
-      return head 414
+      return head 412
     end
     if KindEnv.env("TRACK_PUBLIC") == "1" || KindEnv.env("TRACK_PUBLIC") == "true"
       file_content = File.read("#{Dir.current}/public/track.js")
