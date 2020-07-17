@@ -3,7 +3,7 @@ class AddTrackingComponent < BaseComponent
 
   def render
     snippet = <<-HTML
-    <script src="https://kindmetrics.io/js/track.js" defer="true" data-domain="#{@domain.address}"></script>
+    <script src="https://#{KindEnv.env("APP_HOST")}/js/track.js" defer="true" data-domain="#{@domain.address}"></script>
     HTML
     div class: "mt-20 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       h1 "Add tracking script", class: "text-xl"

@@ -28,16 +28,17 @@ Kindmetrics is built on:
 * Tailwind css
 * Stimulus.js
 * Chart.js
+* Clickhouse
+* PostgreSQL
 
 ### Setting up the project
 
 If you want to run this project for dev, like when you want to fix bugs or new features, you have to install Crystal language. You can find more info about crystal at https://www.crystal-lang.org - You can use crenv, asdf or similar. Check the details on https://luckyframework.org/guides/getting-started/installing#1-install-crystal
 
-Kindmetrics use postgresql 
-
 When that is done, you have to setup the lucky project:
 1. [Install required dependencies](https://luckyframework.org/guides/getting-started/installing#install-required-dependencies)
 1. Update database settings in `config/database.cr`
+1. Run `lucky kind.clickhouse`
 1. Run `script/setup`
 1. Run `lucky dev` to start the app
 
@@ -49,12 +50,9 @@ crystal spec
 And the code should be in `/src` and the tests in `/spec`
 
 ### Deployment
-You can easily deploy this. Just clone this to your computer and run `docker build .` and deploy that container to your server. Kindmetrics use all lucky framework environment variables which can be seen here: https://luckyframework.org/guides/deploying/ubuntu#creating-a-systemd-unit-file-for-your-app
-
-Kindmetrics is dependent on some SMTP mail server and postgresql. Be sure to have those prepared.
+You can find the deployment instructions in [deployment.md file](/deployment.md)
 
 ### Contribute
 I am all open for any help I can get with this project.
 
 Fork this repo, add push your changes to a new branch and create an pull request. I will review when I can. if they follow the aboves ideas and standpoints and don't go against my plans for future, which can be seen in the issues I will approve. Just add tests. Even if I have been bad on that I am trying to be better.
-

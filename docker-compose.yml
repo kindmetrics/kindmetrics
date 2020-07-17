@@ -1,0 +1,56 @@
+# This is made for simple setup kindmetrics server. Be sure to change this
+# for making it work for you. You sitll have to setup things like SECRET and
+# things before running this.
+volumes:
+  db-data:
+    driver: local
+  clickhouse-data:
+    driver: local
+
+services:
+  database:
+    image: postgres:12
+    command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=kindmetrics
+      - POSTGRES_USER=postgres
+    ports:
+      - 5432:5432
+
+  clickhouse:
+    image: yandex/clickhouse-server:latest
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse
+    ports:
+    - 8123:8123
+
+  kindmetrics:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+      - database
+      - clickhouse
+    ports:
+      - 80:5000
+    links:
+      - database
+      - clickhouse
+    env_file:
+      - .env
+  kind_setup:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: sh -c "./start_tasks kind.clickhouse && ./start_tasks db.create && ./start_tasks db.migrate"
+    depends_on:
+      - database
+      - clickhouse
+    links:
+      - database
+      - clickhouse
+    env_file:
+       - .env
