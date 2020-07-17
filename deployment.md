@@ -3,18 +3,40 @@ You can easily deploy this. Just clone this to your computer and run `docker bui
 
 Kindmetrics is dependent on some SMTP mail server and postgresql. Be sure to have those prepared.
 
-## Docker hub - download the prebuilt one
-We have an docker container published at docker hub: https://hub.docker.com/repository/docker/kindmetrics/kindmetrics
-
-You should be able to run `docker pull kindmetrics/kindmetrics:latest` to get the latest build there.
-
 ## Requirement
 You would need this to run:
 * docker
 * postgres
 * clickhouse
 
+## Docker hub - download the prebuilt one
+We have an docker container published at docker hub: https://hub.docker.com/repository/docker/kindmetrics/kindmetrics
+
+You should be able to run `docker pull kindmetrics/kindmetrics:latest` to get the latest build there.
+
 Kindmetrics is running its instance on Kubernetes, you can find example how to set that up in `/script/kube`
+
+## Using docker composer
+If you want to use the docker composer file to set up the whole infrastructure for Kindmetrics be sure to first create SECRET KEY BASE and set all Environment variables below before continue.
+
+You can run it and it should set up everything for you.
+Run it by:
+```
+docker-compose -f docker-compose.yml up
+```
+
+### Using docker hub instead of building Dockerfile
+For using  the docker hub image instead of building the dockerfile, you can remove
+```
+build:
+  context: .
+  dockerfile: ./Dockerfile
+```
+from `kindmetrics` and `kind_setup` and replace with:
+```
+image: kindmetrics/kindmetrics:latest
+```
+Be sure that uglify won't work with this approach. The docker hub is for those that are ok with runtime changing track.js code - making it a bit slower.
 
 ## Want to uglify the track.js file?
 To simplify and make it more straightforward Kindmetrics for self-hosting will return an non-uglify track.js file as default. Making it easy to change host later.
@@ -28,6 +50,14 @@ If you want to uglify the track.js file for your host. You have to set `APP_HOST
 
 If you don't want to do anything and just want it to load the uglified track.js file, you can tell track action to get the public file by setting `TRACK_PUBLIC` to 1.
 
+## Error handling
+
+### track.js return 413
+That means APP_HOST is not set correctly. Set that environment variable should solve that issue and many other issues as it is required for many things.
+
+### I get other errors
+Please add a issue for that. We will have a setup documentation under https://docs.kindmetrics.io later for walkthrough how to setup a kindmetrics server.
+
 ## Environment variables
 
 ### LUCKY_ENV
@@ -40,6 +70,9 @@ example: `https://kindmetrics.io`
 ### APP_HOST
 should only be the hostname, `app.kindmetrics.io` as an example.
 This is used for redirects if the host is not correct, good if other domains are pointing at the same ip address. If used on localhost, write `localhost` here.
+
+### KIND_HOST
+Only use for  the data-domain for the tracker for the Kindmetrics app if you have a domain you want to track the kindmetrics app as well. Like `https://kindmetrics.io` and `https://app.kindmetrics.io` together. Then APP_HOST will usually be `app.kindmetrics.io` - then you can set KIND_HOST to `kindmetrics.io` - If not set, this will be APP_HOST value.
 
 ### APP_TRACK_HOST
 the host for the track, if you use cdn or another static hosting for the track javascript. if you don't, just set this as the same as `APP_HOST` or like we have done, on our landing page. Like `kindmetrics.io`
