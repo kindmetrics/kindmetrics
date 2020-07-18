@@ -7,6 +7,10 @@ class EventHandler
       return unless hostname.ends_with?(domain.address)
     end
 
+    name = params.get?(:name)
+
+    return if name.nil?
+
     country = IPCOUNTRY.lookup_cc(remote_ip)
 
     browser = UserHash.get_browser(user_agent) if user_agent.present?
@@ -48,7 +52,7 @@ class EventHandler
         **browser_data,
         is_bounce: 0,
         length: nil,
-        name: "pageview",
+        name: name,
         device: device,
         referrer: referrer.to_s,
         referrer_domain: referrer.host,
@@ -65,7 +69,7 @@ class EventHandler
         user_id,
         **browser_data,
         device: device,
-        name: "pageview",
+        name: name,
         referrer: referrer.to_s,
         country: country,
         referrer_domain: referrer.host,
@@ -97,7 +101,7 @@ class EventHandler
   end
 
   def self.create_session(user_id : String, length : Int64?, name : String, is_bounce : Int32, referrer : String?, url : String?, referrer_source : String?, referrer_medium : String?, path : String?, device : String?, operative_system : String?, referrer_domain : String?, browser_name : String?, country : String?, domain_id : Int64, created_at : Time = Time.utc, mark : Int8 = 0)
-    AddClickhouse.session_insert(user_id, length, is_bounce, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at.to_utc, mark: mark)
+    AddClickhouse.session_insert(user_id, name, length, is_bounce, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at.to_utc, mark: mark)
     session = get_session(user_id)
     AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id, created_at: created_at.to_utc)
   end

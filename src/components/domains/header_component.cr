@@ -21,6 +21,7 @@ class HeaderComponent < BaseComponent
         {"link" => Domains::Show.url(@domain, period: period), "name" => "Dashboard"},
         {"link" => Domains::Referrer::Index.url(@domain, period: period), "name" => "Referrers"},
         {"link" => Domains::Countries::Index.url(@domain, period: period), "name" => "Countries"},
+        {"link" => Domains::Goals::Index.url(@domain, period: period), "name" => "Goals"},
         {"link" => Domains::Edit.url(@domain), "name" => "Settings"},
         {"link" => Domains::EditReports.url(@domain), "name" => "Reports"},
       ]

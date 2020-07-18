@@ -1,4 +1,6 @@
 class MetricsNew
+  include Percentage
+  include ClickDates
   def initialize(@domain : Domain, @from_date : Time, @to_date : Time)
     @client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
   end
@@ -373,45 +375,5 @@ class MetricsNew
     return [] of StatsOS if res.nil?
     os = Array(StatsOS).from_json(res)
     count_percentage(os)
-  end
-
-  private def slim_from_date
-    @from_date.to_utc.to_s("%Y-%m-%d %H:%M:%S")
-  end
-
-  private def slim_to_date
-    @to_date.to_utc.to_s("%Y-%m-%d %H:%M:%S")
-  end
-
-  private def count_percentage(array)
-    total = array.sum { |p| p.count }
-    array.map do |p|
-      p.percentage = p.count / total.to_f32
-      p
-    end
-  end
-
-  private def count_bounce_rate(array)
-    array.map do |p|
-      next p if p.referrer_source.nil?
-      p.bounce_rate = bounce_query_referrer(p.referrer_source.not_nil!)
-      p
-    end
-  end
-
-  private def count_path_bounce_rate(array, path)
-    array.map do |p|
-      next p if p.referrer_source.nil?
-      p.bounce_rate = bounce_query_path_referrer(p.referrer_source.not_nil!, path)
-      p
-    end
-  end
-
-  private def count_medium_bounce_rate(array)
-    array.map do |p|
-      next p if p.referrer_medium.nil?
-      p.bounce_rate = bounce_query_medium(p.referrer_medium.not_nil!)
-      p
-    end
   end
 end

@@ -1,11 +1,13 @@
 class Metrics
   def initialize(@domain : Domain, @period : String)
     @new_metrics = MetricsNew.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day)
+    @goal_metrics = GoalMetrics.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day)
   end
 
   delegate :current_query, :unique_query, :total_query, :bounce_query, :get_referrers, :get_source_referrers, :get_pages, :get_browsers, :get_os, :get_devices, to: @new_metrics
   delegate :get_source_referrers_total, :path_total_query, :get_countries, :get_countries_map, :path_unique_query, :get_all_referrers, :get_path_referrers, :path_bounce_query, :get_days, to: @new_metrics
   delegate :get_all_medium_referrers, :get_path_medium_referrers, :get_pageviews_days, to: @new_metrics
+  delegate :get_goals, to: @goal_metrics
 
   private def period_days : Time
     case @period
@@ -19,14 +21,6 @@ class Metrics
       return 90.days.ago.at_beginning_of_day
     else
       return 7.days.ago.at_beginning_of_day
-    end
-  end
-
-  private def count_percentage(array)
-    total = array.sum { |p| p.count }
-    array.map do |p|
-      p.percentage = p.count / total.to_f32
-      p
     end
   end
 end
