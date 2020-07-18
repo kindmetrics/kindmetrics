@@ -41,7 +41,7 @@ class HeaderComponent < BaseComponent
             end
           else
             div class: "flex items-center" do
-              mount DomainDropdownComponent.new(domain: @domain, domains: domains)
+              m DomainDropdownComponent, domain: @domain, domains: domains
               div class: "md:mx-2 current-counter-container", data_controller: "current-refresh", data_current_refresh_url: "/domains/#{@domain.id}/data/current", data_current_refresh_refresh_interval: "10000" do
                 span "0", class: "current-counter", data_target: "current-refresh.counter"
                 raw " current active users"
@@ -50,13 +50,13 @@ class HeaderComponent < BaseComponent
           end
           div do
             if show_period?
-              mount PeriodDropdownComponent.new(period_string, current_url)
+              m PeriodDropdownComponent, period_string, current_url
             end
           end
         end
 
         div class: "clear-both w-full pt-2 mt-3" do
-          mount TabMenu.new(links: links, active: @active, domain: @domain) if @total_sum > 0
+          m TabMenu, links: links, active: @active, domain: @domain if @total_sum > 0
         end
       end
     end
