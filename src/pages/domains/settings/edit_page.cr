@@ -22,7 +22,7 @@ class Domains::EditPage < AdminLayout
       # Edit fields in src/components/domains/form_fields.cr
       m Shared::Field, operation.address, "Domain", &.text_input(autofocus: "true", disabled: true, append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
 
-      m TimezoneDropdown,operation.time_zone
+      m TimezoneDropdown, operation.time_zone
 
       m Shared::Field, op.shared, "Share", &.checkbox(append_class: "form-checkbox block clear-both my-4")
 

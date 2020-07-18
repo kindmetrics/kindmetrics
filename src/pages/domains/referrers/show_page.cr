@@ -14,7 +14,7 @@ class Domains::Referrer::ShowPage < Share::BasePage
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
         para "Got #{pluralize(total, "visitor")} from #{source} the last #{period_string}", class: "text-xl mb-2"
         if @events.size > 0
-          m DetailTableComponent,first_header: "Referrer", second_header: "Visitors" do
+          m DetailTableComponent, first_header: "Referrer", second_header: "Visitors" do
             @events.each_with_index do |event, i|
               m ReferrerUrlComponent, event: event, index: i
             end
