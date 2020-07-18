@@ -2,11 +2,11 @@ version: 2.0
 shards:
   authentic:
     git: https://github.com/luckyframework/authentic.git
-    version: 0.6.0
+    version: 0.6.1
 
   avram:
     git: https://github.com/luckyframework/avram.git
-    version: 0.15.0
+    version: 0.16.1
 
   baked_file_system:
     git: https://github.com/schovi/baked_file_system.git
@@ -37,8 +37,16 @@ shards:
     version: 0.3.0
 
   cry:
-    git: https://github.com/paulcsmith/cry.git
+    git: https://github.com/luckyframework/cry.git
     version: 0.4.2
+
+  crystar:
+    git: https://github.com/naqvis/crystar.git
+    version: 0.1.7
+
+  csv_processor:
+    git: https://github.com/drum445/csv_processor.git
+    version: 0.1.0+git.commit.de204a475eac62c03c072feb7735d7c7217425bd
 
   db:
     git: https://github.com/crystal-lang/crystal-db.git
@@ -94,7 +102,7 @@ shards:
 
   lucky:
     git: https://github.com/luckyframework/lucky.git
-    version: 0.22.0
+    version: 0.23.0
 
   lucky_can:
     git: https://github.com/confact/lucky_can.git
@@ -102,15 +110,15 @@ shards:
 
   lucky_cli:
     git: https://github.com/luckyframework/lucky_cli.git
-    version: 0.22.1
+    version: 0.23.1
 
   lucky_flow:
     git: https://github.com/luckyframework/lucky_flow.git
-    version: 0.6.3
+    version: 0.7.0
 
   lucky_router:
     git: https://github.com/luckyframework/lucky_router.git
-    version: 0.2.2
+    version: 0.3.0
 
   markd:
     git: https://github.com/icyleaf/markd.git
@@ -137,8 +145,8 @@ shards:
     version: 0.1.1
 
   selenium:
-    git: https://github.com/ysbaddaden/selenium-webdriver-crystal.git
-    version: 0.4.0+git.commit.bda2fd406c1a118251c5a2883f1e1f3af242116e
+    git: https://github.com/matthewmcgarvey/selenium.cr.git
+    version: 0.6.0
 
   shell-table:
     git: https://github.com/luckyframework/shell-table.cr.git
@@ -151,6 +159,10 @@ shards:
   var:
     git: https://github.com/maiha/var.cr.git
     version: 1.2.0
+
+  webdrivers:
+    git: https://github.com/matthewmcgarvey/webdrivers.cr.git
+    version: 0.3.0
 
   wordsmith:
     git: https://github.com/luckyframework/wordsmith.git

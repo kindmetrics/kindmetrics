@@ -26,8 +26,8 @@
   </head>
 
   <body>
-    <% mount InloggedHead.new(current_user) %>
-    <% mount Shared::FlashMessages.new(context.flash) %>
+    <% m InloggedHead.new(current_user) %>
+    <% m Shared::FlashMessages.new(context.flash) %>
     <% content %>
   </body>
 </html>

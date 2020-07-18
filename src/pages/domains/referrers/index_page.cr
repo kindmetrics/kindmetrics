@@ -6,15 +6,15 @@ class Domains::Referrer::IndexPage < Share::BasePage
   needs domains : DomainQuery?
 
   def content
-    mount HeaderComponent.new(domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1, share_page: @share_page, period_string: period_string, period: @period, active: "Referrers")
+    m HeaderComponent.new(domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1, share_page: @share_page, period_string: period_string, period: @period, active: "Referrers")
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
       sub_header
       div class: "w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
         div class: "card" do
           if referrers.size > 0
-            mount DetailTableComponent.new(first_header: "Referrer", second_header: "Visitors", third_header: "Bounce") do
+            m DetailTableComponent.new(first_header: "Referrer", second_header: "Visitors", third_header: "Bounce") do
               referrers.each_with_index do |event, i|
-                mount ReferrerMainComponent.new(event: event, index: i, current_user: current_user, period: @period, current_domain: @domain)
+                m ReferrerMainComponent.new(event: event, index: i, current_user: current_user, period: @period, current_domain: @domain)
               end
             end
           else
@@ -25,9 +25,9 @@ class Domains::Referrer::IndexPage < Share::BasePage
         end
         div class: "card" do
           if mediums.size > 0
-            mount DetailTableComponent.new(first_header: "Medium", second_header: "Visitors", third_header: "Bounce") do
+            m DetailTableComponent.new(first_header: "Medium", second_header: "Visitors", third_header: "Bounce") do
               mediums.each_with_index do |event, i|
-                mount ReferrerMediumComponent.new(event: event, index: i)
+                m ReferrerMediumComponent.new(event: event, index: i)
               end
             end
           else

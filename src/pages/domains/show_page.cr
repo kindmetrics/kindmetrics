@@ -15,7 +15,7 @@ class Domains::ShowPage < SecretGuestLayout
   def content
     render_header
     if total_sum == 0
-      mount AddTrackingComponent.new(domain: @domain)
+      m AddTrackingComponent.new(domain: @domain)
     else
       render_total
       div class: "max-w-6xl mx-auto py-6 sm:px-6 lg:px-8 p-5 my-3 mb-6 card" do
@@ -26,7 +26,7 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_total
-    mount TotalRowComponent.new(@total_unique, @total_sum, @total_bounce, @total_unique_previous, @total_previous, @total_bounce_previous)
+    m TotalRowComponent.new(@total_unique, @total_sum, @total_bounce, @total_unique_previous, @total_previous, @total_bounce_previous)
   end
 
   def render_canvas
@@ -44,17 +44,17 @@ class Domains::ShowPage < SecretGuestLayout
         div class: "card" do
           div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/referrer"
           unless @share_page
-            mount DetailsLinkComponent.new(link: Domains::Referrer::Index.with(@domain, @period).url)
+            m DetailsLinkComponent.new(link: Domains::Referrer::Index.with(@domain, @period).url)
           else
-            mount DetailsLinkComponent.new(link: Share::Referrer::Index.with(@domain.hashid, @period).url)
+            m DetailsLinkComponent.new(link: Share::Referrer::Index.with(@domain.hashid, @period).url)
           end
         end
         div class: "card" do
           div class: "relative clear-both", data_controller: "loader", data_loader_period: "<%=@period%>", data_loader_url: "/domains/#{@domain.id}/data/countries"
           unless @share_page
-            mount DetailsLinkComponent.new(link: Domains::Countries::Index.with(@domain, @period).url)
+            m DetailsLinkComponent.new(link: Domains::Countries::Index.with(@domain, @period).url)
           else
-            mount DetailsLinkComponent.new(link: Share::Countries::Index.with(@domain.hashid, @period).url)
+            m DetailsLinkComponent.new(link: Share::Countries::Index.with(@domain.hashid, @period).url)
           end
         end
         div class: "card" do
@@ -71,6 +71,6 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_header
-    mount HeaderComponent.new(domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, show_period: total_sum > 0, share_page: @share_page)
+    m HeaderComponent.new(domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, show_period: total_sum > 0, share_page: @share_page)
   end
 end

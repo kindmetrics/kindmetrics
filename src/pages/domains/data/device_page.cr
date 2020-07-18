@@ -13,7 +13,7 @@ class Domains::Data::Devices::DevicesPage
   end
 
   def render_table
-    mount DashboardTableComponent.new(first_header: "Device", second_header: "Percentage") do
+    m DashboardTableComponent.new(first_header: "Device", second_header: "Percentage") do
       @devices.each do |r|
         render_row(r)
       end

@@ -13,7 +13,7 @@ class Domains::Data::CountriesPage
   end
 
   def render_table
-    mount DashboardTableComponent.new(first_header: "Country", second_header: "Visitors") do
+    m DashboardTableComponent.new(first_header: "Country", second_header: "Visitors") do
       @countries.each do |r|
         render_row(r)
       end
