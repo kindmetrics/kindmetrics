@@ -59,5 +59,3 @@ dependencies:
   clickhouse:
     github: confact/clickhouse.cr
     branch: master
-  csv_processor:
-    github: drum445/csv_processor

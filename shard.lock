@@ -44,10 +44,6 @@ shards:
     git: https://github.com/naqvis/crystar.git
     version: 0.1.7
 
-  csv_processor:
-    git: https://github.com/drum445/csv_processor.git
-    version: 0.1.0+git.commit.de204a475eac62c03c072feb7735d7c7217425bd
-
   db:
     git: https://github.com/crystal-lang/crystal-db.git
     version: 0.9.0
