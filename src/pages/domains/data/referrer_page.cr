@@ -16,7 +16,7 @@ class Domains::Data::ReferrerPage
   end
 
   def render_table
-    m DashboardTableComponent.new(first_header: "Referrer", second_header: "Visitors") do
+    m DashboardTableComponent, first_header: "Referrer", second_header: "Visitors" do
       @referrers.each do |r|
         render_row(r)
       end

@@ -6,7 +6,7 @@ class Domains::EditReportsPage < AdminLayout
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
 
   def content
-    m HeaderComponent.new(domain: @domain, current_url: "#", domains: nil, total_sum: 1, share_page: false, period_string: "7 days", show_period: false, active: "Reports")
+    m HeaderComponent, domain: @domain, current_url: "#", domains: nil, total_sum: 1_i64, share_page: false, period_string: "7 days", show_period: false, active: "Reports"
     div class: "mt-10 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       div class: "my-3 card" do
         h1 "Reports", class: "text-xl"
@@ -77,14 +77,14 @@ class Domains::EditReportsPage < AdminLayout
   def render_user_email_form(op)
     form_for Domains::EmailReport::Create.with(@domain.id) do
       # Edit fields in src/components/domains/form_fields.cr
-      m Shared::Field.new(op.email, "Email"), &.email_input(autofocus: "true", append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
+      m Shared::Field, op.email, "Email", &.email_input(autofocus: "true", append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
 
       div class: "inline-block flex items-center" do
         div class: "w-1/2" do
-          m Shared::Field.new(op.weekly, "Weekly"), &.checkbox(append_class: "form-checkbox block clear-both my-4")
+          m Shared::Field, op.weekly, "Weekly", &.checkbox(append_class: "form-checkbox block clear-both my-4")
         end
         div class: "w-1/2" do
-          m Shared::Field.new(op.monthly, "Monthly"), &.checkbox(append_class: "form-checkbox block clear-both my-4")
+          m Shared::Field, op.monthly, "Monthly", &.checkbox(append_class: "form-checkbox block clear-both my-4")
         end
       end
       submit "Add", data_disable_with: "Adding...", class: "mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -99,7 +99,7 @@ class Domains::EditReportsPage < AdminLayout
 
           link "Back to dashboard", to: Domains::Show.with(@domain), class: "stats-bg py-3 px-2 text-white hover:bg-gray-700 hover:no-underline rounded transister"
         end
-        m TabMenu.new(links: [{"link" => Domains::Edit.url(@domain), "name" => "Domain"}, {"link" => Domains::EditReports.url(@domain), "name" => "Reports"}], active: "Reports")
+        m TabMenu, links: [{"link" => Domains::Edit.url(@domain), "name" => "Domain"}, {"link" => Domains::EditReports.url(@domain), "name" => "Reports"}], active: "Reports"
       end
     end
   end

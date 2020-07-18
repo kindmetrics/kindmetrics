@@ -16,7 +16,7 @@ class Domains::Data::PagesPage
   end
 
   def render_table
-    m DashboardTableComponent.new(first_header: "Page", second_header: "Visitors") do
+    m DashboardTableComponent, first_header: "Page", second_header: "Visitors" do
       @pages.each do |r|
         render_row(r)
       end

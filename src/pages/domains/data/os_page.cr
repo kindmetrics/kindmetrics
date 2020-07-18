@@ -13,7 +13,7 @@ class Domains::Data::Devices::OsPage
   end
 
   def render_table
-    m DashboardTableComponent.new(first_header: "OS", second_header: "Percentage") do
+    m DashboardTableComponent, first_header: "OS", second_header: "Percentage" do
       @os.each do |r|
         render_row(r)
       end

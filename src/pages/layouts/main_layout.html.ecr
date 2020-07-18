@@ -24,8 +24,8 @@
   </head>
 
   <body>
-    <% m InloggedHead.new(current_user) %>
-    <% m Shared::FlashMessages.new(context.flash) %>
+    <% m InloggedHead, current_user %>
+    <% m Shared::FlashMessages, context.flash %>
     <% content %>
   </body>
 </html>

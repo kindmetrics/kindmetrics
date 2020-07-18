@@ -15,7 +15,7 @@
     <div class="flex-container">
       <div class="max-w-xl mx-auto flex-grow lg:w-2/5 md:w-3/5  sm:w-4/5 px-2 pt-4 lg:pt-20 md:pt-20">
         <h1 class="text-center text-2xl mb-5">Kindmetrics</h1>
-        <% m Shared::FlashMessages.new(context.flash) %>
+        <% m Shared::FlashMessages, context.flash %>
         <% content %>
       </div>
     </div>

@@ -46,7 +46,7 @@ class Shared::Field(T) < BaseComponent
       yield input_builder
     end
 
-    m Shared::FieldErrors.new(attribute)
+    m Shared::FieldErrors, attribute
   end
 
   # Use a text_input by default

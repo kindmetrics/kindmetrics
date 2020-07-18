@@ -5,7 +5,7 @@ class Domains::EditPage < AdminLayout
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
 
   def content
-    m HeaderComponent.new(domain: @domain, current_url: "#", domains: nil, total_sum: 1, share_page: false, period_string: "7 days", show_period: false, active: "Settings")
+    m HeaderComponent, domain: @domain, current_url: "#", domains: nil, total_sum: 1_i64, share_page: false, period_string: "7 days", show_period: false, active: "Settings"
     div class: "mt-10 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       div class: "my-3 card" do
         h1 "Edit #{@domain.address}", class: "text-xl"
@@ -20,11 +20,11 @@ class Domains::EditPage < AdminLayout
   def render_domain_form(op)
     form_for Domains::Update.with(@domain.id) do
       # Edit fields in src/components/domains/form_fields.cr
-      m Shared::Field.new(operation.address, "Domain"), &.text_input(autofocus: "true", disabled: true, append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
+      m Shared::Field, operation.address, "Domain", &.text_input(autofocus: "true", disabled: true, append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
 
-      m TimezoneDropdown.new(operation.time_zone)
+      m TimezoneDropdown,operation.time_zone
 
-      m Shared::Field.new(op.shared, "Share"), &.checkbox(append_class: "form-checkbox block clear-both my-4")
+      m Shared::Field, op.shared, "Share", &.checkbox(append_class: "form-checkbox block clear-both my-4")
 
       submit "Update", data_disable_with: "Updating...", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
     end
@@ -66,7 +66,7 @@ class Domains::EditPage < AdminLayout
 
           link "Back to dashboard", to: Domains::Show.with(@domain), class: "stats-bg py-3 px-2 text-white hover:bg-gray-700 hover:no-underline rounded transister"
         end
-        m TabMenu.new(links: [{"link" => Domains::Edit.url(@domain), "name" => "Domain"}, {"link" => Domains::EditReports.url(@domain), "name" => "Reports"}], active: "Domain")
+        m TabMenu, links: [{"link" => Domains::Edit.url(@domain), "name" => "Domain"}, {"link" => Domains::EditReports.url(@domain), "name" => "Reports"}], active: "Domain"
       end
     end
   end
