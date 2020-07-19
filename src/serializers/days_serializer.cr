@@ -16,19 +16,20 @@ class DaysSerializer < BaseSerializer
     data = @data.not_nil!.map_with_index do |d, i|
       {
         x: @days.not_nil![i].to_s("%d %B"),
-        y: d
+        y: d,
       }
     end
     data << {x: @days.not_nil!.last.to_s("%d %B"), y: nil}
     data
   end
+
   def get_today
     return [] of {y: Int64, x: String} if @days.nil?
     return [] of {y: Int64, x: String} if @today.nil?
     @today.not_nil!.map_with_index do |d, i|
       {
         x: @days.not_nil![i].to_s("%d %B"),
-        y: d
+        y: d,
       }
     end
   end
@@ -39,19 +40,20 @@ class DaysSerializer < BaseSerializer
     pageviews = @pageviews_data.not_nil!.map_with_index do |d, i|
       {
         x: @days.not_nil![i].to_s("%d %B"),
-        y: d
+        y: d,
       }
     end
     pageviews << {x: @days.not_nil!.last.to_s("%d %B"), y: nil}
     pageviews
   end
+
   def get_pageviews_today
     return [] of {y: Int64, x: String} if @days.nil?
     return [] of {y: Int64, x: String} if @pageviews_today.nil?
     @pageviews_today.not_nil!.map_with_index do |d, i|
       {
         x: @days.not_nil![i].to_s("%d %B"),
-        y: d
+        y: d,
       }
     end
   end
