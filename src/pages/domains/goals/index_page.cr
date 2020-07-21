@@ -11,7 +11,7 @@ class Domains::Goals::IndexPage < Share::BasePage
       div class: "w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-1 gap-6 sm:grid-flow-row" do
         div class: "card" do
           if goals.size > 0
-            mount DetailTableComponent.new(first_header: "Goal", second_header: "Visitors") do
+            mount DetailTableComponent.new(first_header: "Goal", second_header: "Conversions") do
               goals.each_with_index do |goal, i|
                 mount GoalMainComponent.new(goal: goal, index: i, current_user: current_user, period: @period, current_domain: @domain)
               end
