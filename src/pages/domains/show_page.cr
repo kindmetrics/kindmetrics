@@ -31,7 +31,7 @@ class Domains::ShowPage < SecretGuestLayout
 
   def render_canvas
     div style: "max-height:320px;" do
-      tag "canvas", data_controller: "days-chart", data_days_chart_period: @period, data_days_chart_url: "/domains/#{@domain.id}/data/days", height: "300", id: "days_chart", style: "max-height:300px;", width: "100%"
+      div data_controller: "days-chart", data_days_chart_period: @period, data_days_chart_url: "/domains/#{@domain.id}/data/days", height: "300", id: "days_chart", style: "max-height:300px;", width: "100%"
     end
   end
 

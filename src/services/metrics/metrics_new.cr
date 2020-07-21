@@ -1,6 +1,7 @@
 class MetricsNew
   include Percentage
   include ClickDates
+
   def initialize(@domain : Domain, @from_date : Time, @to_date : Time)
     @client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
   end
