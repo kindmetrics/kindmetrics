@@ -7,8 +7,6 @@ class AppServer < Lucky::BaseAppServer
       Lucky::ForceSSLHandler.new,
       Lucky::HttpMethodOverrideHandler.new,
       Lucky::LogHandler.new,
-      SessionHandler.new,
-      Lucky::FlashHandler.new,
       Lucky::ErrorHandler.new(action: Errors::Show),
       CORSHandler.new,
       Lucky::RemoteIpHandler.new,

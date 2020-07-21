@@ -8,15 +8,15 @@ class Domains::Referrer::ShowPage < Share::BasePage
   quick_def page_title, "#{source} for #{@domain.address} last #{period_string}"
 
   def content
-    mount HeaderComponent.new(domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1, share_page: @share_page, period_string: period_string, period: @period, active: "Referrers")
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: @period, active: "Referrers"
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
       sub_header
       div class: "w-full p-5 bg-white rounded-md shadow-md my-3 mb-6" do
         para "Got #{pluralize(total, "visitor")} from #{source} the last #{period_string}", class: "text-xl mb-2"
         if @events.size > 0
-          mount DetailTableComponent.new(first_header: "Referrer", second_header: "Visitors") do
+          m DetailTableComponent, first_header: "Referrer", second_header: "Visitors" do
             @events.each_with_index do |event, i|
-              mount ReferrerUrlComponent.new(event: event, index: i)
+              m ReferrerUrlComponent, event: event, index: i
             end
           end
         else
