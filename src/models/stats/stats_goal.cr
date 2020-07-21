@@ -1,4 +1,4 @@
-class Goal
+class StatsGoal
   include JSON::Serializable
 
   property goal_name : String
@@ -7,5 +7,4 @@ class Goal
   property count : Int64
 
   property percentage : Float32?
-  property bounce_rate : Int64?
 end

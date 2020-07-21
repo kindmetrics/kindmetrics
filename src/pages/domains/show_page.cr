@@ -67,7 +67,12 @@ class Domains::ShowPage < SecretGuestLayout
           div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/devices/os"
         end
       end
+      render_goals
     end
+  end
+
+  def render_goals
+    div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/goals"
   end
 
   def render_header

@@ -1,5 +1,5 @@
 class GoalMainComponent < BaseComponent
-  needs goal : Goal
+  needs goal : StatsGoal
   needs index : Int32
   needs current_user : User?
   needs current_domain : Domain
@@ -14,9 +14,6 @@ class GoalMainComponent < BaseComponent
       end
       td class: "w-1/6 p-2" do
         text goal.count.to_s
-      end
-      td class: "w-1/6 p-2" do
-        text goal.bounce_rate.to_s + "%"
       end
     end
   end
