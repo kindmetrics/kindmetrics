@@ -5,15 +5,15 @@ class Domains::Goals::IndexPage < Share::BasePage
   needs domains : DomainQuery?
 
   def content
-    mount HeaderComponent.new(domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1, share_page: @share_page, period_string: period_string, period: @period, active: "Goals")
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: @period, active: "Goals"
     div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
       sub_header
       div class: "w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-1 gap-6 sm:grid-flow-row" do
         div class: "card" do
           if goals.size > 0
-            mount DetailTableComponent.new(first_header: "Goal", second_header: "Conversions") do
+            m DetailTableComponent, first_header: "Goal", second_header: "Conversions" do
               goals.each_with_index do |goal, i|
-                mount GoalMainComponent.new(goal: goal, index: i, current_user: current_user, period: @period, current_domain: @domain)
+                m GoalMainComponent, goal: goal, index: i, current_user: current_user, period: @period, current_domain: @domain
               end
             end
           else
