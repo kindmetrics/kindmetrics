@@ -27,7 +27,12 @@ class Domains::Goals::IndexPage < Share::BasePage
   end
 
   def sub_header
-    h1 "Goals for #{domain.address}", class: "text-xl mt-4 mb-4"
+    div class: "w-full flex justify-between items-center" do
+      h1 "Goals for #{domain.address}", class: "text-xl mt-4 mb-4"
+      unless share_page?
+        link "Goals Settings", to: Domains::EditGoals.with(domain_id: @domain.id), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 hover:no-underline rounded w-auto inline-block"
+      end
+    end
   end
 
   def header_url(period)

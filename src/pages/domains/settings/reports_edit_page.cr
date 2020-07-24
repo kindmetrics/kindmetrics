@@ -4,16 +4,21 @@ class Domains::EditReportsPage < AdminLayout
   needs user_list : ReportUserQuery
   needs hashid : String
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
+  needs domains : DomainQuery?
 
   def content
-    m HeaderComponent, domain: @domain, current_url: "#", domains: nil, total_sum: 1_i64, share_page: false, period_string: "7 days", show_period: false, active: "Reports"
+    m HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", show_period: false, active: "Reports"
     div class: "mt-10 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
+      h1 "Reports", class: "text-xl"
       div class: "my-3 card" do
-        h1 "Reports", class: "text-xl"
-        render_user_list
+        if user_list.clone.select_count > 0
+          render_user_list
+        else
+          text "No users to send report to yet. Let's add one."
+        end
       end
+      h1 "Add new email", class: "text-xl"
       div class: "my-3 card" do
-        h1 "Add new email", class: "text-xl"
         render_user_email_form(operation)
       end
     end
@@ -88,19 +93,6 @@ class Domains::EditReportsPage < AdminLayout
         end
       end
       submit "Add", data_disable_with: "Adding...", class: "mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-    end
-  end
-
-  def render_header
-    div class: "gradient-color" do
-      div class: "mt-4 max-w-6xl mx-auto pt-6 px-2 sm:px-0" do
-        div class: "flex justify-between items-center" do
-          h1 "Domain Settings", class: "text-xl"
-
-          link "Back to dashboard", to: Domains::Show.with(@domain), class: "stats-bg py-3 px-2 text-white hover:bg-gray-700 hover:no-underline rounded transister"
-        end
-        m TabMenu, links: [{"link" => Domains::Edit.url(@domain), "name" => "Domain"}, {"link" => Domains::EditReports.url(@domain), "name" => "Reports"}], active: "Reports"
-      end
     end
   end
 end

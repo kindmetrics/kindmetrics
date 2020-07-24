@@ -1,13 +1,15 @@
-class Domains::Edit < BrowserAction
+class Domains::EditGoals < DomainBaseAction
   include Hashid
-  get "/domins/:domain_id/settings" do
+  get "/domins/:domain_id/goals/settings" do
     domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
     DomainPolicy.update_not_found?(domain, current_user, context)
     domains = DomainQuery.new.user_id(current_user.id)
-    html EditPage,
-      operation: UpdateDomain.new(domain, current_user: current_user),
+    goals = GoalQuery.new.domain_id(domain.id)
+    html EditGoalsPage,
+      operation: SaveGoal.new(domain_id: domain.id),
       domain: domain,
       hashid: hashids.encode([domain.id]),
+      goals: goals,
       domains: domains
   end
 end

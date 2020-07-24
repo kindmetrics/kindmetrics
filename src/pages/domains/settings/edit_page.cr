@@ -3,12 +3,13 @@ class Domains::EditPage < AdminLayout
   needs domain : Domain
   needs hashid : String
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
+  needs domains : DomainQuery?
 
   def content
-    m HeaderComponent, domain: @domain, current_url: "#", domains: nil, total_sum: 1_i64, share_page: false, period_string: "7 days", show_period: false, active: "Settings"
+    m HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", show_period: false, active: "Settings"
     div class: "mt-10 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
+      h1 "Edit #{@domain.address}", class: "text-xl"
       div class: "my-3 card" do
-        h1 "Edit #{@domain.address}", class: "text-xl"
         render_domain_form(@operation)
       end
       render_code_snippet

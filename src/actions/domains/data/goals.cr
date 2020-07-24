@@ -6,6 +6,6 @@ class Domains::Data::Goals < DomainPublicBaseAction
 
   def get_goals(domain)
     metrics = Metrics.new(domain, period)
-    metrics.get_goals
+    metrics.get_all_goals
   end
 end

@@ -6,6 +6,6 @@ class Domains::Goals::Index < DomainBaseAction
 
   def get_goals
     metrics = Metrics.new(domain, period)
-    metrics.get_goals
+    metrics.get_all_goals
   end
 end
