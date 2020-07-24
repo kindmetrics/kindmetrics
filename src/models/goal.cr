@@ -1,5 +1,4 @@
 class Goal < BaseModel
-
   avram_enum Kind do
     Event = 0
     Path  = 1

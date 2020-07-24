@@ -71,7 +71,6 @@ class Domains::EditGoalsPage < AdminLayout
 
   def render_goal_form(op)
     form_for Domains::Goals::Create.with(@domain.id) do
-
       m IntDropdownComponent, selects: [{"event", 0}, {"path", 1}], field: op.kind
 
       m Shared::Field, op.name, "Name of event or path to visit", &.text_input(attrs: [:required], autofocus: "true", append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")

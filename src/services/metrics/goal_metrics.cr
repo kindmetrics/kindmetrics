@@ -14,10 +14,10 @@ class GoalMetrics
       next if gg.nil?
 
       gg.goal_name = if g.kind == 0
-                        "Trigger " + g.name
-                      else
-                        "Visit " + g.name
-                      end
+                       "Trigger " + g.name
+                     else
+                       "Visit " + g.name
+                     end
       stats_goals << gg
     end
     count_percentage(stats_goals)
@@ -25,20 +25,20 @@ class GoalMetrics
 
   def get_goal_stats(goal : Goal) : StatsGoal?
     sql = if goal.kind == 0
-      <<-SQL
+            <<-SQL
       SELECT name as goal_name, uniq(user_id) as count FROM kindmetrics.events
       WHERE name='#{goal.name}' AND domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
       GROUP BY name
       ORDER BY count desc
       SQL
-    else
-      <<-SQL
+          else
+            <<-SQL
       SELECT name as goal_name, uniq(user_id) as count FROM kindmetrics.events
       WHERE domain_id=#{@domain.id} AND path='#{goal.name}' AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
       GROUP BY name
       ORDER BY count desc
       SQL
-    end
+          end
     res = @client.execute(sql)
     json = res.map_nil(goal_name: String, count: UInt64).to_json
     return nil if json.nil?
