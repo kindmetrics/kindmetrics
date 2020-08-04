@@ -39,14 +39,14 @@ class MetricsNew
   end
 
   def path_bounce_query(path : String) : Int64
-    return 0.to_i64 if total_query == 0
+    return 0_i64 if total_query == 0
     sql = <<-SQL
     SELECT round(sum(is_bounce * id) / sum(id) * 100) as bounce_rate
     FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}')
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_f?
-    return 0.to_i64 if bounce.nil?
+    return 0_i64 if bounce.nil?
     bounce.not_nil!.to_i64
   end
 
@@ -61,8 +61,7 @@ class MetricsNew
     json = res.map_nil(referrer_source: String, referrer_domain: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
-    pages = count_percentage(pages)
-    return pages
+    count_percentage(pages)
   end
 
   def total_query : Int64
@@ -80,7 +79,7 @@ class MetricsNew
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_i64?
-    return 0.to_i64 if bounce.nil?
+    return 0_i64 if bounce.nil?
     bounce.not_nil!.to_i64
   end
 
@@ -91,7 +90,7 @@ class MetricsNew
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_i64?
-    return 0.to_i64 if bounce.nil?
+    return 0_i64 if bounce.nil?
     bounce.not_nil!.to_i64
   end
 
@@ -102,7 +101,7 @@ class MetricsNew
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_i64?
-    return 0.to_i64 if bounce.nil?
+    return 0_i64 if bounce.nil?
     bounce.not_nil!.to_i64
   end
 
@@ -113,7 +112,7 @@ class MetricsNew
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_i64?
-    return 0.to_i64 if bounce.nil?
+    return 0_i64 if bounce.nil?
     bounce.not_nil!.to_i64
   end
 
@@ -140,8 +139,7 @@ class MetricsNew
     json = res.map_nil(referrer_source: String, referrer_domain: String, referrer_medium: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
-    pages = count_percentage(pages)
-    return pages
+    count_percentage(pages)
   end
 
   def get_source_referrers(source : String)
@@ -157,8 +155,7 @@ class MetricsNew
     pages = Array(StatsReferrer).from_json(json)
     pages.reject! { |r| r.referrer_url.nil? }
     pages = count_percentage(pages)
-    pages = count_bounce_rate(pages)
-    return pages
+    count_bounce_rate(pages)
   end
 
   def get_all_referrers : Array(StatsReferrer)
@@ -173,8 +170,7 @@ class MetricsNew
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
     pages = count_percentage(pages)
-    pages = count_bounce_rate(pages)
-    return pages
+    count_bounce_rate(pages)
   end
 
   def get_path_referrers(path : String) : Array(StatsReferrer)
@@ -189,8 +185,7 @@ class MetricsNew
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
     pages = count_percentage(pages)
-    pages = count_path_bounce_rate(pages, path)
-    return pages
+    count_path_bounce_rate(pages, path)
   end
 
   def get_all_medium_referrers : Array(StatsMediumReferrer)
@@ -205,8 +200,7 @@ class MetricsNew
     return [] of StatsMediumReferrer if json.nil?
     pages = Array(StatsMediumReferrer).from_json(json)
     pages = count_percentage(pages)
-    pages = count_medium_bounce_rate(pages)
-    return pages
+    count_medium_bounce_rate(pages)
   end
 
   def get_path_medium_referrers(path : String) : Array(StatsMediumReferrer)
@@ -222,8 +216,7 @@ class MetricsNew
     pages = Array(StatsMediumReferrer).from_json(json)
     pages.reject! { |r| r.referrer_medium.nil? }
     pages = count_percentage(pages)
-    pages = count_medium_bounce_rate(pages)
-    return pages
+    count_medium_bounce_rate(pages)
   end
 
   def get_days
@@ -254,7 +247,7 @@ class MetricsNew
     today = data.clone
     data.pop
     today_data = today[today.size - 2..today.size]
-    today = today[0..today.size - 3].fill { |i| nil }
+    today = today[0..today.size - 3].fill { |_i| nil }
     today_data.each { |t| today.push t }
     return days, today, data
   end
@@ -287,7 +280,7 @@ class MetricsNew
     today = data.clone
     data.pop
     today_data = today[today.size - 2..today.size]
-    today = today[0..today.size - 3].fill { |i| nil }
+    today = today[0..today.size - 3].fill { |_i| nil }
     today_data.each { |t| today.push t }
     return days, today, data
   end
@@ -302,8 +295,7 @@ class MetricsNew
     res = @client.execute_as_json(sql)
     return [] of StatsPages if res.nil?
     pages = Array(StatsPages).from_json(res)
-    pages = count_percentage(pages)
-    return pages
+    count_percentage(pages)
   end
 
   def get_countries : Array(StatsCountry)
@@ -318,12 +310,11 @@ class MetricsNew
     countries = Array(StatsCountry).from_json(res)
     cc2country = IP2Country::CC2Country.new
     countries = count_percentage(countries)
-    countries.map! do |c|
+    countries.map do |c|
       next c if c.country.nil?
       c.country_name = cc2country.lookup(c.country.not_nil!, "en")
       next c
     end
-    return countries
   end
 
   def get_countries_map : Array(StatsCountry)?

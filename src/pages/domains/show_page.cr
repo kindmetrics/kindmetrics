@@ -43,18 +43,18 @@ class Domains::ShowPage < SecretGuestLayout
         end
         div class: "card" do
           div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/referrer"
-          unless @share_page
-            m DetailsLinkComponent, link: Domains::Referrer::Index.with(@domain, @period).url
-          else
+          if @share_page
             m DetailsLinkComponent, link: Share::Referrer::Index.with(@domain.hashid, @period).url
+          else
+            m DetailsLinkComponent, link: Domains::Referrer::Index.with(@domain, @period).url
           end
         end
         div class: "card" do
           div class: "relative clear-both", data_controller: "loader", data_loader_period: "<%=@period%>", data_loader_url: "/domains/#{@domain.id}/data/countries"
-          unless @share_page
-            m DetailsLinkComponent, link: Domains::Countries::Index.with(@domain, @period).url
-          else
+          if @share_page
             m DetailsLinkComponent, link: Share::Countries::Index.with(@domain.hashid, @period).url
+          else
+            m DetailsLinkComponent, link: Domains::Countries::Index.with(@domain, @period).url
           end
         end
         div class: "card" do

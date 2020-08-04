@@ -21,8 +21,8 @@ class GoalMetrics
                      end
       stats_goals << gg
     end
+    stats_goals.sort! { |x, y| y.count <=> x.count }
     count_percentage(stats_goals)
-    stats_goals.sort { |x, y| y.count <=> x.count }
   end
 
   def get_goal_stats(goal : Goal) : StatsGoal?
@@ -46,6 +46,6 @@ class GoalMetrics
     return nil if json.nil?
     pages = Array(StatsGoal).from_json(json)
     return nil if pages.empty?
-    return pages.first
+    pages.first
   end
 end

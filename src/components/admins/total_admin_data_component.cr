@@ -7,15 +7,15 @@ class TotalAdminDataComponent < BaseComponent
     div class: "big_letters" do
       div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0 grid grid-flow-col gap-6" do
         div class: "p-3" do
-          para @total_users.to_s, class: "text-3xl strong"
+          para @total_users, class: "text-3xl strong"
           para "Total Users", class: "text-sm uppercase"
         end
         div class: "p-3" do
-          para @total_confirmed_users.to_s, class: "text-3xl strong"
+          para @total_confirmed_users, class: "text-3xl strong"
           para "Total Confirmed", class: "text-sm strong uppercase"
         end
         div class: "p-3" do
-          para "#{@total_domains.to_s}%", class: "text-3xl strong"
+          para "#{@total_domains}%", class: "text-3xl strong"
           para "Domains", class: "text-sm strong uppercase"
         end
       end

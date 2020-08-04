@@ -132,7 +132,7 @@ class AddClickhouse
     sql = <<-SQL
     ALTER TABLE kindmetrics.events DELETE WHERE domain_id=#{domain_id}
     SQL
-    res = client.insert sql
+    client.insert sql
     sql = <<-SQL
     ALTER TABLE kindmetrics.sessions DELETE WHERE domain_id=#{domain_id}
     SQL
@@ -145,7 +145,7 @@ class AddClickhouse
     sql = <<-SQL
     ALTER TABLE kindmetrics.events DELETE WHERE user_id IS NOT NULL
     SQL
-    res = client.insert sql
+    client.insert sql
     sql = <<-SQL
     ALTER TABLE kindmetrics.sessions DELETE WHERE user_id IS NOT NULL
     SQL

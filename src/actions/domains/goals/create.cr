@@ -2,7 +2,7 @@ class Domains::Goals::Create < BrowserAction
   post "/domins/:domain_id/goals" do
     domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
     DomainPolicy.update_not_found?(domain, current_user, context)
-    SaveGoal.create(params, domain_id: domain.id, sort: 1) do |operation, goal|
+    SaveGoal.create(params, domain_id: domain.id, sort: 1) do |_operation, goal|
       if goal
         flash.success = "The record has been saved"
         redirect Domains::EditGoals.with(domain.id)

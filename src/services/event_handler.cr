@@ -47,7 +47,22 @@ class EventHandler
                "Unknown"
              end
 
-    unless is_current_session?(user_id)
+    if !is_current_session?(user_id)
+      add_event(
+        user_id,
+        **browser_data,
+        device: device,
+        name: name,
+        referrer: referrer.to_s,
+        country: country,
+        referrer_domain: referrer.host,
+        url: url.to_s,
+        path: url.path,
+        referrer_medium: medium,
+        referrer_source: source,
+        domain_id: domain.id
+      )
+    else
       create_session(
         **browser_data,
         is_bounce: 0,
@@ -64,21 +79,6 @@ class EventHandler
         domain_id: domain.id,
         user_id: user_id,
       )
-    else
-      add_event(
-        user_id,
-        **browser_data,
-        device: device,
-        name: name,
-        referrer: referrer.to_s,
-        country: country,
-        referrer_domain: referrer.host,
-        url: url.to_s,
-        path: url.path,
-        referrer_medium: medium,
-        referrer_source: source,
-        domain_id: domain.id
-      )
     end
   end
 
@@ -88,7 +88,7 @@ class EventHandler
     return false unless session.length.nil?
     events = AddClickhouse.get_last_event(session)
     return false if events.size == 0
-    return events.first.created_at > SESSION_TIMEOUT.ago
+    events.first.created_at > SESSION_TIMEOUT.ago
   end
 
   def self.add_event(user_id : String, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id)
@@ -143,15 +143,15 @@ class EventHandler
     return "Unknown" if width.empty?
     widthi = width.not_nil!.to_i
     if widthi.to_i < 576
-      return "Mobile"
+      "Mobile"
     elsif widthi.to_i < 992
-      return "Tablet"
+      "Tablet"
     elsif widthi.to_i < 1440
-      return "Laptop"
+      "Laptop"
     elsif widthi.to_i >= 1440
-      return "Desktop"
+      "Desktop"
     else
-      return "Unknown"
+      "Unknown"
     end
   end
 
