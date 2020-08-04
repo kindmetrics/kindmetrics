@@ -8,8 +8,14 @@ class GoalMainComponent < BaseComponent
   def render
     tr class: index.odd? ? "bg-gray-200" : "bg-white" do
       td class: "w-4/6 py-2" do
-        a class: "block px-2 hover:underline truncate", href: "#" do
-          text goal.goal_name
+        if goal.count > 0
+          a class: "block px-2 hover:underline truncate", href: "#" do
+            text goal.goal_name
+          end
+        else
+          span class: "px-2" do
+            text goal.goal_name
+          end
         end
       end
       td class: "w-1/6 p-2" do

@@ -11,7 +11,8 @@ class GoalMetrics
     stats_goals = [] of StatsGoal
     goals.each do |g|
       gg = get_goal_stats(g)
-      next if gg.nil?
+
+      gg = StatsGoal.new(goal_name: "", count: 0) if gg.nil?
 
       gg.goal_name = if g.kind == 0
                        "Trigger " + g.name
@@ -21,6 +22,7 @@ class GoalMetrics
       stats_goals << gg
     end
     count_percentage(stats_goals)
+    stats_goals.sort { |x, y| y.count <=> x.count }
   end
 
   def get_goal_stats(goal : Goal) : StatsGoal?
