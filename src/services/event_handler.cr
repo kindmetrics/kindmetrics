@@ -48,21 +48,6 @@ class EventHandler
              end
 
     if !is_current_session?(user_id)
-      add_event(
-        user_id,
-        **browser_data,
-        device: device,
-        name: name,
-        referrer: referrer.to_s,
-        country: country,
-        referrer_domain: referrer.host,
-        url: url.to_s,
-        path: url.path,
-        referrer_medium: medium,
-        referrer_source: source,
-        domain_id: domain.id
-      )
-    else
       create_session(
         **browser_data,
         is_bounce: 0,
@@ -78,6 +63,21 @@ class EventHandler
         referrer_source: source,
         domain_id: domain.id,
         user_id: user_id,
+      )
+    else
+      add_event(
+        user_id,
+        **browser_data,
+        device: device,
+        name: name,
+        referrer: referrer.to_s,
+        country: country,
+        referrer_domain: referrer.host,
+        url: url.to_s,
+        path: url.path,
+        referrer_medium: medium,
+        referrer_source: source,
+        domain_id: domain.id
       )
     end
   end
