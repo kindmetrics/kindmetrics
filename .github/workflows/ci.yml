@@ -23,7 +23,6 @@ jobs:
       image: crystallang/crystal:0.35.1
     services:
       # Label used to access the service container
-          services:
       postgres:
         image: postgres:10-alpine
         env:
