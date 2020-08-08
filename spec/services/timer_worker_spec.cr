@@ -23,7 +23,7 @@ describe TimeWorker do
   end
 
   it "has one event attached" do
-    user_id = "sdfsdgsgs"
+    user_id = "654t5u6hbgfdavgtbfc"
     EventHandler.create_session(user_id: user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: nil, is_bounce: 1, domain_id: DomainBox.create.id, created_at: 34.minutes.ago)
     session = AddClickhouse.get_session(user_id)
 
