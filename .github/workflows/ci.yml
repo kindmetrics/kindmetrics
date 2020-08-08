@@ -33,7 +33,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       clickhouse:
         # Docker Hub image
-        image: yandex/clickhouse-server
+        image: yandex/clickhouse-server::20.4.6.53
     steps:
     - uses: actions/checkout@v2
     - name: Install PostgreSQL client
