@@ -88,7 +88,7 @@ class EventHandler
     return false unless session.length.nil?
     events = AddClickhouse.get_last_event(session)
     return false if events.size == 0
-    events.first.created_at > SESSION_TIMEOUT.ago
+    return events.first.created_at > SESSION_TIMEOUT.ago
   end
 
   def self.add_event(user_id : String, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id)

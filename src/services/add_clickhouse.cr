@@ -143,11 +143,11 @@ class AddClickhouse
     return unless Lucky::Env.test?
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
-    ALTER TABLE kindmetrics.events DELETE WHERE user_id IS NOT NULL
+    ALTER TABLE kindmetrics.events DELETE WHERE id IS NOT NULL
     SQL
     client.insert sql
     sql = <<-SQL
-    ALTER TABLE kindmetrics.sessions DELETE WHERE user_id IS NOT NULL
+    ALTER TABLE kindmetrics.sessions DELETE WHERE id IS NOT NULL
     SQL
     client.insert sql
   end
