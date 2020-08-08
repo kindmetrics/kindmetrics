@@ -25,8 +25,6 @@ class GoalMetrics
     count_array_percentage(stats_goals)
   end
 
-
-
   def get_goal_stats(goal : Goal) : StatsGoal?
     sql = if goal.kind == 0
             <<-SQL
