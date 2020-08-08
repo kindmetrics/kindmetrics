@@ -1,4 +1,4 @@
-class Domains::ShowPage < SecretGuestLayout
+class Domains::Goals::ShowPage < SecretGuestLayout
   needs domains : DomainQuery?
   needs domain : Domain
   needs total_unique : Int64
@@ -10,14 +10,15 @@ class Domains::ShowPage < SecretGuestLayout
   needs period : String
   needs period_string : String
   needs share_page : Bool = false
-  needs goal : Goal?
-  quick_def page_title, "Analytics for " + @domain.address
+  needs goal : Goal
+  quick_def page_title, "Analytics for goal " + @goal.name + " at " + @domain.address
 
   def content
     render_header
     if total_sum == 0
       m AddTrackingComponent, domain: @domain
     else
+      render_goal_info
       render_total
       div class: "max-w-6xl mx-auto py-6 sm:px-6 lg:px-8 p-5 my-3 mb-6 card" do
         render_canvas
@@ -68,16 +69,25 @@ class Domains::ShowPage < SecretGuestLayout
           m LoaderComponent, domain: @domain, url: "data/devices/os", goal: @goal, period: @period
         end
       end
-      render_goals unless @goal
     end
   end
 
-  def render_goals
-    div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/goals"
+  def render_goal_info
+    div class: "max-w-6xl mx-auto p-2 my-3 mb-6" do
+      h1 "Goal: " + goal_prefix + @goal.name, class: "text-2xl"
+    end
+  end
+
+  private def goal_prefix
+    if goal.kind == 0
+      "Trigger "
+    else
+      "Visit "
+    end
   end
 
   def render_header
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, show_period: total_sum > 0, share_page: @share_page
+    m HeaderComponent, active: "Goals", domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, show_period: total_sum > 0, share_page: @share_page
   end
 
 end

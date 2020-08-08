@@ -1,6 +1,11 @@
 class Metrics
+  def initialize(@domain : Domain, @period : String, @goal : Goal?)
+    @new_metrics = MetricsNew.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day, @goal)
+    @goal_metrics = GoalMetrics.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day)
+  end
+
   def initialize(@domain : Domain, @period : String)
-    @new_metrics = MetricsNew.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day)
+    @new_metrics = MetricsNew.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day, @goal)
     @goal_metrics = GoalMetrics.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day)
   end
 

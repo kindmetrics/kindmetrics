@@ -1,5 +1,6 @@
 class Domains::Goals::IndexPage < Share::BasePage
-  needs goals : Array(StatsGoal)
+  needs goals : Array(NamedTuple(goal: Goal, stats_goal: StatsGoal))
+
   quick_def page_title, "Referrers to #{@domain.address} last #{period_string}"
   needs share_page : Bool = false
   needs domains : DomainQuery?
@@ -13,7 +14,7 @@ class Domains::Goals::IndexPage < Share::BasePage
           if goals.size > 0
             m DetailTableComponent, first_header: "Goal", second_header: "Conversions" do
               goals.each_with_index do |goal, i|
-                m GoalMainComponent, goal: goal, index: i, current_user: current_user, period: @period, current_domain: @domain
+                m GoalMainComponent, stats_goal: goal[:stats_goal], goal: goal[:goal], index: i, current_user: current_user, period: @period, current_domain: @domain
               end
             end
           else
@@ -30,7 +31,7 @@ class Domains::Goals::IndexPage < Share::BasePage
     div class: "w-full flex justify-between items-center" do
       h1 "Goals for #{domain.address}", class: "text-xl mt-4 mb-4"
       unless share_page?
-        link "Goals Settings", to: Domains::EditGoals.with(domain_id: @domain.id), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 hover:no-underline rounded w-auto inline-block"
+        link "Goals Settings", to: Domains::Settings::EditGoals.with(domain_id: @domain.id), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 hover:no-underline rounded w-auto inline-block"
       end
     end
   end

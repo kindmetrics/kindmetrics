@@ -7,6 +7,14 @@ module Percentage
     end
   end
 
+  private def count_array_percentage(array)
+    total = array.sum { |p| p[:stats_goal].count }
+    array.map do |p|
+      p[:stats_goal].percentage = p[:stats_goal].count / total.to_f32
+      p
+    end
+  end
+
   private def count_bounce_rate(array)
     array.map do |p|
       next p if p.referrer_source.nil?

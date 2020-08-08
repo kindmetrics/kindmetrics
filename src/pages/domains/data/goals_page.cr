@@ -1,6 +1,7 @@
 class Domains::Data::GoalsPage
   include Lucky::HTMLPage
-  needs goals : Array(StatsGoal)
+  needs goals : Array(NamedTuple(goal: Goal, stats_goal: StatsGoal))
+  needs domain : Domain
 
   def render
     unless goals.empty?
@@ -15,19 +16,23 @@ class Domains::Data::GoalsPage
   def render_table
     m DashboardTableComponent, first_header: "Goal", second_header: "Conversions" do
       @goals.each do |r|
-        render_row(r)
+        render_row(r[:stats_goal], r[:goal])
       end
     end
   end
 
-  def render_row(row)
+  def render_row(row : StatsGoal, goal : Goal)
     percentage = ((row.percentage || 0.001)*100)
     tr class: "h-9 text-sm subpixel-antialiased" do
       td class: "w-5/6 py-1 h-9" do
         div class: "w-full h-9" do
           div class: "progress_bar", style: "width: #{percentage}%;height: 30px"
           span class: "block px-2 truncate", style: "margin-top: -1.6rem;" do
-            text row.goal_name.to_s
+            if row.count > 0
+              link row.goal_name.to_s, to: Domains::Goals::Show.with(domain, goal_id: goal.id)
+            else
+              text row.goal_name.to_s
+            end
           end
         end
       end

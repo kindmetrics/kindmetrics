@@ -6,9 +6,9 @@ class GoalMetrics
     @client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
   end
 
-  def get_all_goals : Array(StatsGoal)
+  def get_all_goals
     goals = GoalQuery.new.domain_id(@domain.id)
-    stats_goals = [] of StatsGoal
+    stats_goals = [] of {goal: Goal, stats_goal: StatsGoal}
     goals.each do |g|
       gg = get_goal_stats(g)
 
@@ -19,11 +19,13 @@ class GoalMetrics
                      else
                        "Visit " + g.name
                      end
-      stats_goals << gg
+      stats_goals << {stats_goal: gg, goal: g}
     end
-    stats_goals.sort! { |x, y| y.count <=> x.count }
-    count_percentage(stats_goals)
+    stats_goals.sort! { |x, y| y[:stats_goal].count <=> x[:stats_goal].count }
+    count_array_percentage(stats_goals)
   end
+
+
 
   def get_goal_stats(goal : Goal) : StatsGoal?
     sql = if goal.kind == 0

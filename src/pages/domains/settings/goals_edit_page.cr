@@ -59,7 +59,7 @@ class Domains::EditGoalsPage < AdminLayout
               text Goal::AvramKind.from_value(g.kind).to_s
             end
             td class: "px-2 py-2 text-s" do
-              link to: Domains::Goals::Delete.with(domain_id: @domain.id, goal_id: g.id), class: "block w-auto max-w-full" do
+              link to: Domains::Settings::Goals::Delete.with(domain_id: @domain.id, goal_id: g.id), class: "block w-auto max-w-full" do
                 img src: "/assets/svg/delete.svg", alt: "Delete", class: "h-4 w-4 inline-block w-auto max-w-none"
               end
             end
@@ -70,7 +70,7 @@ class Domains::EditGoalsPage < AdminLayout
   end
 
   def render_goal_form(op)
-    form_for Domains::Goals::Create.with(@domain.id) do
+    form_for Domains::Settings::Goals::Create.with(@domain.id) do
       m IntDropdownComponent, selects: [{"event", 0}, {"path", 1}], field: op.kind
 
       m Shared::Field, op.name, "Name of event or path to visit", &.text_input(attrs: [:required], autofocus: "true", append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
