@@ -30,13 +30,14 @@ class AddClickhouse
     client.insert buf
   end
 
-  def self.session_insert(user_id, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc, mark : Int8 = 0)
+  def self.session_insert(user_id, name : String, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc, mark : Int8 = 0)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
     id = Random.new.rand(0.to_i64..Int64::MAX)
 
     json_object = {
       id:               id,
+      name:             name,
       mark:             mark,
       user_id:          user_id,
       length:           length,
@@ -131,7 +132,7 @@ class AddClickhouse
     sql = <<-SQL
     ALTER TABLE kindmetrics.events DELETE WHERE domain_id=#{domain_id}
     SQL
-    res = client.insert sql
+    client.insert sql
     sql = <<-SQL
     ALTER TABLE kindmetrics.sessions DELETE WHERE domain_id=#{domain_id}
     SQL
@@ -142,11 +143,11 @@ class AddClickhouse
     return unless Lucky::Env.test?
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
-    ALTER TABLE kindmetrics.events DELETE WHERE user_id IS NOT NULL
+    ALTER TABLE kindmetrics.events DELETE WHERE id IS NOT NULL
     SQL
-    res = client.insert sql
+    client.insert sql
     sql = <<-SQL
-    ALTER TABLE kindmetrics.sessions DELETE WHERE user_id IS NOT NULL
+    ALTER TABLE kindmetrics.sessions DELETE WHERE id IS NOT NULL
     SQL
     client.insert sql
   end

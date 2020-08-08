@@ -1,9 +1,7 @@
 class EmailWorker
   def self.send_report(kind : String = "weekly")
-    if kind == "weekly"
-      return weekly
-    end
-    return monthly
+    return weekly if kind == "weekly"
+    monthly
   end
 
   def self.weekly

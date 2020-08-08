@@ -25,7 +25,7 @@ class TotalRowComponent < BaseComponent
         end
         div class: "p-3" do
           div class: "text-4xl strong md:flex items-center" do
-            para "#{@total_bounce.to_s}%", class: "text-4xl strong"
+            para "#{@total_bounce}%", class: "text-4xl strong"
             m GrowthComponent, now: @total_bounce, before: @total_bounce_previous, reverse: true
           end
           para "Bounce", class: "text-sm font-bold uppercase"

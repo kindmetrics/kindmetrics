@@ -74,7 +74,12 @@ export default class extends Controller {
   getData() {
     this.element.innerHTML = this.loader()
     const period = this.data.get("period") ? this.data.get("period") : "7d"
-    fetch(this.data.get("url") + "?period=" + period).then(response => {
+    var url = this.data.get("url") + "?period=" + period
+    const goal = this.data.get("goal")
+    if(goal != null) {
+      url = url + "&goal_id=" + goal
+    }
+    fetch(url).then(response => {
       return response.json()
     }).then(response => {
       return this.createChart(this.element, response)
