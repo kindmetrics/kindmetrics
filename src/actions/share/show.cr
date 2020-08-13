@@ -5,6 +5,7 @@ class Share::Show < BrowserAction
   include Period
 
   param period : String = "7d"
+  param goal_id : Int64?
 
   get "/share/:share_id" do
     ids = hashids.decode(share_id)

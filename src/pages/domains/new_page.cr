@@ -1,5 +1,7 @@
 class Domains::NewPage < AdminLayout
   needs operation : SaveDomain
+  needs domain : Domain?
+  needs domains : DomainQuery?
   quick_def page_title, "New Domain"
 
   def content

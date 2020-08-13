@@ -30,7 +30,7 @@ class HeaderComponent < BaseComponent
 
   def render
     div class: "gradient-color" do
-      div class: "mt-4 max-w-6xl mx-auto pt-6 px-2 sm:px-0 border-t border-b" do
+      div class: "mt-4 max-w-6xl mx-auto pt-6 px-2 sm:px-0 border-b" do
         div class: "flex justify-between items-center" do
           if @share_page
             div class: "w-2/3" do
@@ -42,7 +42,6 @@ class HeaderComponent < BaseComponent
             end
           else
             div class: "flex items-center" do
-              m DomainDropdownComponent, domain: @domain, domains: domains
               div class: "md:mx-2 current-counter-container", data_controller: "current-refresh", data_current_refresh_url: "/domains/#{@domain.id}/data/current", data_current_refresh_refresh_interval: "10000" do
                 span "0", class: "current-counter", data_target: "current-refresh.counter"
                 raw " current active users"

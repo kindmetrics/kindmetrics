@@ -7,7 +7,7 @@ class TotalRowComponent < BaseComponent
   needs total_bounce_previous : Int64
 
   def render
-    div class: "big_letters" do
+    div class: "big_letters gradient-color" do
       div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0 grid grid-flow-col gap-6" do
         div class: "p-3" do
           div class: "text-4xl strong md:flex items-center" do

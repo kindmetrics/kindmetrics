@@ -8,13 +8,13 @@ class TabMenu < BaseComponent
       links.each do |l|
         if l["name"] == active
           li class: "-mb" do
-            a class: "inline-block border-b-2 border-blue-800 py-2 px-4 text-blue-800 hover:no-underline font-semibold", href: l["link"].to_s do
+            a class: "inline-block border-b-2 border-white py-2 px-4 text-white hover:no-underline font-semibold", href: l["link"].to_s do
               raw l["name"].to_s
             end
           end
         else
           li class: "" do
-            a class: "inline-block py-2 px-4 text-gray-800 hover:text-blue-800 font-semibold border-b-2 border-transparent hover:no-underline hover:border-gray-400 transister-menu", href: l["link"].to_s do
+            a class: "inline-block py-2 px-4 text-white hover:text-white font-normal border-b-2 border-transparent hover:no-underline hover:border-white transister-menu", href: l["link"].to_s do
               raw l["name"].to_s
             end
           end
@@ -23,7 +23,7 @@ class TabMenu < BaseComponent
     end
     div class: "md:hidden" do
       div class: "relative", data_controller: "dropdown" do
-        div class: "inline-block select-none rounded-md p-3 text-md bg-gray-200 w-full mb-1", data_action: "click->dropdown#toggle click@window->dropdown#hide", role: "button" do
+        div class: "inline-block select-none rounded-md p-3 text-md bg-white w-full mb-1", data_action: "click->dropdown#toggle click@window->dropdown#hide", role: "button" do
           span class: "appearance-none flex items-center justify-between inline-block text-xl" do
             raw active
             raw <<-SVG

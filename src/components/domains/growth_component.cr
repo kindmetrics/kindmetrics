@@ -7,25 +7,25 @@ class GrowthComponent < BaseComponent
     div class: "flex items-center ml-1 md:ml-4" do
       if reverse?
         if up?
-          img src: "/assets/svg/arrow-up-red.svg", class: "text-red-800 strong text-xs h-4 w-4 block mr-1"
-          span class: "text-red-800 strong text-xs" do
+          img src: "/assets/svg/arrow-up-red.svg", class: "text-red-200 strong text-xs h-4 w-4 block mr-1"
+          span class: "text-white strong text-xs" do
             raw count_percentage + "%"
           end
         else
-          img src: "/assets/svg/arrow-down-green.svg", class: "text-green-800 strong text-xs h-4 w-4 block mr-1"
-          span class: "text-green-800 strong text-xs" do
+          img src: "/assets/svg/arrow-down-green.svg", class: "text-green-200 strong text-xs h-4 w-4 block mr-1"
+          span class: "text-white strong text-xs" do
             raw count_percentage + "%"
           end
         end
       else
         if up?
-          img src: "/assets/svg/arrow-up-green.svg", class: "text-green-800 strong text-xs h-4 w-4 block mr-1"
-          span class: "text-green-800 strong text-xs" do
+          img src: "/assets/svg/arrow-up-green.svg", class: "text-green-200 strong text-xs h-4 w-4 block mr-1"
+          span class: "text-white strong text-xs" do
             raw count_percentage + "%"
           end
         else
-          img src: "/assets/svg/arrow-down-red.svg", class: "text-red-800 strong text-xs h-4 w-4 block mr-1"
-          span class: "text-red-800 strong text-xs" do
+          img src: "/assets/svg/arrow-down-red.svg", class: "text-red-200 strong text-xs h-4 w-4 block mr-1"
+          span class: "text-white strong text-xs" do
             raw count_percentage + "%"
           end
         end

@@ -26,7 +26,13 @@
   </head>
 
   <body>
-    <% m InloggedHead, current_user %>
+    <%
+    if domain
+      m InloggedHead, current_user, domain.not_nil!, domains
+    else
+      m InloggedHead, current_user, nil, domains
+    end
+    %>
     <% m Shared::FlashMessages, context.flash %>
     <% content %>
   </body>

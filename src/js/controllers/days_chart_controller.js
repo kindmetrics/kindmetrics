@@ -3,9 +3,6 @@ import ApexCharts from 'apexcharts'
 export default class extends Controller {
 
   createChart(ctx, response) {
-    console.log("inside create")
-    console.log(response)
-
     const { labels, today, data, pageviews, pageviews_today } = response
 
     var options = {
@@ -24,6 +21,9 @@ export default class extends Controller {
             enabled: false
           }
         }
+      },
+      grid: {
+        show: false
       },
       series: [
         {
@@ -63,7 +63,8 @@ export default class extends Controller {
         categories: labels,
         tooltip: {
           enabled: false
-        }
+        },
+        showForNullSeries: false
       }
     }
     var chart = new ApexCharts(ctx, options);

@@ -10,7 +10,7 @@ class GoalMainComponent < BaseComponent
     tr class: index.odd? ? "bg-gray-200" : "bg-white" do
       td class: "w-4/6 py-2" do
         if stats_goal.count > 0
-          link to: Domains::Goals::Show.with(current_domain, goal_id: goal.id), class: "block px-2 hover:underline truncate" do
+          link to: Domains::Show.with(current_domain, goal_id: goal.id), class: "block px-2 hover:underline truncate" do
             text stats_goal.goal_name
           end
         else

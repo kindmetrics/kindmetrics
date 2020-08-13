@@ -1,4 +1,5 @@
 class Admins::IndexPage < AdminLayout
+  needs domain : Domain?
   needs domains : DomainQuery
   needs users : UserQuery
   needs confirmed_users : UserQuery

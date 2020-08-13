@@ -4,6 +4,7 @@ class ClickSession
   @[JSON::Field(converter: JSON::IntConverter)]
   property id : Int64
 
+  property name : String
   property user_id : String
   property referrer : String?
   property url : String?

@@ -11,6 +11,10 @@ class EventHandler
 
     return if name.nil?
 
+    if name != "pageview"
+      return if GoalQuery.new.domain_id(domain.id).name(name).size == 0
+    end
+
     country = IPCOUNTRY.lookup_cc(remote_ip)
 
     browser = UserHash.get_browser(user_agent) if user_agent.present?

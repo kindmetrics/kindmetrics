@@ -18,11 +18,36 @@ class Domains::ShowPage < SecretGuestLayout
     if total_sum == 0
       m AddTrackingComponent, domain: @domain
     else
+      render_query_tabs
       render_total
-      div class: "max-w-6xl mx-auto py-6 sm:px-6 lg:px-8 p-5 my-3 mb-6 card" do
-        render_canvas
+      div class: "max-w-6xl mx-auto px-2 sm:px-0 poper" do
+        div class: "card py-6 px-2" do
+          render_canvas
+        end
       end
       render_the_rest
+    end
+  end
+
+  def render_query_tabs
+    return if goal.nil?
+    div class: "gradient-color" do
+      div class: "max-w-6xl mx-auto px-2 sm:px-0 pt-4" do
+        if !goal.nil?
+          taber("Goal", goal.not_nil!.name, share_page? ? Share::Show.with(share_id: domain.hashid) : Domains::Show.with(domain_id: domain.id))
+        end
+      end
+    end
+  end
+
+  def taber(name : String, value : String, close)
+    div class: "p-2 inline-block bg-white text-black rounded" do
+      span class: "mr-2" do
+        text name + ": " + value
+      end
+      link to: close do
+        text "x"
+      end
     end
   end
 

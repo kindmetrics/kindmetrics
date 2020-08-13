@@ -29,7 +29,7 @@ class Domains::Data::GoalsPage
           div class: "progress_bar", style: "width: #{percentage}%;height: 30px"
           span class: "block px-2 truncate", style: "margin-top: -1.6rem;" do
             if row.count > 0
-              link row.goal_name.to_s, to: Domains::Goals::Show.with(domain, goal_id: goal.id)
+              link row.goal_name.to_s, to: Domains::Show.with(domain, goal_id: goal.id)
             else
               text row.goal_name.to_s
             end
