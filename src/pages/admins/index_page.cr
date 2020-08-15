@@ -3,6 +3,8 @@ class Admins::IndexPage < AdminLayout
   needs domains : DomainQuery
   needs users : UserQuery
   needs confirmed_users : UserQuery
+  needs share_page : Bool = false
+  needs active : String = ""
   quick_def page_title, "Admin"
 
   def content

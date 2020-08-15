@@ -3,13 +3,13 @@ class Users::EditPage < MainLayout
   quick_def page_title, "Edit"
   quick_def single_page, "Edit my Settings"
 
+  def active
+    "Settings"
+  end
+
   def content
-    div class: "gradient-color" do
-      div class: "mt-4 max-w-6xl mx-auto py-6 px-2 sm:px-0 border-t" do
-        h1 "Edit your Settings", class: "text-xl"
-      end
-    end
-    div class: "mt-20 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
+    div class: "max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
+      h1 "Edit your Settings", class: "text-xl"
       div class: "my-3 card" do
         render_user_form(@operation)
       end

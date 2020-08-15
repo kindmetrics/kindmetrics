@@ -11,6 +11,7 @@ class Domains::Paths::ShowPage < Share::BasePage
   needs total_previous : Int64
   needs bounce_previous : Int64
   needs period_string : String
+  needs active : String = "Dashboard"
 
   quick_def page_title, "#{@path} at #{@domain.address} last #{period_string}"
 

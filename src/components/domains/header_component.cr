@@ -30,7 +30,7 @@ class HeaderComponent < BaseComponent
 
   def render
     div class: "gradient-color" do
-      div class: "mt-4 max-w-6xl mx-auto pt-6 px-2 sm:px-0 border-b" do
+      div class: "" do
         div class: "flex justify-between items-center" do
           if @share_page
             div class: "w-2/3" do
@@ -55,9 +55,9 @@ class HeaderComponent < BaseComponent
           end
         end
 
-        div class: "clear-both w-full pt-2 mt-3" do
-          m TabMenu, links: links, active: @active, domain: @domain if @total_sum > 0
-        end
+        #div class: "clear-both w-full pt-2 mt-3" do
+        #  m TabMenu, links: links, active: @active, domain: @domain if @total_sum > 0
+        #end
       end
     end
   end

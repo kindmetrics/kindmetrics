@@ -3,12 +3,14 @@ class Domains::EditGoalsPage < AdminLayout
   needs domain : Domain
   needs goals : GoalQuery
   needs hashid : String
+  needs share_page : Bool = false
   quick_def page_title, "Edit Goals for domain with id: #{@domain.id}"
   needs domains : DomainQuery?
+  needs active : String = "Settings"
 
   def content
     m HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", show_period: false, active: "Goals"
-    div class: "mt-10 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
+    div class: "max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       h1 "Goals", class: "text-xl"
       div class: "my-3 card" do
         if goals.clone.select_count > 0

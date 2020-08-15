@@ -20,10 +20,19 @@ export default class extends Controller {
           dynamicAnimation: {
             enabled: false
           }
+        },
+        toolbar: {
+          show: false
         }
       },
       grid: {
         show: false
+      },
+      markers: {
+        size: 0,
+        hover: {
+          size: 0
+        }
       },
       series: [
         {
@@ -64,7 +73,15 @@ export default class extends Controller {
         tooltip: {
           enabled: false
         },
+        labels: {
+          show: false
+        },
         showForNullSeries: false
+      },
+      yaxis: {
+        labels: {
+          show: false
+        }
       }
     }
     var chart = new ApexCharts(ctx, options);

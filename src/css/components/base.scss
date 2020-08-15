@@ -1,9 +1,3 @@
-a {
-  @apply text-blue-600;
-}
-a:hover {
-  @apply underline;
-}
 h1 {
   @apply text-5xl;
 }
@@ -17,7 +11,7 @@ h3 {
 
 body {
   //background-color: #F8F7FA;
-  @apply bg-gray-100;
+  @apply bg-white;
 }
 
 .bg-menu-button {
@@ -27,21 +21,15 @@ body {
     background-color: #F8F8F8;
   }
 }
-
-.nav {
-  background-color: white;
-  margin-bottom: -17px !important;
-  @apply pb-2;
-  //@apply bg-white;
-
-  a {
-    @apply text-black;
+.hover\:bg-menu-button {
+  &:hover {
+    background-color: #F5F5F5;
   }
 }
 
 .gradient-color {
-  background-color: #2B5AA8;
-  color: white;
+  //background-color: #2B5AA8;
+  //;
   //@apply bg-white;
   //@apply shadow-md;
 }
@@ -68,27 +56,35 @@ body {
 
 .card {
   @apply rounded-md;
-  @apply shadow-md;
   @apply relative;
   @apply h-full;
   @apply bg-white;
   @apply text-black;
+  @apply border;
+  @apply border-gray-200;
   @apply p-4;
 
   a {
     @apply text-black;
   }
 }
+.mini-card {
+  @apply rounded-md;
+  @apply border;
+  @apply border-gray-200;
+  @apply px-2;
+  @apply py-1;
+}
+
 .big_letters {
   @apply w-full;
   @apply mb-4;
-  @apply text-white;
+  @apply text-gray-900;
   @apply p-1;
-  padding-bottom: 10rem;
 }
 
 .poper {
-  margin-top: -10rem;
+  //margin-top: -10rem;
 }
 
 .progress_bar {
@@ -106,11 +102,11 @@ body {
 }
 
 .current-counter-container {
-  @apply text-white;
+  @apply text-gray-900;
   @apply text-sm;
   .current-counter {
     @apply text-sm;
-    @apply text-white;
+    @apply text-gray-900;
     @apply font-bold;
   }
 }

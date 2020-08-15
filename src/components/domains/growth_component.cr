@@ -8,24 +8,24 @@ class GrowthComponent < BaseComponent
       if reverse?
         if up?
           img src: "/assets/svg/arrow-up-red.svg", class: "text-red-200 strong text-xs h-4 w-4 block mr-1"
-          span class: "text-white strong text-xs" do
+          span class: "text-gray-900 strong text-xs" do
             raw count_percentage + "%"
           end
         else
           img src: "/assets/svg/arrow-down-green.svg", class: "text-green-200 strong text-xs h-4 w-4 block mr-1"
-          span class: "text-white strong text-xs" do
+          span class: "text-gray-900 strong text-xs" do
             raw count_percentage + "%"
           end
         end
       else
         if up?
           img src: "/assets/svg/arrow-up-green.svg", class: "text-green-200 strong text-xs h-4 w-4 block mr-1"
-          span class: "text-white strong text-xs" do
+          span class: "text-gray-90 strong text-xs" do
             raw count_percentage + "%"
           end
         else
           img src: "/assets/svg/arrow-down-red.svg", class: "text-red-200 strong text-xs h-4 w-4 block mr-1"
-          span class: "text-white strong text-xs" do
+          span class: "text-gray-90 strong text-xs" do
             raw count_percentage + "%"
           end
         end

@@ -10,6 +10,7 @@ class Domains::ShowPage < SecretGuestLayout
   needs period : String
   needs period_string : String
   needs share_page : Bool = false
+  needs active : String = "Dashboard"
   needs goal : Goal?
   quick_def page_title, "Analytics for " + @domain.address
 
@@ -20,9 +21,11 @@ class Domains::ShowPage < SecretGuestLayout
     else
       render_query_tabs
       render_total
-      div class: "max-w-6xl mx-auto px-2 sm:px-0 poper" do
-        div class: "card py-6 px-2" do
-          render_canvas
+      div class: "gradient-color" do
+        div class: "mb-6" do
+          div class: "" do
+            render_canvas
+          end
         end
       end
       render_the_rest
@@ -32,7 +35,7 @@ class Domains::ShowPage < SecretGuestLayout
   def render_query_tabs
     return if goal.nil?
     div class: "gradient-color" do
-      div class: "max-w-6xl mx-auto px-2 sm:px-0 pt-4" do
+      div class: "px-2 sm:px-0 pt-4" do
         if !goal.nil?
           taber("Goal", goal.not_nil!.name, share_page? ? Share::Show.with(share_id: domain.hashid) : Domains::Show.with(domain_id: domain.id))
         end
@@ -41,7 +44,7 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def taber(name : String, value : String, close)
-    div class: "p-2 inline-block bg-white text-black rounded" do
+    div class: "inline-block mini-card text-black" do
       span class: "mr-2" do
         text name + ": " + value
       end
@@ -62,7 +65,7 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_the_rest
-    div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6" do
+    div class: "p-2 sm:p-0 my-3 mb-6" do
       div class: "w-full grid grid-cols-1 md:grid-cols-3 gap-6" do
         div class: "card" do
           m LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, period: @period

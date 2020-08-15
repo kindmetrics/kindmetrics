@@ -8,7 +8,7 @@ class TotalRowComponent < BaseComponent
 
   def render
     div class: "big_letters gradient-color" do
-      div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0 grid grid-flow-col gap-6" do
+      div class: "py-3 px-2 sm:px-0 grid grid-flow-col gap-6" do
         div class: "p-3" do
           div class: "text-4xl strong md:flex items-center" do
             para normalize_number(@total_unique), class: "text-4xl strong"
