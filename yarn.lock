@@ -7312,6 +7312,13 @@ statuses@~1.4.0:
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.4.0.tgz#bb73d446da2796106efcc1b601a253d6c46bd087"
   integrity sha512-zhSCtt8v2NDrRlPQpCNtw/heZLtfUDqxBM1udqikb/Hbk52LK4nQSwr10u77iopCW5LsyHpuXS0GnEc48mLeew==
 
+stimulus-toggle-util@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/stimulus-toggle-util/-/stimulus-toggle-util-0.4.1.tgz#f3b9f3be4ea931e42f2a5551f169a3f6a578f9c5"
+  integrity sha512-XG4Hk94vFl+TFYtjqKFQ3ifGCJ33sVuGw+xYYNBNakX27+YgQO8Gx74nW91lp0ygZ9HyLfJMnflsoihzQmTQQA==
+  dependencies:
+    stimulus "^1.1.1"
+
 stimulus-use@^0.9.0:
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/stimulus-use/-/stimulus-use-0.9.3.tgz#3944072f66402708a2520529047aec2485a0fee6"
