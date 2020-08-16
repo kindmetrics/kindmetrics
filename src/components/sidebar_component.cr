@@ -10,18 +10,13 @@ class SidebarComponent < BaseComponent
   def render
       div class: "hidden", data_toggle_name: "sidebar-1" do
         div class: "fixed inset-0 flex z-40" do
-          div class: "fixed inset-0" do
-            div class: "absolute inset-0 bg-gray-600 opacity-75"
-          end
-          div class: "relative flex-1 flex flex-col max-w-xs w-full bg-white" do
-            div class: "absolute top-0 right-0 mr-14 p-1" do
-              button aria_label: "Close sidebar", class: "flex items-center justify-center h-12 w-12 rounded-full focus:outline-none focus:bg-gray-600", data_action:"toggle#toggle", data_toggle_target:"sidebar-1" do
-                tag "svg", class: "h-6 w-6 text-white", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" do
-                  tag "path", d: "M6 18L18 6M6 6l12 12", stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2"
+          div class: "relative flex-1 flex flex-col w-full bg-white" do
+            div class: "flex-1 h-0 pt-5 pb-4 overflow-y-auto" do
+              div class: "flex-shrink-0 flex items-center px-2 mb-5" do
+                button aria_label: "Close sidebar", class: "group flex items-center px-2 w-full text-md bg-menu-button py-2 leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150", data_action:"toggle#toggle", data_toggle_target:"sidebar-1" do
+                  text "Close menu"
                 end
               end
-            end
-            div class: "flex-1 h-0 pt-5 pb-4 overflow-y-auto" do
               div class: "flex-shrink-0 flex items-center px-2" do
                 if !domain.nil? && !current_user.nil?
                   m DomainDropdownComponent, domain: domain.not_nil!, domains: domains

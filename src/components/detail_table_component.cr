@@ -5,7 +5,7 @@ class DetailTableComponent < BaseComponent
 
   def render
     table class: "w-full" do
-      thead class: "border-b border-gray-300" do
+      thead class: "border-b border-gray-200" do
         tr do
           th class: "text-left uppercase text-gray-600 font-semibold text-xs pb-1" do
             text first_header

@@ -97,7 +97,12 @@ class Domains::ShowPage < SecretGuestLayout
         end
       end
       render_goals unless @goal
+      render_promo if share_page? && current_user.nil?
     end
+  end
+
+  def render_promo
+    m PromoComponent, domain
   end
 
   def render_goals
