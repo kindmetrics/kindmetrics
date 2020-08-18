@@ -3,6 +3,7 @@ class Domains::Data::PagesPage
   needs pages : Array(StatsPages)
   needs period : String
   needs domain : Domain
+  needs goal : Goal?
   needs current_user : User?
 
   def render
@@ -43,9 +44,9 @@ class Domains::Data::PagesPage
 
   def get_url(row)
     if current_user.nil?
-      "/share/#{@domain.hashid}/paths/#{row.address}"
+      Share::Show.with(share_id: domain.hashid, goal_id: goal.try { |g| g.id } || 0_i64, site_path: row.address.to_s).url
     else
-      "/domains/#{@domain.id}/paths/#{row.address}"
+      Domains::Show.with(domain_id: domain.id, goal_id: goal.try { |g| g.id } || 0_i64, site_path: row.address.to_s).url
     end
   end
 end

@@ -54,6 +54,10 @@ body {
   transition: border-color .2s ease-in;
 }
 
+.blue-numbers {
+  color: #0064FF;
+}
+
 .card {
   @apply rounded-md;
   @apply relative;
