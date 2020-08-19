@@ -41,7 +41,6 @@ class TimeWorker
     L.info { "saving session #{session_id}" }
 
     AddClickhouse.update_session(session_id.to_i64, length: time_spent_seconds, is_bounce: is_bounce)
-    AddClickhouse.update_session(session_id, length: time_spent_seconds, is_bounce: is_bounce)
   end
 
   def self.get_sessions
