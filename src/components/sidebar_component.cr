@@ -6,6 +6,7 @@ class SidebarComponent < BaseComponent
   needs domain : Domain?
   needs period : String = "7d"
   needs domains : DomainQuery?
+  needs total_sum : Int64 = 1_i64
 
   def render
       div class: "hidden", data_toggle_name: "sidebar-1" do
@@ -31,25 +32,27 @@ class SidebarComponent < BaseComponent
                   end
                 end
               end
-              nav class: "mt-5 space-y-1" do
-                links.each do |l|
-                  if l["name"] == active
-                    class_names = "group flex items-center px-4 py-2 text-sm leading-5 blue-numbers font-semibold bg-gray-200 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
-                    svg_class = "blue-numbers"
-                  else
-                    class_names ="group flex items-center px-4 py-2 text-sm leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
-                    svg_class = "text-gray-600"
-                  end
-                  a class: class_names, href: l["link"] do
-                    if !l["icon"].empty?
-                      icon(l["icon"],"h-4 w-4 align-middle inline mr-2 fill-current " + svg_class)
+              if total_sum > 0
+                nav class: "mt-5 space-y-1" do
+                  links.each do |l|
+                    if l["name"] == active
+                      class_names = "group flex items-center px-4 py-2 text-sm leading-5 blue-numbers font-semibold bg-gray-200 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
+                      svg_class = "blue-numbers"
+                    else
+                      class_names ="group flex items-center px-4 py-2 text-sm leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
+                      svg_class = "text-gray-600"
                     end
-                    text l["name"]
+                    a class: class_names, href: l["link"] do
+                      if !l["icon"].empty?
+                        icon(l["icon"],"h-4 w-4 align-middle inline mr-2 fill-current " + svg_class)
+                      end
+                      text l["name"]
+                    end
                   end
                 end
               end
             end
-            div class: "flex-shrink-0 flex border-t border-gray-200 p-4" do
+            div class: "flex-shrink-0 flex border-t border-gray-200 p-4 hover:bg-gray-200" do
               link to: Users::Edit, class: "flex-shrink-0 group block focus:outline-none" do
                 div class: "flex items-center" do
                   div class: "ml-3" do
@@ -85,25 +88,27 @@ class SidebarComponent < BaseComponent
                   end
                 end
               end
-              nav class: "mt-5 flex-1 bg-gray-100 space-y-1" do
-                links.each do |l|
-                  if l["name"] == active
-                    class_names = "group flex items-center px-4 py-2 text-sm leading-5 blue-numbers font-semibold bg-gray-200 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
-                    svg_class = "blue-numbers"
-                  else
-                    class_names ="group flex items-center px-4 py-2 text-sm leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
-                    svg_class = "text-gray-600"
-                  end
-                  a class: class_names, href: l["link"] do
-                    if !l["icon"].empty?
-                      icon(l["icon"],"h-4 w-4 align-middle inline mr-2 fill-current " + svg_class)
+              if total_sum > 0
+                nav class: "mt-5 flex-1 bg-gray-100 space-y-1" do
+                  links.each do |l|
+                    if l["name"] == active
+                      class_names = "group flex items-center px-4 py-2 text-sm leading-5 blue-numbers font-semibold bg-gray-200 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
+                      svg_class = "blue-numbers"
+                    else
+                      class_names ="group flex items-center px-4 py-2 text-sm leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
+                      svg_class = "text-gray-600"
                     end
-                    text l["name"]
+                    a class: class_names, href: l["link"] do
+                      if !l["icon"].empty?
+                        icon(l["icon"],"h-4 w-4 align-middle inline mr-2 fill-current " + svg_class)
+                      end
+                      text l["name"]
+                    end
                   end
                 end
               end
             end
-            div class: "flex-shrink-0 flex p-4" do
+            div class: "flex-shrink-0 flex p-4 hover:bg-gray-200" do
               link to: Users::Edit, class: "flex-shrink-0 w-full group block" do
                 div class: "flex items-center" do
                   div class: "ml-3" do
