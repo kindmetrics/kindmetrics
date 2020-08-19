@@ -17,7 +17,7 @@ class TotalRowComponent < BaseComponent
                 text " Unique "
               end
               dd class: "mt-1 flex items-baseline md:block lg:flex" do
-                div class: "flex items-baseline text-2xl leading-8 mr-2 font-semibold blue-numbers" do
+                div class: "flex items-baseline text-3xl leading-8 mr-2 font-semibold blue-numbers" do
                   text normalize_number(@total_unique)
                   span class: "ml-2 text-sm leading-5 font-medium text-gray-500" do
                     text " from " + normalize_number(@total_unique_previous)
@@ -36,7 +36,7 @@ class TotalRowComponent < BaseComponent
                 text " Pageviews "
               end
               dd class: "mt-1 flex items-baseline md:block lg:flex" do
-                div class: "flex items-baseline text-2xl leading-8 mr-2 font-semibold blue-numbers" do
+                div class: "flex items-baseline text-3xl leading-8 mr-2 font-semibold blue-numbers" do
                   text normalize_number(@total_sum)
                   span class: "ml-2 text-sm leading-5 font-medium text-gray-500" do
                     text " from " + normalize_number(@total_previous)
@@ -55,7 +55,7 @@ class TotalRowComponent < BaseComponent
                 text " Bounce rate "
               end
               dd class: "mt-1 flex items-baseline md:block lg:flex" do
-                div class: "flex items-baseline text-2xl leading-8 mr-2 font-semibold blue-numbers" do
+                div class: "flex items-baseline text-3xl leading-8 mr-2 font-semibold blue-numbers" do
                   text total_bounce.to_s+"% "
                   span class: "ml-2 text-sm leading-5 font-medium text-gray-500" do
                     text " from " + total_bounce_previous.to_s + "%"
