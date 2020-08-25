@@ -49,7 +49,6 @@ class Users::BillingPage < MainLayout
       para events_count.format + " events", class: "font-semibold mb-4"
 
       link "Upgrade", to: Users::Plans, class: "inline-block p-2 font-semibold bg-blue-700 text-white rounded"
-
     end
   end
 
@@ -57,8 +56,6 @@ class Users::BillingPage < MainLayout
     h2 "Cancel", class: "text-xl"
     div class: "my-3 border border-gray-200 rounded bg-white p-4" do
       para "you can cancel your subscription and use Kindmetrics until the date."
-
-
     end
   end
 end

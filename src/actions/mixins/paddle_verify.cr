@@ -4,7 +4,7 @@ module PaddleVerify
 
     params.delete("p_signature")
     stringify_data = Hash(String, String).new
-    params.each { |key, value| stringify_data[key.to_s] = value.to_s}
+    params.each { |key, value| stringify_data[key.to_s] = value.to_s }
 
     serialized_data = stringify_data.to_php_serialized
     rsa = OpenSSL::PKey::RSA.new(File.read("./paddle_key.pem"))

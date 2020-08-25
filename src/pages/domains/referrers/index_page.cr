@@ -6,7 +6,6 @@ class Domains::Referrer::IndexPage < Share::BasePage
   needs domains : DomainQuery?
   needs active : String = "Referrers"
 
-
   def content
     m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: @period, active: "Referrers"
     div do

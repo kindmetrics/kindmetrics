@@ -55,9 +55,9 @@ class HeaderComponent < BaseComponent
           end
         end
 
-        #div class: "clear-both w-full pt-2 mt-3" do
+        # div class: "clear-both w-full pt-2 mt-3" do
         #  m TabMenu, links: links, active: @active, domain: @domain if @total_sum > 0
-        #end
+        # end
       end
     end
   end

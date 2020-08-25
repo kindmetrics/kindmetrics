@@ -1,7 +1,6 @@
 SESSION_TIMEOUT   = 30.minutes
 HASHID_MIN_LENGTH = 8
 
-
 PLANS = [
   {name: "Personal", id: "596767", views: 30000, price: 7},
   {name: "Small", id: "596768", views: 200000, price: 17},

@@ -1,5 +1,4 @@
 class PromoComponent < BaseComponent
-
   needs domain : Domain
 
   def render
@@ -7,7 +6,7 @@ class PromoComponent < BaseComponent
       div class: "w-full mx-auto pl-6 pr-8 sm:px-4 md:px-20 md:sb-pl" do
         div class: "p-2 rounded-md stats-bg text-white shadow-lg sm:p-3 flex justify-between items-center" do
           div class: "grid grid-cols-1 lg:grid-cols-2 text-gray-200 flex items-center" do
-            span "Kindmetrics Analytics for "+ domain.address, class: "text-xl text-white mr-2"
+            span "Kindmetrics Analytics for " + domain.address, class: "text-xl text-white mr-2"
             span "Get exactly the same right now"
           end
           div class: "" do
@@ -19,5 +18,4 @@ class PromoComponent < BaseComponent
       end
     end
   end
-
 end

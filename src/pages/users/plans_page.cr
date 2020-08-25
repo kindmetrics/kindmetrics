@@ -14,7 +14,6 @@ class Users::PlansPage < MainLayout
       h1 "Plans", class: "text-xl"
       div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
         div class: "w-full", data_controller: "plans", data_plans_paddle: KindEnv.env("PADDLE_VENDOR") || "", data_plans_user: current_user.id, data_plans_email: current_user.email do
-
           render_list
 
           div class: "text-right m-2 text-sm" do
@@ -73,7 +72,7 @@ class Users::PlansPage < MainLayout
       end
       td class: "w-2/6 px-6 py-3 text-sm leading-5 font-medium" do
         div class: "flex items-center space-x-2" do
-          span  price.to_s+"€", class: "flex-shrink-0 text-xs leading-5 font-medium"
+          span price.to_s + "€", class: "flex-shrink-0 text-xs leading-5 font-medium"
         end
       end
       td class: "w-2/6 px-6 py-3 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900" do

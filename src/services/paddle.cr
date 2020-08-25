@@ -1,5 +1,6 @@
 class Paddle
   BASE_URL = "https://vendors.paddle.com/api/2.0"
+
   def initialize(@subscription : Subscription)
     @site = Crest::Resource.new(BASE_URL)
   end

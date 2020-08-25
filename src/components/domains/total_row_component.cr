@@ -9,7 +9,6 @@ class TotalRowComponent < BaseComponent
   def render
     div class: "big_letters gradient-color" do
       div class: "mt-5 grid grid-cols-1 rounded-md overflow-hidden md:grid-cols-3" do
-
         div do
           div class: "px-4 py-5 sm:p-6" do
             dl do
@@ -56,7 +55,7 @@ class TotalRowComponent < BaseComponent
               end
               dd class: "mt-1 flex items-baseline md:block lg:flex" do
                 div class: "flex items-baseline text-3xl leading-8 mr-2 font-semibold blue-numbers" do
-                  text total_bounce.to_s+"% "
+                  text total_bounce.to_s + "% "
                   span class: "ml-2 text-sm leading-5 font-medium text-gray-500" do
                     text " from " + total_bounce_previous.to_s + "%"
                   end
