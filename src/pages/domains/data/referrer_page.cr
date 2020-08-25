@@ -37,7 +37,7 @@ class Domains::Data::ReferrerPage
               img src: "https://api.faviconkit.com/#{row.referrer_domain}/16", class: "inline align-middle mr-2 h-4 w-4 -mt-1"
               text row.referrer_source.to_s
               unless row.referrer_medium.nil?
-                text " / " + row.referrer_medium.not_nil!
+                text " / #{row.referrer_medium.not_nil!}"
               end
             end
           end
@@ -53,9 +53,9 @@ class Domains::Data::ReferrerPage
 
   def get_url(row)
     if current_user.nil?
-      Share::Referrer::Show.with(@domain.hashid, row.referrer_source.to_s, @period.to_s).url
+      Share::Referrer::Show.with(@domain.hashid, row.referrer_source.to_s, @period).url
     else
-      Domains::Referrer::Show.with(@domain.id, row.referrer_source.to_s, @period.to_s).url
+      Domains::Referrer::Show.with(@domain.id, row.referrer_source.to_s, @period).url
     end
   end
 end

@@ -1,4 +1,4 @@
-class StatsCountry
+struct StatsCountry
   include JSON::Serializable
 
   property country : String?

@@ -1,4 +1,4 @@
-class StatsBrowser
+struct StatsBrowser
   include JSON::Serializable
 
   property browser : String?

@@ -1,4 +1,4 @@
-class ClickSession
+struct ClickSession
   include JSON::Serializable
 
   @[JSON::Field(converter: JSON::IntConverter)]

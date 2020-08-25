@@ -1,4 +1,4 @@
-class StatsPages
+struct StatsPages
   include JSON::Serializable
 
   property address : String?

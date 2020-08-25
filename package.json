@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@rails/ujs": "^6.0.0",
+    "@tailwindcss/ui": "^0.5.0",
     "apexcharts": "^3.19.3",
     "datamaps": "^0.5.9",
     "normalize-scss": "^7.0.1",

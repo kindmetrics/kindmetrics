@@ -8,6 +8,9 @@
     <script src="//<%=Lucky::Env.production? ? KindEnv.env("APP_TRACK_HOST") : "localhost:5000" %>/js/track.js" defer="true" data-domain="<%=KindEnv.env("KIND_HOST") || KindEnv.env("APP_HOST")%>" data-turbolinks-track="reload"></script>
     <% meta name: "turbolinks-cache-control", content: "no-cache" %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% if enable_paddle %>
+      <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
+    <% end %>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">

@@ -1,4 +1,4 @@
-class StatsGoal
+struct StatsGoal
   include JSON::Serializable
 
   property goal_name : String
