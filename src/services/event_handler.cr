@@ -3,6 +3,8 @@ class EventHandler
     return if url.host.nil?
     hostname = remove_www(url.host.not_nil!)
 
+    AddClickhouse.clean_database
+
     if Lucky::Env.production?
       return unless hostname.ends_with?(domain.address)
     end
@@ -98,16 +100,16 @@ class EventHandler
   def self.add_event(user_id : String, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id)
     session = get_session(user_id)
     if session
-      AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id)
+      spawn AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id)
     else
       puts "session not found?"
     end
   end
 
   def self.create_session(user_id : String, length : Int64?, name : String, is_bounce : Int32, referrer : String?, url : String?, referrer_source : String?, referrer_medium : String?, path : String?, device : String?, operative_system : String?, referrer_domain : String?, browser_name : String?, country : String?, domain_id : Int64, created_at : Time = Time.utc, mark : Int8 = 0)
-    AddClickhouse.session_insert(user_id, name, length, is_bounce, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at.to_utc, mark: mark)
-    session = get_session(user_id)
-    AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id, created_at: created_at.to_utc)
+    id = Random.new.rand(0.to_i64..Int64::MAX)
+    spawn AddClickhouse.session_insert(id, user_id, name, length, is_bounce, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at.to_utc, mark: mark)
+    spawn AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: id, created_at: created_at.to_utc)
   end
 
   def self.referer_source(referrer : URI) : String?
@@ -146,13 +148,13 @@ class EventHandler
     return "Unknown" if width.nil?
     return "Unknown" if width.empty?
     widthi = width.not_nil!.to_i
-    if widthi.to_i < 576
+    if widthi < 576
       "Mobile"
-    elsif widthi.to_i < 992
+    elsif widthi < 992
       "Tablet"
-    elsif widthi.to_i < 1440
+    elsif widthi < 1440
       "Laptop"
-    elsif widthi.to_i >= 1440
+    elsif widthi >= 1440
       "Desktop"
     else
       "Unknown"
