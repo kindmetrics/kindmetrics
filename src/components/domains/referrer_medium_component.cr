@@ -3,7 +3,7 @@ class ReferrerMediumComponent < BaseComponent
   needs index : Int32
 
   def render
-    tr class: index.odd? ? "bg-gray-200" : "bg-white" do
+    tr class: index.odd? ? "bg-gray-100" : "bg-white" do
       td class: "w-4/6 p-2" do
         text event.referrer_medium.to_s
       end

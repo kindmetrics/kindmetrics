@@ -1,4 +1,5 @@
 class Domains::Goals::Index < DomainBaseAction
+  include TrialCheck
   get "/domains/:domain_id/goals" do
     domains = DomainQuery.new.user_id(current_user.id)
     html IndexPage, goals: get_goals, domain: domain, period: period, domains: domains

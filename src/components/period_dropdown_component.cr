@@ -29,6 +29,6 @@ class PeriodDropdownComponent < BaseComponent
   end
 
   def period_url(period : String)
-    @current_url + "?period=" + period
+    "#{@current_url}?period=#{period}"
   end
 end

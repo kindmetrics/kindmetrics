@@ -1,6 +1,7 @@
 class Users::EditPage < MainLayout
   needs operation : SaveUser
   quick_def page_title, "Edit"
+  quick_def enable_paddle, false
   quick_def single_page, "Edit my Settings"
 
   def active

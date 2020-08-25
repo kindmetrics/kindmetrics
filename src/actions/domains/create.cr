@@ -1,4 +1,5 @@
 class Domains::Create < BrowserAction
+  include TrialCheck
   route do
     SaveDomain.create(params, user_id: current_user.id, current_user: current_user) do |operation, domain|
       if domain

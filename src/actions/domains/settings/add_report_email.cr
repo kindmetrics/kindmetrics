@@ -1,4 +1,5 @@
 class Domains::EmailReport::Create < BrowserAction
+  include TrialCheck
   post "/domins/:domain_id/settings/reports" do
     domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
     DomainPolicy.update_not_found?(domain, current_user, context)

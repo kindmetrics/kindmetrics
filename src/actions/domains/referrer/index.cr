@@ -1,4 +1,5 @@
 class Domains::Referrer::Index < DomainBaseAction
+  include TrialCheck
   get "/domains/:domain_id/referrers" do
     domains = DomainQuery.new.user_id(current_user.id)
     html IndexPage, referrers: get_referrals, mediums: get_mediums, domain: domain, period: period, domains: domains
