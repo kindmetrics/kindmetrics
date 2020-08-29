@@ -24,7 +24,6 @@ class Users::Plans::Update < BrowserAction
       flash.info = "Couldn't update subscription for some reason. Contact info@kindmetrics.io for help."
     end
 
-
     flash.keep
     redirect to: Users::Billing
   end
