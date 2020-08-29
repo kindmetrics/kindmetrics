@@ -59,3 +59,5 @@ dependencies:
   clickhouse:
     github: confact/clickhouse.cr
     branch: master
+  php_serializer:
+    github: reiswindy/php_serializer
