@@ -51,7 +51,7 @@ class HeaderComponent < BaseComponent
             end
           end
           div class: "flex" do
-            if !current_user.nil? && subscription_user_check
+            if !current_user.nil? && !subscription_user_check
               m TrialComponent, current_user: current_user.not_nil!
             end
             if show_period?
