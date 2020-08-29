@@ -1,15 +1,20 @@
-class Users::EditPage < MainLayout
+class Users::EditPage < SettingsLayout
   needs operation : SaveUser
   quick_def page_title, "Edit"
   quick_def enable_paddle, false
-  quick_def single_page, "Edit my Settings"
+  quick_def links, [
+    {"link" => Users::Edit.url, "name" => "Settings", "icon" => "settings"},
+    {"link" => Users::Billing.url, "name" => "Billing", "icon" => "billing"},
+  ]
+  quick_def active, "Settings"
+  quick_def tab, true
 
   def active
     "Settings"
   end
 
   def content
-    div class: "max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
+    div class: "max-w-2xl mx-auto" do
       h1 "Edit your Settings", class: "text-xl"
       div class: "my-3 card" do
         render_user_form(@operation)

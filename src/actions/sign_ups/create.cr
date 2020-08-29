@@ -4,6 +4,7 @@ class SignUps::Create < BrowserAction
   post "/sign_up" do
     SignUpUser.create(params, admin: false) do |operation, user|
       if user
+        flash.keep
         flash.info = "Sent an email for confirm"
         redirect to: SignIns::New
       else

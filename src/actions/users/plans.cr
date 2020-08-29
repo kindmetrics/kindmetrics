@@ -1,5 +1,5 @@
 class Users::Plans < BrowserAction
-  get "/me/plans" do
+  get "/plans" do
     UserPolicy.update_forbidden?(current_user, current_user, context)
     subscription = SubscriptionQuery.new.user_id(current_user.id).first?
     html PlansPage,

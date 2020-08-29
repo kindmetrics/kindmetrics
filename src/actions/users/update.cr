@@ -3,6 +3,7 @@ class Users::Update < BrowserAction
     SaveUser.update(current_user, params) do |operation, user|
       if operation.saved?
         flash.success = "The record has been updated"
+        flash.keep
         redirect Users::Edit
       else
         flash.failure = "It looks like the form is not valid"

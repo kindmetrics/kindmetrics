@@ -10,9 +10,9 @@ class SidebarComponent < BaseComponent
 
   def render
       div class: "hidden", data_toggle_name: "sidebar-1" do
-        div class: "fixed inset-0 flex z-40" do
-          div class: "relative flex-1 flex flex-col w-full bg-white" do
-            div class: "flex-1 h-0 pt-5 pb-4 overflow-y-auto" do
+        div class: "fixed w-full z-40" do
+          div class: "relative h-screen w-full bg-white" do
+            div class: "pt-5 pb-4 overflow-y-auto" do
               div class: "flex-shrink-0 flex items-center px-2 mb-5" do
                 button aria_label: "Close sidebar", class: "group flex items-center px-2 w-full text-md bg-menu-button py-2 leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150", data_action:"toggle#toggle", data_toggle_target:"sidebar-1" do
                   text "Close menu"
@@ -52,17 +52,13 @@ class SidebarComponent < BaseComponent
                 end
               end
             end
-            div class: "flex-shrink-0 flex border-t border-gray-200 p-4 hover:bg-cool-gray-50" do
-              link to: Users::Edit, class: "flex-shrink-0 group block focus:outline-none" do
-                div class: "flex items-center" do
-                  div class: "ml-3" do
-                    para class: "text-base leading-6 font-medium text-gray-700 group-hover:text-gray-900" do
-                      text (!current_user.nil? ? current_user.not_nil!.name : "No name").to_s
-                    end
-                    para class: "text-sm leading-5 font-medium text-gray-500 group-hover:text-gray-700 group-focus:underline transition ease-in-out duration-150" do
-                      text " Settings "
-                    end
-                  end
+            div class: "flex-shrink-0 flex p-4" do
+              div class: "flex-shrink-0 w-full group block" do
+                link to: Users::Edit, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
+                  text "User Settings"
+                end
+                link to: SignIns::Delete, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
+                  text "Sign out"
                 end
               end
             end
@@ -108,17 +104,13 @@ class SidebarComponent < BaseComponent
                 end
               end
             end
-            div class: "flex-shrink-0 flex p-4 hover:bg-gray-50" do
-              link to: Users::Edit, class: "flex-shrink-0 w-full group block" do
-                div class: "flex items-center" do
-                  div class: "ml-3" do
-                    para class: "text-sm leading-5 font-medium text-gray-700 group-hover:text-gray-900" do
-                      text (!current_user.nil? ? current_user.not_nil!.name : "No name").to_s
-                    end
-                    para class: "text-xs leading-4 font-medium text-gray-500 group-hover:text-gray-700 transition ease-in-out duration-150" do
-                      text " Settings "
-                    end
-                  end
+            div class: "flex-shrink-0 flex mb-2" do
+              div class: "flex-shrink-0 w-full group block" do
+                link to: Users::Edit, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
+                  text "User Settings"
+                end
+                link to: SignIns::Delete, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
+                  text "Sign out"
                 end
               end
             end
@@ -128,14 +120,6 @@ class SidebarComponent < BaseComponent
   end
 
   def links
-    if domain.nil?
-      return [
-        {"link" => Home::Index.url, "name" => "Dashboard", "icon" => "dashboard"},
-        {"link" => Users::Edit.url, "name" => "Settings", "icon" => "settings"},
-        {"link" => Users::Billing.url, "name" => "Billing", "icon" => "billing"},
-        {"link" => SignIns::Delete.url, "name" => "Sign out", "icon" => ""},
-      ]
-    end
     if share_page?
       [
         {"link" => Share::Show.url(domain.not_nil!.hashid, period: period), "name" => "Dashboard", "icon" => "dashboard"},

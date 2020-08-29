@@ -114,7 +114,7 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_header
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, show_period: total_sum > 0, share_page: @share_page
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, show_period: total_sum > 0, share_page: @share_page, current_user: current_user
   end
 
   def generate_params(kind : String)

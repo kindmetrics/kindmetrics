@@ -6,9 +6,11 @@ class Domains::EmailReport::Create < BrowserAction
     SaveReportUser.create(params, domain_id: domain.id, unsubscribed: false) do |_operation, report_user|
       if report_user
         flash.success = "The record has been saved"
+        flash.keep
         redirect Domains::EditReports.with(domain.id)
       else
         flash.failure = "It looks like the form is not valid"
+        flash.keep
         redirect Domains::EditReports.with(domain.id)
       end
     end

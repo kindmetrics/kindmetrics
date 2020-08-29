@@ -30,13 +30,15 @@ class Paddle::Webhook < ApiAction
     checkout_id = params.get(:checkout_id)
     plan_id = params.get(:subscription_plan_id)
     subscription_id = params.get(:subscription_id)
+    update_url = params.get(:update_url)
+    cancel_url = params.get(:cancel_url)
 
     subscription = user.not_nil!.subscription
 
     if subscription.nil?
-      SaveSubscription.create!(user_id: user.not_nil!.id, subscription_id: subscription_id, checkout_id: checkout_id, next_bill_at: next_bill_at, plan_id: plan_id)
+      SaveSubscription.create!(user_id: user.not_nil!.id, cancelled: false, cancel_url: cancel_url, update_url: update_url, subscription_id: subscription_id, checkout_id: checkout_id, next_bill_at: next_bill_at, plan_id: plan_id)
     else
-      SaveSubscription.update!(subscription, subscription_id: subscription_id, checkout_id: checkout_id, next_bill_at: next_bill_at, plan_id: plan_id, cancelled: false)
+      SaveSubscription.update!(subscription, cancel_url: cancel_url, update_url: update_url, subscription_id: subscription_id, checkout_id: checkout_id, next_bill_at: next_bill_at, plan_id: plan_id, cancelled: false)
     end
   end
 
@@ -45,12 +47,14 @@ class Paddle::Webhook < ApiAction
     checkout_id = params.get(:checkout_id)
     plan_id = params.get(:subscription_plan_id)
     subscription_id = params.get(:subscription_id)
+    update_url = params.get(:update_url)
+    cancel_url = params.get(:cancel_url)
     next_bill_at = Time.parse_utc(params.get?(:next_bill_date) || "", "%F")
 
     subscription = user.not_nil!.subscription
     return if subscription.nil?
 
-    SaveSubscription.update!(subscription, subscription_id: subscription_id, checkout_id: checkout_id, next_bill_at: next_bill_at, plan_id: plan_id)
+    SaveSubscription.update!(subscription, subscription_id: subscription_id, checkout_id: checkout_id, cancel_url: cancel_url, update_url: update_url, next_bill_at: next_bill_at, plan_id: plan_id)
   end
 
   def cancel_subscription

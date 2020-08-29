@@ -33,7 +33,7 @@ class Domains::Data::ReferrerPage
               text "(direct)"
             end
           else
-            a class: "block px-2 hover:underline truncate w-64", style: "margin-top: -1.6rem;", href: get_url(row) do
+            a class: "block px-2 hover:underline truncate w-60", style: "margin-top: -1.6rem;", href: get_url(row) do
               img src: "https://api.faviconkit.com/#{row.referrer_domain}/16", class: "inline align-middle mr-2 h-4 w-4 -mt-1"
               text row.referrer_source.to_s
               unless row.referrer_medium.nil?

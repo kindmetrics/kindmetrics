@@ -5,7 +5,13 @@ class Subscription < BaseModel
     column checkout_id : String
     column plan_id : String
     column cancelled : Bool
+    column cancel_url : String
+    column update_url : String
     belongs_to user : User
+  end
+
+  def name
+    plan.try { |p| p["name"] }
   end
 
   def price

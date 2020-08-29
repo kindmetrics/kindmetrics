@@ -1,4 +1,5 @@
 class HeaderComponent < BaseComponent
+  include SubscriptionCheck
   needs active : String = "Dashboard"
   needs domain : Domain
   needs domains : DomainQuery?
@@ -8,6 +9,7 @@ class HeaderComponent < BaseComponent
   needs period_string : String = "7 days"
   needs show_period : Bool = true
   needs current_url : String
+  needs current_user : User?
 
   def links
     if share_page?
@@ -48,7 +50,10 @@ class HeaderComponent < BaseComponent
               end
             end
           end
-          div do
+          div class: "flex" do
+            if !current_user.nil? && subscription_user_check
+              m TrialComponent, current_user: current_user.not_nil!
+            end
             if show_period?
               m PeriodDropdownComponent, period_string, current_url
             end

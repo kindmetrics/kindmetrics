@@ -10,7 +10,7 @@ module TrialCheck
 
     subscription = current_user.subscription!
 
-    return continue unless subscription.nil? || subscription_time?(subscription)
+    return continue unless subscription_user_check
 
     redirect to: Users::Billing
   end

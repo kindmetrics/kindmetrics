@@ -9,7 +9,8 @@ describe TimeWorker do
   end
   it "no events attached to session" do
     user_id = "evwesafsafas"
-    AddClickhouse.session_insert(user_id: user_id, name: "pageview", length: nil, is_bounce: 1, referrer: "indiehacker.com", url: "https://kindmetrics.com/aaadsad", referrer_source: "indiehacker.com", referrer_medium: "referrer", path: "/asadasd", device: "Desktop", operative_system: "Mac OS", referrer_domain: "indiehacker.com", browser_name: "Chrome", country: "SE", domain_id: DomainBox.create.id)
+    session_id = Random.new.rand(0.to_i64..Int64::MAX)
+    AddClickhouse.session_insert(id: session_id, user_id: user_id, name: "pageview", length: nil, is_bounce: 1, referrer: "indiehacker.com", url: "https://kindmetrics.com/aaadsad", referrer_source: "indiehacker.com", referrer_medium: "referrer", path: "/asadasd", device: "Desktop", operative_system: "Mac OS", referrer_domain: "indiehacker.com", browser_name: "Chrome", country: "SE", domain_id: DomainBox.create.id)
     session = AddClickhouse.get_session(user_id)
     session.not_nil!.length.should eq(nil)
     session.not_nil!.is_bounce.should eq(1)

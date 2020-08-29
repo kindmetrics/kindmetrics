@@ -6,5 +6,6 @@ class UserBox < Avram::Box
     confirmed_token Random::Secure.hex(32)
     confirmed_at Time.utc
     admin false
+    trial_ends_at Time.utc + 14.days
   end
 end

@@ -27,7 +27,6 @@ class AddClickhouse
     INSERT INTO kindmetrics.events FORMAT JSONEachRow #{json_object.to_json}
     SQL
     res = client.insert(buf)
-    pp! res
   end
 
   def self.session_insert(id : Int64, user_id, name : String, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc, mark : Int8 = 0)
@@ -59,7 +58,6 @@ class AddClickhouse
     SQL
 
     res = client.insert(buf)
-    pp! res
   end
 
   def self.get_session(user_id) : ClickSession?

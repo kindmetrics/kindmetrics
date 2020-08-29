@@ -5,6 +5,7 @@ class SignIns::Create < BrowserAction
     SignInUser.new(params).submit do |operation, authenticated_user|
       if authenticated_user
         sign_in(authenticated_user)
+        flash.keep
         flash.success = "You're now signed in"
         Authentic.redirect_to_originally_requested_path(self, fallback: Home::Index)
       else
