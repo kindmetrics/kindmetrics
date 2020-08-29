@@ -19,14 +19,14 @@ class Users::PlansPage < SettingsLayout
     div class: "max-w-2xl mx-auto" do
       h1 "Plans", class: "text-xl"
       para "Events usage last 30 days: #{events_count.format}", class: "text-sm"
-      div class: "w-full mt-2", data_controller: "plans", data_plans_paddle: KindEnv.env("PADDLE_VENDOR") || "", data_plans_user: current_user.id, data_plans_success: Users::Plans::Success.url, data_plans_email: current_user.email, data_plans_default: "596767", data_plans_current_plan: subscription.try { |s| s.plan_id }.to_s, data_plans_upgrade: subscription_check do
+      div class: "w-full mt-2", data_controller: "plans", data_plans_paddle: KindEnv.env("PADDLE_VENDOR") || "", data_plans_user: current_user.id, data_plans_success: Users::Plans::Success.url, data_plans_email: current_user.email, data_plans_default: "596767", data_plans_current_plan: subscription.try { |s| s.cancelled? ? "" : s.plan_id }.to_s, data_plans_upgrade: subscription_check do
         div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
           div class: "" do
             render_list
           end
 
           div do
-            unless subscription.nil?
+            unless subscription.nil? || subscription.try {|s| s.cancelled? }
               div class: "p-2 border-gray-200 border rounded mb-2" do
                 para "current plan: #{subscription.not_nil!.pageviews.try { |p| p.format }.to_s}", class: "text-cool-gray-600 text-center"
               end

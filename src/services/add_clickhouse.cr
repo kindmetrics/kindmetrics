@@ -141,6 +141,8 @@ class AddClickhouse
       db.query_all "SELECT id FROM domains WHERE user_id='#{user.id}'", as: Int64
     end
 
+    return 0_i64 if domain_ids.empty?
+
     start_date = 30.days.ago.at_beginning_of_day.to_s("%Y-%m-%d %H:%M:%S")
 
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
