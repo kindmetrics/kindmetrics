@@ -122,3 +122,8 @@ body {
 .plan-current {
   @apply bg-blue-100;
 }
+.plan-disable {
+  @apply bg-cool-gray-50;
+  @apply text-gray-300;
+  @apply cursor-not-allowed;
+}

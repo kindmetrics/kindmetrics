@@ -70,7 +70,7 @@ class Users::BillingPage < SettingsLayout
 
   def update_payment_window
     h2 "Update", class: "text-xl"
-    div class: "my-3 border border-gray-200 rounded bg-white p-4", data_controller: "cancel", data_cancel_paddle: KindEnv.env("PADDLE_VENDOR") || "", data_cancel_url: subscription.not_nil!.update_url do
+    div class: "my-3 border border-gray-200 rounded bg-white p-4", data_controller: "cancel", data_cancel_paddle: KindEnv.env("PADDLE_VENDOR") || "", data_cancel_url: subscription.not_nil!.update_url, data_cancel_success: "http://localhost:5000/me/plans/card" do
       para "You can update your card details whenever you want."
       a "Update card", href: subscription.not_nil!.update_url, data_action: "click->cancel#cancel", class: "inline-block p-2 mt-4 font-semibold bg-blue-700 text-white rounded"
     end
@@ -78,7 +78,7 @@ class Users::BillingPage < SettingsLayout
 
   def cancel_subscription_window
     h2 "Cancel", class: "text-xl"
-    div class: "my-3 border border-gray-200 rounded bg-white p-4", data_controller: "cancel", data_cancel_paddle: KindEnv.env("PADDLE_VENDOR") || "", data_cancel_url: subscription.not_nil!.cancel_url do
+    div class: "my-3 border border-gray-200 rounded bg-white p-4", data_controller: "cancel", data_cancel_paddle: KindEnv.env("PADDLE_VENDOR") || "", data_cancel_url: subscription.not_nil!.cancel_url, data_cancel_success: "http://localhost:5000/me/plans/cancelled" do
       para "you can cancel your subscription and use Kindmetrics until the subscription's next bill date."
       a "Cancel Subscription", href: subscription.not_nil!.cancel_url, data_action: "click->cancel#cancel", class: "inline-block p-2 mt-4 font-semibold bg-red-700 text-white rounded"
     end

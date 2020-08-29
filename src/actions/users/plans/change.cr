@@ -19,8 +19,13 @@ class Users::Plans::Update < BrowserAction
     pp! json_response
     if json_response["success"]
       SaveSubscription.update!(subscription, plan_id: plan_id.to_s, cancelled: false)
+      flash.success = "Subscription is updated! It can take 1-2 minutes before it updates below."
+    else
+      flash.info = "Couldn't update subscription for some reason. Contact info@kindmetrics.io for help."
     end
 
+
+    flash.keep
     redirect to: Users::Billing
   end
 end

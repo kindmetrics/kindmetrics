@@ -8,7 +8,7 @@ class Domains::Update < BrowserAction
       if operation.saved?
         flash.success = "The record has been updated"
         flash.keep
-        redirect Show.with(domain.id)
+        redirect to: Show.with(domain.id)
       else
         flash.failure = "It looks like the form is not valid"
         html EditPage, operation: operation, domain: domain, hashid: hashids.encode([domain.id]), domains: domains

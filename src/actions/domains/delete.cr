@@ -12,6 +12,6 @@ class Domains::Delete < BrowserAction
       flash.success = "Deleted the record"
       flash.keep
     end
-    redirect Home::Index
+    redirect to: Home::Index
   end
 end

@@ -6,6 +6,7 @@ export default class extends Controller {
   connect() {
     Paddle.Setup({ vendor: parseInt(this.data.get("paddle")) })
     this.default()
+    this.current()
   }
 
   get plan() {
@@ -23,10 +24,20 @@ export default class extends Controller {
     }
   }
 
+  current() {
+    var currentPlan = this.data.get("current-plan")
+    if(currentPlan != "") {
+      this.goThroughDisablePlans(currentPlan)
+    }
+  }
+
   switch(event) {
     event.preventDefault()
     var button = event.currentTarget
     var plan = button.getAttribute("data-plan")
+    if(plan == this.data.get("current-plan")) {
+      return
+    }
     this._setData(button)
     this.goThroughPlans(plan)
   }
@@ -38,10 +49,22 @@ export default class extends Controller {
     eventElm.innerHTML = events
   }
 
-  goThroughPlans(id) {
+  goThroughPlans(planId) {
     const targets = this.element.querySelectorAll("[data-plan]")
     for (const target of targets) {
-      this._setPlan(target, id)
+      this._setPlan(target, planId)
+    }
+  }
+
+  goThroughDisablePlans(planId) {
+    const targets = this.element.querySelectorAll("[data-plan]")
+    for (const target of targets) {
+      const temp_plan = target.getAttribute("data-plan")
+      if(temp_plan == planId) {
+        console.log("found it")
+        target.classList.add("plan-disable")
+        return
+      }
     }
   }
 
@@ -64,7 +87,7 @@ export default class extends Controller {
   }
 
   checkout(event) {
-    if(this.data.get("upgrade") != undefined || this.data.get("upgrade") == true) {
+    if(this.data.get("upgrade") == "true") {
       return window.location = "http://localhost:5000/me/plans/update?plan_id=" + this.plan
     }
 

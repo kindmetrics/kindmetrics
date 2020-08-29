@@ -1,10 +1,16 @@
-class Domains::NewPage < AdminLayout
+class Domains::NewPage < SettingsLayout
   needs operation : SaveDomain
   needs domain : Domain?
   needs domains : DomainQuery?
   quick_def page_title, "New Domain"
+  quick_def enable_paddle, false
+  quick_def links, [
+    {"link" => Users::Edit.url, "name" => "Settings", "icon" => "settings"},
+    {"link" => Users::Billing.url, "name" => "Billing", "icon" => "billing"},
+  ]
   needs share_page : Bool = false
   needs active : String = ""
+  quick_def tab, true
 
   def content
     div class: "max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do

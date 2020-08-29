@@ -4,6 +4,6 @@ class Domains::Settings::Goals::Delete < BrowserAction
     DomainPolicy.update_not_found?(domain, current_user, context)
     goal = GoalQuery.find(goal_id)
     goal.delete
-    redirect Domains::Settings::EditGoals.with(domain.id)
+    redirect to: Domains::Settings::EditGoals.with(domain.id)
   end
 end

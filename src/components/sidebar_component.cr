@@ -120,6 +120,7 @@ class SidebarComponent < BaseComponent
   end
 
   def links
+    return [] of Hash(String, String) if domain.nil?
     if share_page?
       [
         {"link" => Share::Show.url(domain.not_nil!.hashid, period: period), "name" => "Dashboard", "icon" => "dashboard"},
