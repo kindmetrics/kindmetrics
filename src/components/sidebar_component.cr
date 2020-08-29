@@ -9,114 +9,114 @@ class SidebarComponent < BaseComponent
   needs total_sum : Int64 = 1_i64
 
   def render
-      div class: "hidden", data_toggle_name: "sidebar-1" do
-        div class: "fixed w-full z-40" do
-          div class: "relative h-screen w-full bg-white" do
-            div class: "pt-5 pb-4 overflow-y-auto" do
-              div class: "flex-shrink-0 flex items-center px-2 mb-5" do
-                button aria_label: "Close sidebar", class: "group flex items-center px-2 w-full text-md bg-menu-button py-2 leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150", data_action:"toggle#toggle", data_toggle_target:"sidebar-1" do
-                  text "Close menu"
-                end
+    div class: "hidden", data_toggle_name: "sidebar-1" do
+      div class: "fixed w-full z-40" do
+        div class: "relative h-screen w-full bg-white" do
+          div class: "pt-5 pb-4 overflow-y-auto" do
+            div class: "flex-shrink-0 flex items-center px-2 mb-5" do
+              button aria_label: "Close sidebar", class: "group flex items-center px-2 w-full text-md bg-menu-button py-2 leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150", data_action: "toggle#toggle", data_toggle_target: "sidebar-1" do
+                text "Close menu"
               end
-              div class: "flex-shrink-0 flex items-center px-2" do
-                if !domain.nil? && !current_user.nil?
-                  m DomainDropdownComponent, domain: domain.not_nil!, domains: domains
-                elsif !domain.nil?
-                  div class: "inline-block select-none rounded-md p-3 text-md transister w-full", data_action: "click->dropdown#toggle click@window->dropdown#hide", role: "button" do
-                    span class: "appearance-none flex items-center justify-between inline-block text-lg" do
-                      span class: "flex items-center" do
-                        img src: "https://api.faviconkit.com/#{domain.not_nil!.address}/32", class: "inline align-middle h-6 w-6 mr-2"
-                        text domain.not_nil!.address
-                      end
-                    end
-                  end
-                end
-              end
-              if total_sum > 0
-                nav class: "mt-5 space-y-1" do
-                  links.each do |l|
-                    if l["name"] == active
-                      class_names = "group flex items-center px-4 py-2 text-sm leading-5 blue-numbers font-semibold bg-gray-100 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
-                      svg_class = "blue-numbers"
-                    else
-                      class_names ="group flex items-center px-4 py-2 text-sm leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
-                      svg_class = "text-gray-600"
-                    end
-                    a class: class_names, href: l["link"] do
-                      if !l["icon"].empty?
-                        icon(l["icon"],"h-4 w-4 align-middle inline mr-2 fill-current #{svg_class}")
-                      end
-                      text l["name"]
+            end
+            div class: "flex-shrink-0 flex items-center px-2" do
+              if !domain.nil? && !current_user.nil?
+                m DomainDropdownComponent, domain: domain.not_nil!, domains: domains
+              elsif !domain.nil?
+                div class: "inline-block select-none rounded-md p-3 text-md transister w-full", data_action: "click->dropdown#toggle click@window->dropdown#hide", role: "button" do
+                  span class: "appearance-none flex items-center justify-between inline-block text-lg" do
+                    span class: "flex items-center" do
+                      img src: "https://api.faviconkit.com/#{domain.not_nil!.address}/32", class: "inline align-middle h-6 w-6 mr-2"
+                      text domain.not_nil!.address
                     end
                   end
                 end
               end
             end
-            div class: "flex-shrink-0 flex p-4" do
-              div class: "flex-shrink-0 w-full group block" do
-                link to: Users::Edit, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
-                  text "User Settings"
-                end
-                link to: SignIns::Delete, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
-                  text "Sign out"
+            if total_sum > 0
+              nav class: "mt-5 space-y-1" do
+                links.each do |l|
+                  if l["name"] == active
+                    class_names = "group flex items-center px-4 py-2 text-sm leading-5 blue-numbers font-semibold bg-gray-100 hover:text-gray-900 hover:bg-gray-300 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
+                    svg_class = "blue-numbers"
+                  else
+                    class_names = "group flex items-center px-4 py-2 text-sm leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
+                    svg_class = "text-gray-600"
+                  end
+                  a class: class_names, href: l["link"] do
+                    if !l["icon"].empty?
+                      icon(l["icon"], "h-4 w-4 align-middle inline mr-2 fill-current #{svg_class}")
+                    end
+                    text l["name"]
+                  end
                 end
               end
             end
           end
-          div " ", class: "flex-shrink-0 w-14"
-        end
-      end
-      div class: "hidden md:flex md:flex-shrink-0 h-screen sticky top-0" do
-        div class: "flex flex-col w-64" do
-          div class: "flex flex-col h-0 flex-1 bg-cool-gray-50" do
-            div class: "flex-1 flex flex-col pt-5 pb-4 overflow-y-auto" do
-              div class: "flex items-center flex-shrink-0 px-2" do
-                if !domain.nil? && !current_user.nil?
-                  m DomainDropdownComponent, domain: domain.not_nil!, domains: domains
-                elsif !domain.nil?
-                  div class: "inline-block select-none rounded-md p-3 text-md transister w-full", data_action: "click->dropdown#toggle click@window->dropdown#hide", role: "button" do
-                    span class: "appearance-none flex items-center justify-between inline-block text-lg" do
-                      span class: "flex items-center" do
-                        img src: "https://api.faviconkit.com/#{domain.not_nil!.address}/32", class: "inline align-middle h-6 w-6 mr-2"
-                        text domain.not_nil!.address
-                      end
-                    end
-                  end
-                end
+          div class: "flex-shrink-0 flex p-4" do
+            div class: "flex-shrink-0 w-full group block" do
+              link to: Users::Edit, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
+                text "User Settings"
               end
-              if total_sum > 0
-                nav class: "mt-5 flex-1 bg-cool-gray-50 space-y-1" do
-                  links.each do |l|
-                    if l["name"] == active
-                      class_names = "group flex items-center px-4 py-2 text-sm leading-5 blue-numbers font-semibold bg-cool-gray-100 hover:text-gray-900 hover:bg-cool-gray-200 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
-                      svg_class = "blue-numbers"
-                    else
-                      class_names ="group flex items-center px-4 py-2 text-sm leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
-                      svg_class = "text-gray-600"
-                    end
-                    a class: class_names, href: l["link"] do
-                      if !l["icon"].empty?
-                        icon(l["icon"],"h-4 w-4 align-middle inline mr-2 fill-current #{svg_class}")
-                      end
-                      text l["name"]
+              link to: SignIns::Delete, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
+                text "Sign out"
+              end
+            end
+          end
+        end
+        div " ", class: "flex-shrink-0 w-14"
+      end
+    end
+    div class: "hidden md:flex md:flex-shrink-0 h-screen sticky top-0" do
+      div class: "flex flex-col w-64" do
+        div class: "flex flex-col h-0 flex-1 bg-cool-gray-50" do
+          div class: "flex-1 flex flex-col pt-5 pb-4 overflow-y-auto" do
+            div class: "flex items-center flex-shrink-0 px-2" do
+              if !domain.nil? && !current_user.nil?
+                m DomainDropdownComponent, domain: domain.not_nil!, domains: domains
+              elsif !domain.nil?
+                div class: "inline-block select-none rounded-md p-3 text-md transister w-full", data_action: "click->dropdown#toggle click@window->dropdown#hide", role: "button" do
+                  span class: "appearance-none flex items-center justify-between inline-block text-lg" do
+                    span class: "flex items-center" do
+                      img src: "https://api.faviconkit.com/#{domain.not_nil!.address}/32", class: "inline align-middle h-6 w-6 mr-2"
+                      text domain.not_nil!.address
                     end
                   end
                 end
               end
             end
-            div class: "flex-shrink-0 flex mb-2" do
-              div class: "flex-shrink-0 w-full group block" do
-                link to: Users::Edit, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
-                  text "User Settings"
+            if total_sum > 0
+              nav class: "mt-5 flex-1 bg-cool-gray-50 space-y-1" do
+                links.each do |l|
+                  if l["name"] == active
+                    class_names = "group flex items-center px-4 py-2 text-sm leading-5 blue-numbers font-semibold bg-cool-gray-100 hover:text-gray-900 hover:bg-cool-gray-200 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
+                    svg_class = "blue-numbers"
+                  else
+                    class_names = "group flex items-center px-4 py-2 text-sm leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
+                    svg_class = "text-gray-600"
+                  end
+                  a class: class_names, href: l["link"] do
+                    if !l["icon"].empty?
+                      icon(l["icon"], "h-4 w-4 align-middle inline mr-2 fill-current #{svg_class}")
+                    end
+                    text l["name"]
+                  end
                 end
-                link to: SignIns::Delete, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
-                  text "Sign out"
-                end
+              end
+            end
+          end
+          div class: "flex-shrink-0 flex mb-2" do
+            div class: "flex-shrink-0 w-full group block" do
+              link to: Users::Edit, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
+                text "User Settings"
+              end
+              link to: SignIns::Delete, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
+                text "Sign out"
               end
             end
           end
         end
       end
+    end
   end
 
   def links
@@ -172,5 +172,4 @@ class SidebarComponent < BaseComponent
       return nil
     end
   end
-
 end
