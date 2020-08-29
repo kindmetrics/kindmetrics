@@ -47,5 +47,4 @@ class TabComponent < BaseComponent
       end
     end
   end
-
 end

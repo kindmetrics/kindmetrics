@@ -1,5 +1,4 @@
 class Users::Plans::Update < BrowserAction
-
   param plan_id : Int64
 
   get "/me/plans/update" do

@@ -10,7 +10,6 @@ class Users::BillingPage < SettingsLayout
   quick_def active, "Settings"
   quick_def tab, true
 
-
   def active
     "Billing"
   end
@@ -66,7 +65,6 @@ class Users::BillingPage < SettingsLayout
       end
 
       link "Upgrade", to: Users::Plans, class: "inline-block p-2 font-semibold bg-blue-700 text-white rounded mt-4"
-
     end
   end
 
