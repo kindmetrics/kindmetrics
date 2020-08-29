@@ -173,7 +173,7 @@ class MetricsNew
   end
 
   def get_days
-    return [nil, nil, nil] if total_query == 0
+    return [nil, nil] if total_query == 0
     sql = <<-SQL
     SELECT toDate(created_at) as date, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
@@ -186,7 +186,7 @@ class MetricsNew
     grouped_json = res.map_nil(date: Time, count: UInt64).to_json
     grouped = Array(StatsDays).from_json(grouped_json)
     grouped2 = [] of StatsDays
-    range = (@from_date..@to_date)
+    range = (@from_date...@to_date)
     range.each do |e|
       date = nil
       grouped.each do |g|
@@ -199,16 +199,11 @@ class MetricsNew
     end
     days = grouped2.map { |d| d.date }
     data = grouped2.map { |d| d.count }
-    today = data.clone
-    data.pop
-    today_data = today[today.size - 2..today.size]
-    today = today[0..today.size - 3].fill { |_i| nil }
-    today_data.each { |t| today.push t }
-    return days, today, data
+    return days, data
   end
 
   def get_pageviews_days
-    return [nil, nil, nil] if total_query == 0
+    return [nil, nil] if total_query == 0
     sql = <<-SQL
     SELECT toDate(created_at) as date, count(*) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
@@ -221,7 +216,7 @@ class MetricsNew
     grouped_json = res.map_nil(date: Time, count: UInt64).to_json
     grouped = Array(StatsDays).from_json(grouped_json)
     grouped2 = [] of StatsDays
-    range = (@from_date..@to_date)
+    range = (@from_date...@to_date)
     range.each do |e|
       date = nil
       grouped.each do |g|
@@ -235,11 +230,7 @@ class MetricsNew
     days = grouped2.map { |d| d.date }
     data = grouped2.map { |d| d.count }
     today = data.clone
-    data.pop
-    today_data = today[today.size - 2..today.size]
-    today = today[0..today.size - 3].fill { |_i| nil }
-    today_data.each { |t| today.push t }
-    return days, today, data
+    return days, data
   end
 
   def get_pages : Array(StatsPages)

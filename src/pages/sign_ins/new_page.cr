@@ -6,15 +6,14 @@ class SignIns::NewPage < AuthLayout
   end
 
   private def render_sign_in_form(op)
-    div class: "card" do
-      h2 "Sign In", class: "text-xl"
+    div class: "" do
       form_for SignIns::Create do
         sign_in_fields(op)
         submit "Sign In", flow_id: "sign-in-button", class: "w-full mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       end
     end
     div class: "w-full text-center mt-2" do
-      link "Sign up", to: SignUps::New
+      link "Sign up instead", to: SignUps::New
     end
   end
 

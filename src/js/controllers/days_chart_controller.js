@@ -3,7 +3,7 @@ import ApexCharts from 'apexcharts'
 export default class extends Controller {
 
   createChart(ctx, response) {
-    const { labels, today, data, pageviews, pageviews_today } = response
+    const { labels, data, pageviews } = response
 
     var options = {
       chart: {
@@ -40,16 +40,8 @@ export default class extends Controller {
           data: data
         },
         {
-          name: "Visitors",
-          data: today
-        },
-        {
           name: "Pageviews",
           data: pageviews
-        },
-        {
-          name: "Pageviews",
-          data: pageviews_today
         }
       ],
       dataLabels: {
@@ -64,9 +56,9 @@ export default class extends Controller {
       stroke: {
         width: [5, 5, 5, 5],
         curve: 'straight',
-        dashArray: [0, 5, 0, 5]
+        dashArray: [0, 0]
       },
-      colors: ['#30475e', '#30475e', '#3182ce', '#3182ce'],
+      colors: ['#30475e', '#3182ce'],
       xaxis: {
         type: 'category',
         categories: labels,

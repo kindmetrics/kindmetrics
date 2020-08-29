@@ -44,7 +44,7 @@ class Domains::Data::ReferrerPage
         end
       end
       td class: "w-1/6 h-9 py-1" do
-        div class: "mt-1 text-right" do
+        div class: "text-right" do
           text row.count
         end
       end

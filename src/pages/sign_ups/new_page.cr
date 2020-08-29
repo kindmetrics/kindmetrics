@@ -6,8 +6,7 @@ class SignUps::NewPage < AuthLayout
   end
 
   private def render_sign_up_form(op)
-    div class: "card" do
-      h2 "Sign Up", class: "text-xl"
+    div class: "" do
       form_for SignUps::Create do
         sign_up_fields(op)
         submit "Sign Up", flow_id: "sign-up-button", class: "w-full mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

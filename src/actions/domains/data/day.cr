@@ -1,9 +1,9 @@
 class Domains::Data::Days < DomainPublicBaseAction
   include Auth::AllowGuests
   get "/domains/:domain_id/data/days" do
-    days, today, data = get_visitors
-    pageviews_days, pageviews_today, pageviews_data = get_pageviews
-    json DaysSerializer.new(days, today, data, pageviews_today, pageviews_data)
+    days, data = get_visitors
+    pageviews_days, pageviews_data = get_pageviews
+    json DaysSerializer.new(days, data, pageviews_data)
   end
 
   def get_visitors

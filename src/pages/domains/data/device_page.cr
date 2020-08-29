@@ -32,7 +32,7 @@ class Domains::Data::Devices::DevicesPage
         end
       end
       td class: "w-1/6 h-9 py-1" do
-        div class: "mt-1 text-right" do
+        div class: "text-right" do
           text (percentage.to_i).to_s + "%"
         end
       end
