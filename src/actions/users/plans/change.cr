@@ -16,7 +16,6 @@ class Users::Plans::Update < BrowserAction
     response = HTTP::Client.post("https://vendors.paddle.com/api/2.0/subscription/users/update", form: io.to_s)
 
     json_response = JSON.parse(response.body)
-    pp! json_response
     if json_response["success"]
       SaveSubscription.update!(subscription, plan_id: plan_id.to_s, cancelled: false)
       flash.success = "Subscription is updated! It can take 1-2 minutes before it updates below."

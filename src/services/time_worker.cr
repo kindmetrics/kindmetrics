@@ -15,7 +15,6 @@ class TimeWorker
     events = AddClickhouse.get_events(session_id)
 
     return false if events.size == 0
-    pp! events.size
 
     last_event = events.last
     first_event = events.first

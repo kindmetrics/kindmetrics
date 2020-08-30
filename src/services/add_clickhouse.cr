@@ -150,7 +150,6 @@ class AddClickhouse
       SELECT COUNT(*) FROM kindmetrics.events WHERE domain_id IN (#{domain_ids.join(", ")}) AND created_at > '#{start_date}'
     SQL
     res = client.execute(sql)
-    pp! res
     res.map(current: UInt64).first["current"].not_nil!.to_i64
   end
 
