@@ -6,7 +6,7 @@
     <% css_link asset("css/app.css"), data_turbolinks_track: "reload" %>
     <% js_link asset("js/app.js"), defer: "true", data_turbolinks_track: "reload" %>
     <% unless current_user %>
-    <script src="//<%=Lucky::Env.production? ? KindEnv.env("APP_TRACK_HOST") : "localhost:5000" %>/js/track.js" async defer data-domain="<%=KindEnv.env("KIND_HOST") || KindEnv.env("APP_HOST")%>" data-turbolinks-track="reload"></script>
+    <script src="//<%=Lucky::Env.production? ? KindEnv.env("APP_TRACK_HOST") : "localhost:5000" %>/js/kind.js" async defer data-domain="<%=KindEnv.env("KIND_HOST") || KindEnv.env("APP_HOST")%>" data-turbolinks-track="reload"></script>
     <% end %>
     <% meta name: "turbolinks-cache-control", content: "no-cache" %>
     <meta name="viewport" content="width=device-width, initial-scale=1">

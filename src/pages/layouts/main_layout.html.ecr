@@ -8,7 +8,7 @@
       <script src="https://cdn.paddle.com/paddle/paddle.js" data-turbolinks-track="reload"></script>
     <% end %>
     <% js_link asset("js/app.js"), defer: "true", data_turbolinks_track: "reload" %>
-    <script src="//<%=Lucky::Env.production? ? KindEnv.env("APP_TRACK_HOST") : "localhost:5000" %>/js/track.js" defer="true" data-domain="<%=KindEnv.env("KIND_HOST") || KindEnv.env("APP_HOST")%>" data-turbolinks-track="reload"></script>
+    <script src="//<%=Lucky::Env.production? ? KindEnv.env("APP_TRACK_HOST") : "localhost:5000" %>/js/kind.js" defer="true" data-domain="<%=KindEnv.env("KIND_HOST") || KindEnv.env("APP_HOST")%>" data-turbolinks-track="reload"></script>
     <% meta name: "turbolinks-cache-control", content: "no-cache" %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">

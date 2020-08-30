@@ -43,7 +43,7 @@ class Domains::EditPage < AdminLayout
 
   def render_code_snippet
     snippet = <<-HTML
-    <script src="https://#{KindEnv.env("APP_TRACK_HOST")}/js/track.js" defer="true" data-domain="#{@domain.address}"></script>
+    <script src="https://#{KindEnv.env("APP_TRACK_HOST")}/js/kind.js" defer="true" data-domain="#{@domain.address}"></script>
     HTML
     div class: "my-3 card" do
       h2 "The code you use for tracking", class: "text-xl"

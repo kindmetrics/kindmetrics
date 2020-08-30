@@ -26,7 +26,7 @@ class Users::PlansPage < SettingsLayout
           end
 
           div do
-            unless subscription.nil? || subscription.try {|s| s.cancelled? }
+            unless subscription.nil? || subscription.try { |s| s.cancelled? }
               div class: "p-2 border-gray-200 border rounded mb-2" do
                 para "current plan: #{subscription.not_nil!.pageviews.try { |p| p.format }.to_s}", class: "text-cool-gray-600 text-center"
               end
