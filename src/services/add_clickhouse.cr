@@ -71,6 +71,17 @@ class AddClickhouse
     sessions.first
   end
 
+  def self.get_session_by_id(session_id) : ClickSession?
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+    SELECT *, toDateTime(created_at) as created_at FROM kindmetrics.sessions WHERE id=#{session_id} ORDER BY created_at DESC
+    SQL
+    res = client.execute_as_json(sql)
+    sessions = Array(ClickSession).from_json(res)
+    return nil if sessions.empty?
+    sessions.first
+  end
+
   def self.get_active_sessions : Array(ClickSession)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL

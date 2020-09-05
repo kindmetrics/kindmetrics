@@ -23,6 +23,22 @@ describe TimeWorker do
     session.not_nil!.is_bounce.should eq(1)
   end
 
+  it "session with no events and timed out" do
+    user_id = "evwesafsafas"
+    session_id = Random.new.rand(0.to_i64..Int64::MAX)
+    AddClickhouse.session_insert(id: session_id, user_id: user_id, name: "pageview", length: nil, is_bounce: 1, referrer: "indiehacker.com", url: "https://kindmetrics.com/aaadsad", referrer_source: "indiehacker.com", referrer_medium: "referrer", path: "/asadasd", device: "Desktop", operative_system: "Mac OS", referrer_domain: "indiehacker.com", browser_name: "Chrome", country: "SE", domain_id: DomainBox.create.id, created_at: Time.utc - 50.minutes)
+    session = AddClickhouse.get_session(user_id)
+    session.not_nil!.length.should eq(nil)
+    session.not_nil!.is_bounce.should eq(1)
+
+    TimeWorker.session_time_check(session.not_nil!.id)
+    sleep 1
+    session = AddClickhouse.get_session_by_id(session_id)
+
+    session.not_nil!.length.should eq(0)
+    session.not_nil!.is_bounce.should eq(1)
+  end
+
   it "has one event attached" do
     AddClickhouse.clean_database
     user_id = "654t5u6hbgfdavgtbfc"
