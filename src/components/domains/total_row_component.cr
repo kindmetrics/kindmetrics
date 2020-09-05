@@ -28,7 +28,7 @@ class TotalRowComponent < BaseComponent
           end
         end
 
-        div class: "border-t border-gray-200 md:border-0 md:border-l" do
+        div class: "border-t border-kind-gray md:border-0 md:border-l" do
           div class: "px-4 py-5 sm:p-6" do
             dl do
               dt class: "text-base leading-6 font-normal text-gray-900" do
@@ -47,7 +47,7 @@ class TotalRowComponent < BaseComponent
           end
         end
 
-        div class: "border-t border-gray-200 md:border-0 md:border-l" do
+        div class: "border-t border-kind-gray md:border-0 md:border-l" do
           div class: "px-4 py-5 sm:p-6" do
             dl do
               dt class: "text-base leading-6 font-normal text-gray-900" do

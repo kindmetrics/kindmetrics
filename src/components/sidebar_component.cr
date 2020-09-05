@@ -68,7 +68,7 @@ class SidebarComponent < BaseComponent
     end
     div class: "hidden md:flex md:flex-shrink-0 h-screen sticky top-0" do
       div class: "flex flex-col w-64" do
-        div class: "flex flex-col h-0 flex-1 bg-cool-gray-50" do
+        div class: "flex flex-col h-0 flex-1 bg-kind-gray" do
           div class: "flex-1 flex flex-col pt-5 pb-4 overflow-y-auto" do
             div class: "flex items-center flex-shrink-0 px-2" do
               if !domain.nil? && !current_user.nil?
@@ -85,13 +85,13 @@ class SidebarComponent < BaseComponent
               end
             end
             if total_sum > 0
-              nav class: "mt-5 flex-1 bg-cool-gray-50 space-y-1" do
+              nav class: "mt-5 flex-1 bg-kind-gray space-y-1" do
                 links.each do |l|
                   if l["name"] == active
-                    class_names = "group flex items-center px-4 py-2 text-sm leading-5 blue-numbers font-semibold bg-cool-gray-100 hover:text-gray-900 hover:bg-cool-gray-200 focus:outline-none focus:bg-gray-200 transition ease-in-out duration-150"
+                    class_names = "group flex items-center px-4 py-2 text-sm leading-5 blue-numbers font-semibold bg-kind-gray hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:bg-gray-100 transition ease-in-out duration-150"
                     svg_class = "blue-numbers"
                   else
-                    class_names = "group flex items-center px-4 py-2 text-sm leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150"
+                    class_names = "group flex items-center px-4 py-2 text-sm leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:text-gray-900 focus:bg-gray-100 transition ease-in-out duration-150"
                     svg_class = "text-gray-600"
                   end
                   a class: class_names, href: l["link"] do
@@ -106,10 +106,10 @@ class SidebarComponent < BaseComponent
           end
           div class: "flex-shrink-0 flex mb-2" do
             div class: "flex-shrink-0 w-full group block" do
-              link to: Users::Edit, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
+              link to: Users::Edit, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-cool-gray-100 transition ease-in-out duration-150" do
                 text "User Settings"
               end
-              link to: SignIns::Delete, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150" do
+              link to: SignIns::Delete, class: "group flex items-center px-4 py-2 text-sm text-center leading-5 font-medium text-gray-600 hover:text-gray-900 hover:bg-cool-gray-100 focus:outline-none focus:text-gray-900 focus:bg-cool-gray-100 transition ease-in-out duration-150" do
                 text "Sign out"
               end
             end

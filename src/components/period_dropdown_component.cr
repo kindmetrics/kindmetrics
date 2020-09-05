@@ -5,7 +5,7 @@ class PeriodDropdownComponent < BaseComponent
   def render
     div class: "text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900" do
       div class: "relative", data_controller: "dropdown" do
-        div class: "inline-block select-none rounded-md p-3 text-md border-gray-200 border transister", data_action: "click->dropdown#toggle click@window->dropdown#hide", role: "button" do
+        div class: "inline-block select-none rounded-md p-3 text-md border-kind-gray border bg-white transister", data_action: "click->dropdown#toggle click@window->dropdown#hide", role: "button" do
           span class: "appearance-none flex items-center justify-between inline-block text-lg" do
             span do
               text @period_string
