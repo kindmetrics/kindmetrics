@@ -26,14 +26,11 @@ class AddClickhouse
     buf = <<-SQL
     INSERT INTO kindmetrics.events FORMAT JSONEachRow #{json_object.to_json}
     SQL
-
-    client.insert buf
+    res = client.insert(buf)
   end
 
-  def self.session_insert(user_id, name : String, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc, mark : Int8 = 0)
+  def self.session_insert(id : Int64, user_id, name : String, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc, mark : Int8 = 0)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
-
-    id = Random.new.rand(0.to_i64..Int64::MAX)
 
     json_object = {
       id:               id,
@@ -60,13 +57,24 @@ class AddClickhouse
     INSERT INTO kindmetrics.sessions FORMAT JSONEachRow #{json_object.to_json}
     SQL
 
-    client.insert buf
+    res = client.insert(buf)
   end
 
   def self.get_session(user_id) : ClickSession?
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
     SELECT *, toDateTime(created_at) as created_at FROM kindmetrics.sessions WHERE user_id='#{user_id}' ORDER BY created_at DESC
+    SQL
+    res = client.execute_as_json(sql)
+    sessions = Array(ClickSession).from_json(res)
+    return nil if sessions.empty?
+    sessions.first
+  end
+
+  def self.get_session_by_id(session_id) : ClickSession?
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+    SELECT *, toDateTime(created_at) as created_at FROM kindmetrics.sessions WHERE id=#{session_id} ORDER BY created_at DESC
     SQL
     res = client.execute_as_json(sql)
     sessions = Array(ClickSession).from_json(res)
@@ -137,6 +145,23 @@ class AddClickhouse
     ALTER TABLE kindmetrics.sessions DELETE WHERE domain_id=#{domain_id}
     SQL
     client.insert sql
+  end
+
+  def self.all_events_count(user : User) : Int64
+    domain_ids = AppDatabase.run do |db|
+      db.query_all "SELECT id FROM domains WHERE user_id='#{user.id}'", as: Int64
+    end
+
+    return 0_i64 if domain_ids.empty?
+
+    start_date = 30.days.ago.at_beginning_of_day.to_s("%Y-%m-%d %H:%M:%S")
+
+    client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
+    sql = <<-SQL
+      SELECT COUNT(*) FROM kindmetrics.events WHERE domain_id IN (#{domain_ids.join(", ")}) AND created_at > '#{start_date}'
+    SQL
+    res = client.execute(sql)
+    res.map(current: UInt64).first["current"].not_nil!.to_i64
   end
 
   def self.clean_database

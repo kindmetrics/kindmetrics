@@ -3,6 +3,7 @@ class Domains::Data::PagesPage
   needs pages : Array(StatsPages)
   needs period : String
   needs domain : Domain
+  needs goal : Goal?
   needs current_user : User?
 
   def render
@@ -28,7 +29,7 @@ class Domains::Data::PagesPage
       td class: "w-5/6 py-1 h-9" do
         div class: "w-full h-9" do
           div class: "progress_bar", style: "width: #{(row.percentage || 0.001)*100}%;height: 30px"
-          a class: "block px-2 hover:underline truncate w-64", style: "margin-top: -1.6rem;", href: get_url(row) do
+          a class: "block px-2 hover:underline truncate w-60", style: "margin-top: -1.6rem;", href: get_url(row) do
             text row.address.to_s
           end
         end
@@ -43,9 +44,9 @@ class Domains::Data::PagesPage
 
   def get_url(row)
     if current_user.nil?
-      "/share/#{@domain.hashid}/paths/#{row.address}"
+      Share::Show.with(share_id: domain.hashid, goal_id: goal.try { |g| g.id } || 0_i64, site_path: row.address.to_s).url
     else
-      "/domains/#{@domain.id}/paths/#{row.address}"
+      Domains::Show.with(domain_id: domain.id, goal_id: goal.try { |g| g.id } || 0_i64, site_path: row.address.to_s).url
     end
   end
 end

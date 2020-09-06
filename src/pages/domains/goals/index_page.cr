@@ -4,12 +4,13 @@ class Domains::Goals::IndexPage < Share::BasePage
   quick_def page_title, "Referrers to #{@domain.address} last #{period_string}"
   needs share_page : Bool = false
   needs domains : DomainQuery?
+  needs active : String = "Goals"
 
   def content
     m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: @period, active: "Goals"
-    div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
+    div do
       sub_header
-      div class: "w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-1 gap-6 sm:grid-flow-row" do
+      div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-1 gap-6 sm:grid-flow-row" do
         div class: "card" do
           if goals.size > 0
             m DetailTableComponent, first_header: "Goal", second_header: "Conversions" do
@@ -28,7 +29,7 @@ class Domains::Goals::IndexPage < Share::BasePage
   end
 
   def sub_header
-    div class: "w-full flex justify-between items-center" do
+    div class: "flex justify-between items-center" do
       h1 "Goals for #{domain.address}", class: "text-xl mt-4 mb-4"
       unless share_page?
         link "Goals Settings", to: Domains::Settings::EditGoals.with(domain_id: @domain.id), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 hover:no-underline rounded w-auto inline-block"

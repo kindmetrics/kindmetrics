@@ -4,10 +4,12 @@ class Domains::EditPage < AdminLayout
   needs hashid : String
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
   needs domains : DomainQuery?
+  needs share_page : Bool = false
+  needs active : String = "Settings"
 
   def content
     m HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", show_period: false, active: "Settings"
-    div class: "mt-10 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
+    div class: "max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       h1 "Edit #{@domain.address}", class: "text-xl"
       div class: "my-3 card" do
         render_domain_form(@operation)
@@ -41,7 +43,7 @@ class Domains::EditPage < AdminLayout
 
   def render_code_snippet
     snippet = <<-HTML
-    <script src="https://#{KindEnv.env("APP_TRACK_HOST")}/js/track.js" defer="true" data-domain="#{@domain.address}"></script>
+    <script src="https://#{KindEnv.env("APP_TRACK_HOST")}/js/kind.js" defer="true" data-domain="#{@domain.address}"></script>
     HTML
     div class: "my-3 card" do
       h2 "The code you use for tracking", class: "text-xl"

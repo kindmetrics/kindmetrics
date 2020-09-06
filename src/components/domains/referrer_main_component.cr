@@ -6,7 +6,7 @@ class ReferrerMainComponent < BaseComponent
   needs period : String
 
   def render
-    tr class: index.odd? ? "bg-gray-200" : "bg-white" do
+    tr class: index.odd? ? "bg-gray-100" : "bg-white" do
       td class: "w-4/6 py-2" do
         if !event.referrer_domain.nil? && event.referrer_domain.not_nil! == current_domain.address
           span class: "px-2" do

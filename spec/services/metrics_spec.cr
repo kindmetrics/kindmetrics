@@ -64,10 +64,9 @@ describe Metrics do
     EventHandler.create_session(user_id: "f32532ewfds", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
     metrics = Metrics.new(domain, "7d")
-    days, today, data = metrics.get_days
+    days, data = metrics.get_days
     days.not_nil!.size.should eq(8)
-    data.not_nil!.size.should eq(7)
-    today.not_nil!.size.should eq(8)
+    data.not_nil!.size.should eq(8)
 
     days.not_nil!.last.day.should eq(Time.utc.day)
     days.not_nil!.last.month.should eq(Time.utc.month)
@@ -82,20 +81,12 @@ describe Metrics do
     EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
     metrics = Metrics.new(domain, "7d")
-    days, today, data = metrics.get_days
+    days, data = metrics.get_days
     days.not_nil!.size.should eq(8)
-    data.not_nil!.size.should eq(7)
-    today.not_nil!.size.should eq(8)
+    data.not_nil!.size.should eq(8)
 
     empty_days = data.try { |d| d[0..(data.not_nil!.size || 1) - 1] }
-    empty_days.not_nil!.size.should eq(7)
-
-    empty_days.not_nil!.each { |ed| ed.should eq(0) }
-
-    empty_today = today.try { |t| t[0..(today.not_nil!.size || 1) - 3] }
-    empty_today.not_nil!.size.should eq(6)
-
-    empty_today.not_nil!.each { |ed| ed.should eq(nil) }
+    empty_days.not_nil!.size.should eq(8)
   end
 
   it "14 days calculation" do
@@ -104,10 +95,9 @@ describe Metrics do
     EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
     metrics = Metrics.new(domain, "14d")
-    days, today, data = metrics.get_days
+    days, data = metrics.get_days
     days.not_nil!.size.should eq(15)
-    data.not_nil!.size.should eq(14)
-    today.not_nil!.size.should eq(15)
+    data.not_nil!.size.should eq(15)
 
     days.not_nil!.last.day.should eq(Time.utc.day)
     days.not_nil!.last.month.should eq(Time.utc.month)

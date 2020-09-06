@@ -7,38 +7,69 @@ class TotalRowComponent < BaseComponent
   needs total_bounce_previous : Int64
 
   def render
-    div class: "big_letters" do
-      div class: "max-w-6xl mx-auto py-3 px-2 sm:px-0 grid grid-flow-col gap-6" do
-        div class: "p-3" do
-          div class: "text-4xl strong md:flex items-center" do
-            para normalize_number(@total_unique), class: "text-4xl strong"
-            m GrowthComponent, now: @total_unique, before: @total_unique_previous
+    div class: "big_letters gradient-color" do
+      div class: "mt-5 grid grid-cols-1 rounded-md overflow-hidden md:grid-cols-3" do
+        div do
+          div class: "px-4 py-5 sm:p-6" do
+            dl do
+              dt class: "text-base leading-6 font-normal text-gray-900" do
+                text " Unique "
+              end
+              dd class: "mt-1 flex items-baseline md:block lg:flex" do
+                div class: "flex items-baseline text-3xl leading-8 mr-2 font-semibold blue-numbers" do
+                  text normalize_number(@total_unique)
+                  span class: "ml-2 text-sm leading-5 font-medium text-gray-500" do
+                    text " from " + normalize_number(@total_unique_previous)
+                  end
+                end
+                m GrowthComponent, now: @total_unique, before: @total_unique_previous
+              end
+            end
           end
-          para "Unique", class: "text-sm uppercase font-bold"
         end
-        div class: "p-3" do
-          div class: "text-4xl strong md:flex items-center" do
-            para normalize_number(@total_sum), class: "text-4xl strong"
-            m GrowthComponent, now: @total_sum, before: @total_previous
+
+        div class: "border-t border-kind-gray md:border-0 md:border-l" do
+          div class: "px-4 py-5 sm:p-6" do
+            dl do
+              dt class: "text-base leading-6 font-normal text-gray-900" do
+                text " Pageviews "
+              end
+              dd class: "mt-1 flex items-baseline md:block lg:flex" do
+                div class: "flex items-baseline text-3xl leading-8 mr-2 font-semibold blue-numbers" do
+                  text normalize_number(@total_sum)
+                  span class: "ml-2 text-sm leading-5 font-medium text-gray-500" do
+                    text " from " + normalize_number(@total_previous)
+                  end
+                end
+                m GrowthComponent, now: @total_sum, before: @total_previous
+              end
+            end
           end
-          para "Pageviews", class: "text-sm font-bold uppercase"
         end
-        div class: "p-3" do
-          div class: "text-4xl strong md:flex items-center" do
-            para "#{@total_bounce}%", class: "text-4xl strong"
-            m GrowthComponent, now: @total_bounce, before: @total_bounce_previous, reverse: true
+
+        div class: "border-t border-kind-gray md:border-0 md:border-l" do
+          div class: "px-4 py-5 sm:p-6" do
+            dl do
+              dt class: "text-base leading-6 font-normal text-gray-900" do
+                text " Bounce rate "
+              end
+              dd class: "mt-1 flex items-baseline md:block lg:flex" do
+                div class: "flex items-baseline text-3xl leading-8 mr-2 font-semibold blue-numbers" do
+                  text total_bounce.to_s + "% "
+                  span class: "ml-2 text-sm leading-5 font-medium text-gray-500" do
+                    text " from " + total_bounce_previous.to_s + "%"
+                  end
+                end
+                m GrowthComponent, now: @total_bounce, before: @total_bounce_previous, reverse: true
+              end
+            end
           end
-          para "Bounce", class: "text-sm font-bold uppercase"
         end
       end
     end
   end
 
   private def normalize_number(number : Int64) : String
-    if number >= 1000
-      number.humanize(precision: 2, significant: false)
-    else
-      number.to_s
-    end
+    number.format
   end
 end

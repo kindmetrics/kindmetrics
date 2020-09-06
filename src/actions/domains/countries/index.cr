@@ -1,6 +1,9 @@
 class Domains::Countries::Index < DomainBaseAction
+  include TrialCheck
   get "/domains/:domain_id/countries" do
     domains = DomainQuery.new.user_id(current_user.id)
-    html IndexPage, domain: domain, period: period, domains: domains
+    metrics = Metrics.new(domain, period)
+    countries = metrics.get_countries
+    html IndexPage, domain: domain, period: period, domains: domains, countries: countries
   end
 end

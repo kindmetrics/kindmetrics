@@ -7,6 +7,7 @@ abstract class MainLayout
 
   abstract def content
   abstract def page_title
+  abstract def enable_paddle
 
   # MainLayout defines a default 'page_title'.
   #

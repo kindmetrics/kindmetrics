@@ -1,17 +1,21 @@
-class ClickSession
+struct ClickSession
   include JSON::Serializable
 
   @[JSON::Field(converter: JSON::IntConverter)]
   property id : Int64
 
+  property name : String
   property user_id : String
   property referrer : String?
   property url : String?
-  property referrer_source : String?
   property path : String?
   property device : String?
   property operative_system : String?
+
+  property referrer_source : String?
   property referrer_domain : String?
+  property referrer_medium : String?
+
   property browser_name : String?
   property country : String?
   property is_bounce : Int32

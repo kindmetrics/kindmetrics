@@ -1,4 +1,4 @@
-class StatsMediumReferrer
+struct StatsMediumReferrer
   include JSON::Serializable
 
   property referrer_medium : String?

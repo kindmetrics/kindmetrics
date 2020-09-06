@@ -1,4 +1,5 @@
 class Domains::Referrer::Show < DomainBaseAction
+  include TrialCheck
   get "/domains/:domain_id/referrers/:source" do
     domains = DomainQuery.new.user_id(current_user.id)
     html ShowPage, domain: domain, total: get_total, events: get_referrals, source: parse_source, period: period, domains: domains

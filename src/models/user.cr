@@ -11,6 +11,8 @@ class User < BaseModel
     column admin : Bool
     belongs_to current_domain : Domain?
     has_many domains : Domain
+    has_one subscription : Subscription?
+    column trial_ends_at : Time
   end
 
   def confirmed?

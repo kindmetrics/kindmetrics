@@ -14,6 +14,7 @@ class SignUpUser < User::SaveOperation
     validate_required name
     validate_uniqueness_of email
     confirmed_token.value = Random::Secure.urlsafe_base64(32)
+    trial_ends_at.value = Time.utc + 14.days
     if Lucky::Env.development?
       Log.debug { {confirmed_token: confirmed_token.value} }
     end

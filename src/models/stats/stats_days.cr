@@ -1,4 +1,4 @@
-class StatsDays
+struct StatsDays
   include JSON::Serializable
 
   property date : Time

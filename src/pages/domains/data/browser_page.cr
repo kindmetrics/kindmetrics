@@ -32,8 +32,8 @@ class Domains::Data::Devices::BrowsersPage
         end
       end
       td class: "w-1/6 h-9 py-1" do
-        div class: "mt-1 text-right" do
-          text (percentage.to_i).to_s + "%"
+        div class: "text-right" do
+          text "#{percentage}%"
         end
       end
     end

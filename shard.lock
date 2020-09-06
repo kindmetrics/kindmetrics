@@ -128,6 +128,10 @@ shards:
     git: https://github.com/will/crystal-pg.git
     version: 0.21.1
 
+  php_serializer:
+    git: https://github.com/reiswindy/php_serializer.git
+    version: 0.1.0
+
   pretty:
     git: https://github.com/maiha/pretty.cr.git
     version: 0.9.11

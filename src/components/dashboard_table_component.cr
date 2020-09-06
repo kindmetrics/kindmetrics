@@ -4,7 +4,7 @@ class DashboardTableComponent < BaseComponent
 
   def render
     table class: "w-full mb-3" do
-      thead class: "border-b border-gray-300" do
+      thead class: "border-b border-kind-gray" do
         tr do
           th class: "text-left uppercase text-gray-600 font-semibold text-xs pb-1" do
             text first_header

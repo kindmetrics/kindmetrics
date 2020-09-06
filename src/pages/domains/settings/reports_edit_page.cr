@@ -3,12 +3,14 @@ class Domains::EditReportsPage < AdminLayout
   needs domain : Domain
   needs user_list : ReportUserQuery
   needs hashid : String
+  needs share_page : Bool = false
   quick_def page_title, "Edit Domain with id: #{@domain.id}"
   needs domains : DomainQuery?
+  needs active : String = "Reports"
 
   def content
     m HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", show_period: false, active: "Reports"
-    div class: "mt-10 max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
+    div class: "max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       h1 "Reports", class: "text-xl"
       div class: "my-3 card" do
         if user_list.clone.select_count > 0

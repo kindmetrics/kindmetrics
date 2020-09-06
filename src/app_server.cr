@@ -10,8 +10,6 @@ class AppServer < Lucky::BaseAppServer
       Lucky::ErrorHandler.new(action: Errors::Show),
       CORSHandler.new,
       Lucky::RemoteIpHandler.new,
-      HTTP::PathGlobHandler.new,
-      HTTP::PathShareGlobHandler.new,
       Lucky::RouteHandler.new,
       Lucky::StaticCompressionHandler.new("./public", file_ext: "gz", content_encoding: "gzip"),
       Lucky::StaticFileHandler.new("./public", false),

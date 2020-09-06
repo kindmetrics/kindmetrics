@@ -1,4 +1,4 @@
-class ClickEvent
+struct ClickEvent
   include JSON::Serializable
 
   @[JSON::Field(converter: JSON::IntConverter)]

@@ -1,4 +1,4 @@
-class StatsOS
+struct StatsOS
   include JSON::Serializable
 
   property operative_system : String?

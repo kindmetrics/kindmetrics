@@ -3,7 +3,7 @@ class ReferrerUrlComponent < BaseComponent
   needs index : Int32
 
   def render
-    tr class: index.odd? ? "bg-gray-200" : "bg-white" do
+    tr class: index.odd? ? "bg-gray-100" : "bg-white" do
       td class: "max-w-sm md:max-w-none md:w-4/6 p-2" do
         a href: event.not_nil!.referrer_url || "#", class: "block px-2 text-black truncate", rel: "noreferrer" do
           text (event.not_nil!.referrer_url || event.not_nil!.referrer_domain || "").to_s

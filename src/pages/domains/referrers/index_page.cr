@@ -4,12 +4,13 @@ class Domains::Referrer::IndexPage < Share::BasePage
   quick_def page_title, "Referrers to #{@domain.address} last #{period_string}"
   needs share_page : Bool = false
   needs domains : DomainQuery?
+  needs active : String = "Referrers"
 
   def content
     m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: @period, active: "Referrers"
-    div class: "max-w-6xl mx-auto p-2 sm:p-0 my-3 mb-6 mt-8" do
+    div do
       sub_header
-      div class: "w-full grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
+      div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
         div class: "card" do
           if referrers.size > 0
             m DetailTableComponent, first_header: "Referrer", second_header: "Visitors", third_header: "Bounce" do

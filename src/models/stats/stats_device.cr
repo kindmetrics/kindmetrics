@@ -1,4 +1,4 @@
-class StatsDevice
+struct StatsDevice
   include JSON::Serializable
 
   property device : String?

@@ -1,4 +1,5 @@
 class HeaderComponent < BaseComponent
+  include SubscriptionCheck
   needs active : String = "Dashboard"
   needs domain : Domain
   needs domains : DomainQuery?
@@ -8,6 +9,7 @@ class HeaderComponent < BaseComponent
   needs period_string : String = "7 days"
   needs show_period : Bool = true
   needs current_url : String
+  needs current_user : User?
 
   def links
     if share_page?
@@ -30,7 +32,7 @@ class HeaderComponent < BaseComponent
 
   def render
     div class: "gradient-color" do
-      div class: "mt-4 max-w-6xl mx-auto pt-6 px-2 sm:px-0 border-t border-b" do
+      div class: "" do
         div class: "flex justify-between items-center" do
           if @share_page
             div class: "w-2/3" do
@@ -42,23 +44,25 @@ class HeaderComponent < BaseComponent
             end
           else
             div class: "flex items-center" do
-              m DomainDropdownComponent, domain: @domain, domains: domains
               div class: "md:mx-2 current-counter-container", data_controller: "current-refresh", data_current_refresh_url: "/domains/#{@domain.id}/data/current", data_current_refresh_refresh_interval: "10000" do
                 span "0", class: "current-counter", data_target: "current-refresh.counter"
                 raw " current active users"
               end
             end
           end
-          div do
+          div class: "flex" do
+            if !current_user.nil? && !subscription_user_check
+              m TrialComponent, current_user: current_user.not_nil!
+            end
             if show_period?
               m PeriodDropdownComponent, period_string, current_url
             end
           end
         end
 
-        div class: "clear-both w-full pt-2 mt-3" do
-          m TabMenu, links: links, active: @active, domain: @domain if @total_sum > 0
-        end
+        # div class: "clear-both w-full pt-2 mt-3" do
+        #  m TabMenu, links: links, active: @active, domain: @domain if @total_sum > 0
+        # end
       end
     end
   end

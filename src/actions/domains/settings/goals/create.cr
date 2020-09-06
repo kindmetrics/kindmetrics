@@ -5,10 +5,10 @@ class Domains::Settings::Goals::Create < BrowserAction
     SaveGoal.create(params, domain_id: domain.id, sort: 1) do |_operation, goal|
       if goal
         flash.success = "The record has been saved"
-        redirect Domains::Settings::EditGoals.with(domain.id)
+        redirect to: Domains::Settings::EditGoals.with(domain.id)
       else
         flash.failure = "It looks like the form is not valid"
-        redirect Domains::Settings::EditGoals.with(domain.id)
+        redirect to: Domains::Settings::EditGoals.with(domain.id)
       end
     end
   end

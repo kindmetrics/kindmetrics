@@ -1,9 +1,3 @@
-a {
-  @apply text-blue-600;
-}
-a:hover {
-  @apply underline;
-}
 h1 {
   @apply text-5xl;
 }
@@ -17,21 +11,26 @@ h3 {
 
 body {
   //background-color: #F8F7FA;
-  @apply bg-gray-100;
+  //@apply bg-white;
+  background-color: rgba(248, 250, 252, 0.5);
 }
 
-.nav {
-  margin-bottom: -17px !important;
-  @apply pb-2;
-  //@apply bg-white;
-
-  a {
-    @apply text-black;
+.bg-menu-button {
+  background-color: #F5F5F5;
+  color: #293241;
+  &:hover {
+    background-color: #F8F8F8;
+  }
+}
+.hover\:bg-menu-button {
+  &:hover {
+    background-color: #F5F5F5;
   }
 }
 
 .gradient-color {
-  //background-color: #E2EDF3;
+  //background-color: #2B5AA8;
+  //;
   //@apply bg-white;
   //@apply shadow-md;
 }
@@ -53,27 +52,49 @@ body {
 }
 
 .transister-menu {
-  transition: border-color .2s ease-in;
+  transition: border-color .2s ease-in, color .2s ease-in;
+}
+
+.blue-numbers {
+  color: #0064FF;
 }
 
 .card {
   @apply rounded-md;
-  @apply shadow-md;
   @apply relative;
   @apply h-full;
   @apply bg-white;
   @apply text-black;
+  @apply border;
+  border-color: #E6EBF1;
   @apply p-4;
 
   a {
     @apply text-black;
   }
 }
+.mini-card {
+  @apply rounded-md;
+  @apply border;
+  @apply border-gray-200;
+  @apply px-2;
+  @apply py-1;
+}
+@media (min-width: 768px) {
+  .md\:sb-pl {
+    padding-left: 20rem !important;
+  }
+}
+
 .big_letters {
   @apply w-full;
   @apply mb-4;
-  @apply text-gray-800;
+  @apply text-gray-900;
   @apply p-1;
+}
+
+.poper {
+  //margin-top: -10rem;
 }
 
 .progress_bar {
@@ -91,11 +112,29 @@ body {
 }
 
 .current-counter-container {
-  @apply text-gray-800;
+  @apply text-gray-900;
   @apply text-sm;
   .current-counter {
     @apply text-sm;
-    @apply text-gray-800;
+    @apply text-gray-900;
     @apply font-bold;
   }
+}
+.plan-current {
+  @apply bg-blue-100;
+}
+.plan-disable {
+  @apply bg-cool-gray-50;
+  @apply text-gray-300;
+  @apply cursor-not-allowed;
+}
+.border-kind-gray {
+  border-color: #E6EBF1;
+}
+.bg-kind-gray {
+  background-color: #E6EBF1;
+}
+
+.bg-kind-light-gray {
+  background-color: rgba(248, 250, 252, 0.5);
 }

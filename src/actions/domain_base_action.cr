@@ -1,5 +1,7 @@
 abstract class DomainBaseAction < BrowserAction
   param period : String = "7d"
+  param goal_id : Int64 = 0_i64
+  param site_path : String = ""
 
   before require_domain
 
@@ -17,5 +19,10 @@ abstract class DomainBaseAction < BrowserAction
 
   private def domain : Domain
     @domain.not_nil!
+  end
+
+  private def goal : Goal?
+    return nil if goal_id == 0
+    GoalQuery.find(goal_id)
   end
 end
