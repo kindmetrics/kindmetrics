@@ -19,12 +19,12 @@ class DomainDropdownComponent < BaseComponent
         div class: "absolute right-0 mt-2 w-full hidden z-10", data_target: "dropdown.menu" do
           div class: "bg-white shadow-lg rounded overflow-hidden border" do
             (@domains || [] of Domain).each do |d|
-              link to: Domains::Show.with(d), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-menu-button whitespace-no-wrap flex items-center" do
+              link to: Domains::Show.with(d), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap flex items-center" do
                 img src: "https://api.faviconkit.com/#{d.address}/16", class: "inline h-4 w-4 mr-2"
                 text d.address
               end
             end
-            link to: Domains::New, class: "hover:no-underline block px-5 py-4 text-gray-900 border-t border-gray-200 bg-gray-100 hover:bg-menu-button whitespace-no-wrap flex items-center" do
+            link to: Domains::New, class: "hover:no-underline block px-5 py-4 text-gray-900 border-t border-gray-200 bg-cool-gray-50 hover:bg-cool-gray-100 whitespace-no-wrap flex items-center" do
               tag "svg", class: "inline h-4 w-4 mr-2 fill-current text-gray-900", fill: "none", viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg" do
                 tag "path", d: "M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"
               end

@@ -73,6 +73,7 @@ export default class extends Controller {
     var events = button.getAttribute("data-events")
     var plan = button.getAttribute("data-plan")
     this.plan = plan
+    button.classList.add("plan-current")
     this.update_data(price, events)
   }
 
