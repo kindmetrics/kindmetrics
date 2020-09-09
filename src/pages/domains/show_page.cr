@@ -64,7 +64,7 @@ class Domains::ShowPage < SecretGuestLayout
 
   def render_canvas
     div style: "max-height:320px;" do
-      m DaysLoaderComponent, domain: @domain, period: @period, goal: @goal
+      m DaysLoaderComponent, domain: @domain, period: @period, goal: @goal, site_path: site_path
     end
   end
 

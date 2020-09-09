@@ -86,8 +86,12 @@ export default class extends Controller {
     const period = this.data.get("period") ? this.data.get("period") : "7d"
     var url = this.data.get("url") + "?period=" + period
     const goal = this.data.get("goal")
+    const site_path = this.data.get("site-path")
     if(goal != null) {
       url = url + "&goal_id=" + goal
+    }
+    if(site_path != null) {
+      url = url + "&site_path=" + site_path
     }
     fetch(url).then(response => {
       return response.json()
