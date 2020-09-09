@@ -105,4 +105,76 @@ describe Metrics do
     days.not_nil!.first.day.should eq((Time.utc - 14.days).day)
     days.not_nil!.first.month.should eq((Time.utc - 14.days).month)
   end
+
+  describe "filters" do
+    describe "unique" do
+      it "filter by path" do
+        domain = DomainBox.create
+        EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+        EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+
+        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+
+        unique = metrics.unique_query
+        unique.should eq(2)
+      end
+
+      it "filter by path - only show one" do
+        domain = DomainBox.create
+        EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/sdfsf", path: "/test/sdfsf", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+        EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+
+        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+
+        unique = metrics.unique_query
+        unique.should eq(1)
+      end
+    end
+    describe "total" do
+      it "filter by path" do
+        domain = DomainBox.create
+        EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+        EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+
+        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+
+        unique = metrics.total_query
+        unique.should eq(2)
+      end
+
+      it "filter by path - only show one" do
+        domain = DomainBox.create
+        EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/sdfsf", path: "/test/sdfsf", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+        EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+
+        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+
+        unique = metrics.total_query
+        unique.should eq(1)
+      end
+    end
+    describe "devices" do
+      it "filter by path" do
+        domain = DomainBox.create
+        EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+        EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+
+        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+
+        devices = metrics.get_devices
+        devices.first.count.should eq(2)
+      end
+
+      it "filter by path - only show one" do
+        domain = DomainBox.create
+        EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/sdfsf", path: "/test/sdfsf", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+        EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
+
+        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+
+        devices = metrics.get_devices
+        devices.first.count.should eq(1)
+      end
+    end
+  end
 end

@@ -12,6 +12,7 @@
     "stimulus-use": "^0.9.0",
     "tailwindcss": "^1.4.6",
     "tailwindcss-stimulus-components": "^1.0.2",
+    "terser-webpack-plugin": "^4.1.0",
     "turbolinks": "^5.2.0"
   },
   "scripts": {
@@ -30,7 +31,6 @@
     "resolve-url-loader": "2.3.1",
     "sass": "1.17.1",
     "sass-loader": "^7.3.1",
-    "uglifyjs-webpack-plugin": "^2.2.0",
     "vue-template-compiler": "^2.5.22"
   }
 }

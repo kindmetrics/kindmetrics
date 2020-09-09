@@ -7,8 +7,8 @@
  | Docs: https://github.com/JeffreyWay/laravel-mix/tree/master/docs#readme
  */
  const tailwindcss = require('tailwindcss')
- const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
  const DefinePlugin = require('webpack').DefinePlugin;
+const TerserPlugin = require('terser-webpack-plugin');
 
 let mix = require("laravel-mix");
 
@@ -56,7 +56,8 @@ mix
   // https://github.com/JeffreyWay/laravel-mix/blob/master/docs/mixjs.md
   .js("src/js/app.js", "public/js")
   //track javascript
-  .js("src/js/track.js", "public/js")
+  .js("src/js/kind.js", "public/js")
+  .js("src/js/kinder.js", "public/js")
   // SASS entry file. Uses autoprefixer automatically.
   .sass("src/css/app.scss", "public/css")
   // Customize postCSS:
@@ -85,8 +86,12 @@ mix
     optimization: {
       minimize: true,
       minimizer: [
-        new UglifyJsPlugin({ cache: true, parallel: true, sourceMap: false })
-      ]
+        new TerserPlugin({
+          terserOptions: {
+            mangle: true
+          },
+        }),
+      ],
     }
   })
   // Disable default Mix notifications because we're using our own notifier

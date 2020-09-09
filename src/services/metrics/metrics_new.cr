@@ -18,7 +18,7 @@ class MetricsNew
 
   def unique_query : Int64
     sql = <<-SQL
-    SELECT uniq(user_id) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}')
+    SELECT uniq(user_id) FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}')
     #{where_goal_string}
     #{where_path_string}
     SQL
@@ -250,7 +250,7 @@ class MetricsNew
 
   def get_countries : Array(StatsCountry)
     sql = <<-SQL
-    SELECT country, uniq(user_id) as count FROM kindmetrics.events
+    SELECT country, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
@@ -272,7 +272,7 @@ class MetricsNew
   def get_countries_map : Array(StatsCountry)?
     return nil if total_query == 0
     sql = <<-SQL
-    SELECT country, uniq(user_id) as count FROM kindmetrics.events
+    SELECT country, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
@@ -286,7 +286,7 @@ class MetricsNew
 
   def get_devices : Array(StatsDevice)
     sql = <<-SQL
-    SELECT device, COUNT(id) as count FROM kindmetrics.events
+    SELECT device, COUNT(id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
@@ -301,7 +301,7 @@ class MetricsNew
 
   def get_browsers : Array(StatsBrowser)
     sql = <<-SQL
-    SELECT browser_name as browser, COUNT(id) as count FROM kindmetrics.events
+    SELECT browser_name as browser, COUNT(id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND browser_name IS NOT NULL AND browser_name!=''
     #{where_goal_string}
     #{where_path_string}
@@ -316,7 +316,7 @@ class MetricsNew
 
   def get_os : Array(StatsOS)
     sql = <<-SQL
-    SELECT operative_system, COUNT(id) as count FROM kindmetrics.events
+    SELECT operative_system, COUNT(id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND operative_system IS NOT NULL AND operative_system!=''
     #{where_goal_string}
     #{where_path_string}

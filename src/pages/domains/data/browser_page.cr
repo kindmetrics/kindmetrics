@@ -33,7 +33,7 @@ class Domains::Data::Devices::BrowsersPage
       end
       td class: "w-1/6 h-9 py-1" do
         div class: "text-right" do
-          text "#{percentage}%"
+          text "#{percentage.to_i}%"
         end
       end
     end
