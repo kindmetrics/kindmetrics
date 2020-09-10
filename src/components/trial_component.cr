@@ -6,7 +6,7 @@ class TrialComponent < BaseComponent
       if time_span.days < 1
         text "Upgrade now"
       else
-        text "Trial ends in #{time_span.days} days"
+        text "Trial ends in #{pluralize(time_span.days, "day")}"
       end
     end
   end

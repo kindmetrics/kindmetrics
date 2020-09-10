@@ -38,15 +38,13 @@ class HeaderComponent < BaseComponent
             div class: "w-2/3" do
               h1 "Analytics for #{@domain.address}", class: "text-xl block w-full"
               div class: "current-counter-container", data_controller: "current-refresh", data_current_refresh_url: "/domains/#{@domain.id}/data/current", data_current_refresh_refresh_interval: "10000" do
-                span "0", class: "current-counter", data_target: "current-refresh.counter"
-                raw " current active users"
+                span "0 current active user", data_target: "current-refresh.counter"
               end
             end
           else
             div class: "flex items-center" do
               div class: "md:mx-2 current-counter-container", data_controller: "current-refresh", data_current_refresh_url: "/domains/#{@domain.id}/data/current", data_current_refresh_refresh_interval: "10000" do
-                span "0", class: "current-counter", data_target: "current-refresh.counter"
-                raw " current active users"
+                span "0 current active user", data_target: "current-refresh.counter"
               end
             end
           end
