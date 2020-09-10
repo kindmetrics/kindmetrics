@@ -23,7 +23,7 @@ export default class extends Controller {
         dataset[iso] = { numberOfThings: value, fillColor: paletteScale(value) };
     });
 
-    new Datamap({
+    this.map = new Datamap({
         element: this.element,
         scope: 'world',
         responsive: true,
@@ -55,11 +55,14 @@ export default class extends Controller {
     })
   }
 
-  resized({ height, width }) {
-    map.resize();
+  resize({ height, width }) {
+    if(this.map) {
+      this.map.resize();
+    }
   }
 
   connect() {
+    useResize(this)
     this.element.innerHTML = this.loader()
     this.getData();
   }

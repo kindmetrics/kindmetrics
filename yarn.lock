@@ -7500,10 +7500,10 @@ stimulus-toggle-util@^0.4.1:
   dependencies:
     stimulus "^1.1.1"
 
-stimulus-use@^0.9.0:
-  version "0.9.4"
-  resolved "https://registry.yarnpkg.com/stimulus-use/-/stimulus-use-0.9.4.tgz#e57651e42bc389f716a56b8e1fd19251f1060478"
-  integrity sha512-nawW+V4nLLPh9mRa+WjVQen6pI6UalDHNZNE2eBCHZ8erMchX6xhNU60EUcJ6qB3WTm6OqKoKKsxNa0VBuMqbA==
+stimulus-use@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/stimulus-use/-/stimulus-use-0.12.1.tgz#37ef966aaff0b0906e209388e5bf47bb00e25044"
+  integrity sha512-kbZuEFXm9w8o3VgnI9xcIYk89gqrCRJPypfmfCAKH+YEuOUFYY2Ifz8/fv771uXfoTqC2C6cth7lUA9dxpXV6Q==
 
 stimulus@^1.1.0, stimulus@^1.1.1:
   version "1.1.1"
