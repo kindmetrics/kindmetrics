@@ -1,13 +1,18 @@
 module.exports = {
-  purge: ['./src/pages/**/*.html.ecr',
-  './src/pages/**/*.cr',
-  './src/components/**/*.cr',
-  './src/js/**/*.js'],
+  purge: {
+    mode: 'all',
+    content: ['./src/pages/**/*.html.ecr',
+    './src/pages/**/*.cr',
+    './src/components/**/*.cr',
+    './src/js/**/*.js']
+  },
   theme: {
     extend: {},
   },
   variants: {},
   plugins: [
-    require('@tailwindcss/ui'),
+    require('@tailwindcss/ui')({
+      layout: 'sidebar',
+    }),
   ],
 }
