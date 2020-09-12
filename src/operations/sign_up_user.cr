@@ -21,6 +21,15 @@ class SignUpUser < User::SaveOperation
     Authentic.copy_and_encrypt password, to: encrypted_password
   end
 
+  before_save no_url_in_name
+
+  def no_url_in_name
+    matched = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/.match(name.value.not_nil!)
+    unless matched.nil?
+      name.add_error "invalid"
+    end
+  end
+
   def send_invite_email(user)
     UserConfirmationEmail.new(user).deliver_later
   end
