@@ -6,7 +6,7 @@ class Domains::Referrer::Show < DomainBaseAction
   end
 
   def get_referrals
-    metrics.get_source_referrers
+    metrics.get_referrers(0)
   end
 
   def get_total

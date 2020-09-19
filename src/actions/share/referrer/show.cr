@@ -14,7 +14,7 @@ class Share::Referrer::Show < BrowserAction
 
   def get_referrals(domain)
     metrics = Metrics.new(domain, period, nil, "", source, "")
-    metrics.get_source_referrers
+    metrics.get_referrers
   end
 
   def get_total(domain)

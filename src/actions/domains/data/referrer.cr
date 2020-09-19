@@ -5,6 +5,6 @@ class Domains::Data::Referrer < DomainPublicBaseAction
   end
 
   def get_source_referrers
-    metrics.get_source_referrers
+    metrics.get_referrers
   end
 end

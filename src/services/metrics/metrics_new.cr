@@ -99,7 +99,7 @@ class MetricsNew
     res.map(total: UInt64).first["total"].to_i64
   end
 
-  def get_referrers(limit : Int32 = 6)
+  def get_sources(limit : Int32 = 6)
     sql = <<-SQL
     SELECT referrer_source, any(referrer_domain) as referrer_domain, MIN(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source IS NOT NULL
@@ -117,7 +117,7 @@ class MetricsNew
     count_percentage(pages)
   end
 
-  def get_source_referrers
+  def get_referrers(limit : Int32 = 6)
     sql = <<-SQL
     SELECT referrer_source, any(referrer) as referrer_url, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
@@ -126,7 +126,7 @@ class MetricsNew
     #{where_source_string}
     #{where_medium_string}
     GROUP BY referrer_source
-    ORDER BY count desc
+    ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
     res = @client.execute(sql)
     json = res.map_nil(referrer_source: String, referrer_url: String, count: UInt64).to_json
@@ -154,21 +154,6 @@ class MetricsNew
     pages = Array(StatsReferrer).from_json(json)
     pages = count_percentage(pages)
     count_bounce_rate(pages)
-  end
-
-  def get_path_referrers(path : String) : Array(StatsReferrer)
-    sql = <<-SQL
-    SELECT referrer_source, any(referrer_domain) as referrer_domain, MIN(referrer) as referrer_url, uniq(user_id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND (path='#{path}' OR path='/#{path}') AND referrer IS NOT NULL AND referrer_source IS NOT NULL
-    GROUP BY referrer_source
-    ORDER BY count desc
-    SQL
-    res = @client.execute(sql)
-    json = res.map_nil(referrer_source: String, referrer_domain: String, referrer_url: String, count: UInt64).to_json
-    return [] of StatsReferrer if json.nil?
-    pages = Array(StatsReferrer).from_json(json)
-    pages = count_percentage(pages)
-    count_path_bounce_rate(pages, path)
   end
 
   def get_all_medium_referrers : Array(StatsMediumReferrer)
