@@ -87,8 +87,16 @@ export default class extends Controller {
     var url = this.data.get("url") + "?period=" + period
     const goal = this.data.get("goal")
     const site_path = this.data.get("site-path")
+    const source = this.data.get("source")
+    const medium = this.data.get("medium")
     if(goal != null) {
       url = url + "&goal_id=" + goal
+    }
+    if(source != null) {
+      url = url + "&source_name=" + source
+    }
+    if(medium != null) {
+      url = url + "&medium_name=" + medium
     }
     if(site_path != null) {
       url = url + "&site_path=" + site_path

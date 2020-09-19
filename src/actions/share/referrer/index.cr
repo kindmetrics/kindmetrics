@@ -13,12 +13,12 @@ class Share::Referrer::Index < BrowserAction
   end
 
   def get_referrals(domain)
-    metrics = Metrics.new(domain, period)
+    metrics = Metrics.new(domain, period, nil, "", "", "")
     metrics.get_all_referrers
   end
 
   def get_mediums(domain)
-    metrics = Metrics.new(domain, period)
+    metrics = Metrics.new(domain, period, nil, "", "", "")
     metrics.get_all_medium_referrers
   end
 end

@@ -1,10 +1,5 @@
-class Domains::Data::PagesPage
-  include Lucky::HTMLPage
+class Domains::Data::PagesPage < Domains::Data::BasePage
   needs pages : Array(StatsPages)
-  needs period : String
-  needs domain : Domain
-  needs goal : Goal?
-  needs current_user : User?
 
   def render
     if pages.empty?
@@ -44,9 +39,9 @@ class Domains::Data::PagesPage
 
   def get_url(row)
     if current_user.nil?
-      Share::Show.with(share_id: domain.hashid, goal_id: goal.try { |g| g.id } || 0_i64, site_path: row.address.to_s).url
+      Share::Show.with(share_id: domain.hashid, goal_id: goal.try { |g| g.id } || 0_i64, site_path: row.address.to_s, source_name: source_name, medium_name: medium_name, period: period).url
     else
-      Domains::Show.with(domain_id: domain.id, goal_id: goal.try { |g| g.id } || 0_i64, site_path: row.address.to_s).url
+      Domains::Show.with(domain_id: domain.id, goal_id: goal.try { |g| g.id } || 0_i64, site_path: row.address.to_s, source_name: source_name, medium_name: medium_name, period: period).url
     end
   end
 end

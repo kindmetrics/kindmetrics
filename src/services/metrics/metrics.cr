@@ -1,16 +1,6 @@
 class Metrics
-  def initialize(@domain : Domain, @period : String, @goal : Goal?, @path : String)
-    @new_metrics = MetricsNew.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day, @goal, @path)
-    @goal_metrics = GoalMetrics.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day)
-  end
-
-  def initialize(@domain : Domain, @period : String, @path : String)
-    @new_metrics = MetricsNew.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day, @goal, @path)
-    @goal_metrics = GoalMetrics.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day)
-  end
-
-  def initialize(@domain : Domain, @period : String, @path : String = "")
-    @new_metrics = MetricsNew.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day, @goal, "")
+  def initialize(@domain : Domain, @period : String, @goal : Goal?, @path : String, @source : String, @medium : String)
+    @new_metrics = MetricsNew.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day, @goal, @path, @source, @medium)
     @goal_metrics = GoalMetrics.new(@domain, period_days.to_local_in(Time::Location.load(@domain.time_zone)), Time.local(Time::Location.load(@domain.time_zone)).at_end_of_day)
   end
 

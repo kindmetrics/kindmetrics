@@ -1,10 +1,10 @@
 class Domains::Data::Referrer < DomainPublicBaseAction
   include Auth::AllowGuests
-  get "/domains/:domain_id/data/referrer" do
-    html ReferrerPage, domain: domain, referrers: get_referrers, period: period
+  get "/domains/:domain_id/data/referrers" do
+    html ReferrerPage, domain: domain, referrers: get_source_referrers, period: period
   end
 
-  def get_referrers
-    metrics.get_referrers
+  def get_source_referrers
+    metrics.get_source_referrers
   end
 end

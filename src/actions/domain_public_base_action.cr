@@ -2,6 +2,8 @@ abstract class DomainPublicBaseAction < BrowserAction
   param period : String = "7d"
   param goal_id : Int64 = 0_i64
   param site_path : String = ""
+  param source_name : String = ""
+  param medium_name : String = ""
 
   before require_domain
 
@@ -27,6 +29,6 @@ abstract class DomainPublicBaseAction < BrowserAction
   end
 
   private def metrics : Metrics
-    Metrics.new(domain, period, goal, site_path)
+    Metrics.new(domain, period, goal, site_path, source_name, medium_name)
   end
 end

@@ -1,18 +1,22 @@
 class DaysLoaderComponent < BaseComponent
+  include DrilldownParams
   needs domain : Domain
   needs period : String
-  needs goal : Goal? = nil
-  needs site_path : String = ""
 
   def render
-    if !goal.nil? && !site_path.empty?
-      div data_controller: "days-chart", data_days_chart_period: @period, data_days_chart_url: "/domains/#{@domain.id}/data/days", height: "300", id: "days_chart", style: "max-height:300px;", width: "100%", data_days_chart_goal: @goal.not_nil!.id, data_days_chart_site_path: site_path
-    elsif !goal.nil?
-      div data_controller: "days-chart", data_days_chart_period: @period, data_days_chart_url: "/domains/#{@domain.id}/data/days", height: "300", id: "days_chart", style: "max-height:300px;", width: "100%", data_days_chart_goal: @goal.not_nil!.id
-    elsif !site_path.empty?
-      div data_controller: "days-chart", data_days_chart_period: @period, data_days_chart_url: "/domains/#{@domain.id}/data/days", height: "300", id: "days_chart", style: "max-height:300px;", width: "100%", data_days_chart_site_path: site_path
-    else
-      div data_controller: "days-chart", data_days_chart_period: @period, data_days_chart_url: "/domains/#{@domain.id}/data/days", height: "300", id: "days_chart", style: "max-height:300px;", width: "100%"
+    params = Hash(String, String).new
+    params["data_controller"] = "days-chart"
+    params["data_days_chart_period"] = period
+    params["data_days_chart_url"] = "/domains/#{@domain.id}/data/days"
+    params["height"] = "300"
+    params["width"] = "100%"
+    params["style"] = "max-height:300px;"
+    params["id"] = "days_chart"
+
+    custom_params = set_params("data_days_")
+    params.merge!(custom_params) unless custom_params.nil?
+
+    div params do
     end
   end
 end

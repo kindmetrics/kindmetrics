@@ -1,24 +1,45 @@
 class Share::Show < BrowserAction
   include Auth::AllowGuests
-  include DomainMetrics
   include Hashid
   include Period
+  include PreviousDomainMetrics
 
   param period : String = "7d"
   param goal_id : Int64 = 0_i64
   param site_path : String = ""
+  param source_name : String = ""
+  param medium_name : String = ""
+
+  before require_domain
+  @domain : Domain?
 
   get "/share/:share_id" do
+    html Domains::ShowPage, domain: domain, goal: goal, source: source_name, medium: medium_name, site_path: site_path, share_page: true, total_unique: metrics.unique_query, total_unique_previous: previous_metric.unique_query, total_bounce: metrics.bounce_query, total_bounce_previous: previous_metric.bounce_query, total_sum: metrics.total_query, total_previous: previous_metric.total_query, period: period, period_string: period_string
+  end
+
+
+  private def require_domain
     ids = hashids.decode(share_id)
     raise Lucky::RouteNotFoundError.new(context) if ids.empty?
-    domain = DomainQuery.find(ids.first)
-    DomainPolicy.show_share_not_found?(domain, current_user, context)
+    @domain = DomainQuery.find(ids.first)
+    raise Lucky::RouteNotFoundError.new(context) if @domain.nil?
+    if DomainPolicy.show_share?(domain, current_user)
+      continue
+    else
+      raise Lucky::RouteNotFoundError.new(context)
+    end
+  end
 
-    html Domains::ShowPage, domain: domain, goal: goal, site_path: site_path, share_page: true, total_unique: unique_query(domain, goal, site_path), total_unique_previous: unique_query_previous(domain, goal, site_path), total_bounce: bounce_query(domain, goal, site_path), total_bounce_previous: bounce_query_previous(domain, goal, site_path), total_sum: total_query(domain, goal, site_path), total_previous: total_query_previous(domain, goal, site_path), period: period, period_string: period_string
+  private def domain : Domain
+    @domain.not_nil!
   end
 
   private def goal : Goal?
     return nil if goal_id == 0
     GoalQuery.find(goal_id)
+  end
+
+  private def metrics : Metrics
+    Metrics.new(domain, period, goal, site_path, source_name, medium_name)
   end
 end

@@ -2,15 +2,13 @@ class MetricsNew
   include Percentage
   include ClickDates
 
-  def initialize(@domain : Domain, @from_date : Time, @to_date : Time, @goal : Goal?, @path : String)
+  def initialize(@domain : Domain, @from_date : Time, @to_date : Time, @goal : Goal?, @path : String, @source : String, @medium : String)
     @client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
   end
 
   def current_query : Int64
     sql = <<-SQL
       SELECT COUNT(*) FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND length IS NULL
-      #{where_goal_string}
-      #{where_path_string}
     SQL
     res = @client.execute(sql)
     res.map(current: UInt64).first["current"].not_nil!.to_i64
@@ -21,6 +19,8 @@ class MetricsNew
     SELECT uniq(user_id) FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}')
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     SQL
     res = @client.execute(sql)
     res.map(unique: UInt64).first["unique"].to_i64
@@ -31,6 +31,8 @@ class MetricsNew
     SELECT COUNT(*) FROM kindmetrics.events WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}')
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     SQL
     res = @client.execute(sql)
     res.map(total: UInt64).first["total"].to_i64
@@ -42,6 +44,8 @@ class MetricsNew
     FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_i64?
@@ -55,6 +59,8 @@ class MetricsNew
     FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{referrer_source}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_i64?
@@ -68,6 +74,8 @@ class MetricsNew
     FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_medium='#{referrer_medium}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_i64?
@@ -75,12 +83,14 @@ class MetricsNew
     bounce.not_nil!.to_i64
   end
 
-  def get_source_referrers_total(source : String) : Int64
+  def get_source_referrers_total : Int64
     sql = <<-SQL
     SELECT uniq(user_id) as total FROM kindmetrics.sessions
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY referrer_source
     ORDER BY total desc
     SQL
@@ -95,6 +105,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source IS NOT NULL
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY referrer_source
     ORDER BY count desc LIMIT #{limit}
     SQL
@@ -105,12 +117,14 @@ class MetricsNew
     count_percentage(pages)
   end
 
-  def get_source_referrers(source : String)
+  def get_source_referrers
     sql = <<-SQL
-    SELECT referrer_source, any(referrer) as referrer_url, COUNT(id) as count FROM kindmetrics.events
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source='#{source.strip}'
+    SELECT referrer_source, any(referrer) as referrer_url, uniq(user_id) as count FROM kindmetrics.sessions
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY referrer_source
     ORDER BY count desc
     SQL
@@ -129,6 +143,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source IS NOT NULL
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY referrer_source
     ORDER BY count desc
     SQL
@@ -161,6 +177,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_medium IS NOT NULL
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY referrer_medium
     ORDER BY count desc
     SQL
@@ -179,6 +197,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY toDate(created_at)
     ORDER BY toDate(created_at) asc
     SQL
@@ -209,6 +229,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY toDate(created_at)
     ORDER BY toDate(created_at) asc
     SQL
@@ -239,6 +261,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY path
     ORDER BY count desc LIMIT 6
     SQL
@@ -254,6 +278,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY country
     ORDER BY count desc LIMIT 6
     SQL
@@ -276,6 +302,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY country
     ORDER BY count asc
     SQL
@@ -290,6 +318,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY device
     ORDER BY COUNT(id) desc LIMIT 6
     SQL
@@ -305,6 +335,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND browser_name IS NOT NULL AND browser_name!=''
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY browser_name
     ORDER BY COUNT(id) desc LIMIT 6
     SQL
@@ -320,6 +352,8 @@ class MetricsNew
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND operative_system IS NOT NULL AND operative_system!=''
     #{where_goal_string}
     #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
     GROUP BY operative_system
     ORDER BY COUNT(id) desc LIMIT 6
     SQL
@@ -355,5 +389,17 @@ class MetricsNew
     return if @path.empty?
 
     "AND path='#{@path}'"
+  end
+
+  private def where_source_string
+    return if @source.empty?
+
+    "AND referrer_source='#{@source}'"
+  end
+
+  private def where_medium_string
+    return if @medium.empty?
+
+    "AND referrer_medium='#{@medium}'"
   end
 end

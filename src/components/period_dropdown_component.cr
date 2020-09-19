@@ -1,6 +1,12 @@
 class PeriodDropdownComponent < BaseComponent
   needs period_string : String
-  needs current_url : String
+  needs period : String
+  needs domain : Domain
+  needs current_user : User?
+  needs site_path : String = ""
+  needs source : String = ""
+  needs medium : String = ""
+  needs goal : Goal? = nil
 
   def render
     div class: "text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900" do
@@ -29,6 +35,10 @@ class PeriodDropdownComponent < BaseComponent
   end
 
   def period_url(period : String)
-    "#{@current_url}?period=#{period}"
+    if current_user.nil?
+      Share::Show.with(domain.hashid, period: period, goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
+    else
+      Domains::Show.with(domain.id, period: period, goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
+    end
   end
 end

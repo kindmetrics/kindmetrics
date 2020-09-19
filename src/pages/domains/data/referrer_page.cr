@@ -1,8 +1,4 @@
-class Domains::Data::ReferrerPage
-  include Lucky::HTMLPage
-  needs domain : Domain
-  needs period : String
-  needs current_user : User?
+class Domains::Data::ReferrerPage < Domains::Data::BasePage
   needs referrers : Array(StatsReferrer)
 
   def render
@@ -28,18 +24,9 @@ class Domains::Data::ReferrerPage
       td class: "w-5/6 py-1 h-9" do
         div class: "w-full h-9" do
           div class: "progress_bar", style: "width: #{(row.percentage || 0.001)*100}%;height: 30px"
-          if !row.referrer_domain.nil? && row.referrer_domain.not_nil! == domain.address
-            span class: "block px-2", style: "margin-top: -1.6rem;" do
-              text "(direct)"
-            end
-          else
-            a class: "block px-2 hover:underline truncate md:w-48 xl:w-56", style: "margin-top: -1.6rem;", href: get_url(row) do
-              img src: "https://api.faviconkit.com/#{row.referrer_domain}/16", class: "inline align-middle mr-2 h-4 w-4 -mt-1"
-              text row.referrer_source.to_s
-              unless row.referrer_medium.nil?
-                text " / #{row.referrer_medium.not_nil!}"
-              end
-            end
+
+          a href: row.not_nil!.referrer_url || "#", class: "block px-2 hover:underline truncate md:w-48 xl:w-56", style: "margin-top: -1.6rem;", rel: "noreferrer" do
+            text (row.not_nil!.referrer_url || row.not_nil!.referrer_domain || "").to_s
           end
         end
       end
@@ -48,14 +35,6 @@ class Domains::Data::ReferrerPage
           text row.count
         end
       end
-    end
-  end
-
-  def get_url(row)
-    if current_user.nil?
-      Share::Referrer::Show.with(@domain.hashid, row.referrer_source.to_s, @period).url
-    else
-      Domains::Referrer::Show.with(@domain.id, row.referrer_source.to_s, @period).url
     end
   end
 end
