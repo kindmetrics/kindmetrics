@@ -84,7 +84,7 @@ class Domains::EditReportsPage < AdminLayout
   def render_user_email_form(op)
     form_for Domains::EmailReport::Create.with(@domain.id) do
       # Edit fields in src/components/domains/form_fields.cr
-      m Shared::Field, op.email, "Email", &.email_input(autofocus: "true", append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
+      m Shared::Field, op.email, "Email", &.email_input(autofocus: "true", append_class: "w-full form-input my-2 leading-tight")
 
       div class: "inline-block flex items-center" do
         div class: "w-1/2" do

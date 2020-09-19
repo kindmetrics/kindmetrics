@@ -75,7 +75,7 @@ class Domains::EditGoalsPage < AdminLayout
     form_for Domains::Settings::Goals::Create.with(@domain.id) do
       m IntDropdownComponent, selects: [{"event", 0}, {"path", 1}], field: op.kind
 
-      m Shared::Field, op.name, "Name of event or path to visit", &.text_input(attrs: [:required], autofocus: "true", append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
+      m Shared::Field, op.name, "Name of event or path to visit", &.text_input(attrs: [:required], autofocus: "true", append_class: "w-full form-input my-2 leading-tight")
 
       submit "Add", data_disable_with: "Adding...", class: "mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
     end

@@ -19,8 +19,8 @@ class SignUps::NewPage < AuthLayout
 
   private def sign_up_fields(op)
     m Shared::Field, op.name
-    m Shared::Field, op.email, "Email", &.email_input(append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
-    m Shared::Field, op.password, "Password", &.password_input(append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
-    m Shared::Field, op.password_confirmation, "Confirm Password", &.password_input(append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
+    m Shared::Field, op.email, "Email", &.email_input(append_class: "w-full form-input my-2 leading-tight")
+    m Shared::Field, op.password, "Password", &.password_input(append_class: "w-full form-input my-2 leading-tight")
+    m Shared::Field, op.password_confirmation, "Confirm Password", &.password_input(append_class: "w-full form-input my-2 leading-tight")
   end
 end

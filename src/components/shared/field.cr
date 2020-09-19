@@ -51,6 +51,6 @@ class Shared::Field(T) < BaseComponent
 
   # Use a text_input by default
   def render
-    render &.text_input(append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
+    render &.text_input(append_class: "w-full form-input my-2 leading-tight")
   end
 end

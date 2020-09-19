@@ -23,7 +23,7 @@ class Domains::EditPage < AdminLayout
   def render_domain_form(op)
     form_for Domains::Update.with(@domain.id) do
       # Edit fields in src/components/domains/form_fields.cr
-      m Shared::Field, operation.address, "Domain", &.text_input(autofocus: "true", disabled: true, append_class: "w-full bg-white text-gray-900 focus:bg-white border border-gray-400 hover:border hover:border-blue-500 focus:text-black rounded p-2 my-2 leading-tight transistor")
+      m Shared::Field, operation.address, "Domain", &.text_input(autofocus: "true", disabled: true, append_class: "w-full form-input my-2 leading-tight transistor")
 
       m TimezoneDropdown, operation.time_zone
 
@@ -48,7 +48,7 @@ class Domains::EditPage < AdminLayout
     div class: "my-3 card" do
       h2 "The code you use for tracking", class: "text-xl"
       para "Add this to your header", class: "text-sm my-2"
-      textarea(snippet, attrs: [:readonly], class: "w-full text-sm rounded p-2 text-gray-900 border border-gray-400 hover:border hover:border-blue-500")
+      textarea(snippet, attrs: [:readonly], class: "w-full text-sm form-textarea")
     end
   end
 
@@ -56,8 +56,8 @@ class Domains::EditPage < AdminLayout
     url = Share::Show.with(hashid).url
     div class: "my-3 card" do
       h2 "Share the analytics", class: "text-xl"
-      para "This will be the link you can share to your clients, friends and more - But don't forget to change the share settings above.", class: "text-sm my-2"
-      textarea(url, attrs: [:readonly], class: "w-full text-sm rounded p-2 text-gray-900 border border-gray-400 hover:border hover:border-blue-500")
+      para "This will be the link you can share with your clients, friends, and more - But don't forget to change the share settings above.", class: "text-sm my-2"
+      textarea(url, attrs: [:readonly], class: "w-full text-sm form-input")
     end
   end
 
