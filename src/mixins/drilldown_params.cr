@@ -1,5 +1,4 @@
 module DrilldownParams
-
   macro included
     needs goal : Goal? = nil
     needs source : String = ""

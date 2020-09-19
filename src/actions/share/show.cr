@@ -17,7 +17,6 @@ class Share::Show < BrowserAction
     html Domains::ShowPage, domain: domain, goal: goal, source: source_name, medium: medium_name, site_path: site_path, share_page: true, total_unique: metrics.unique_query, total_unique_previous: previous_metric.unique_query, total_bounce: metrics.bounce_query, total_bounce_previous: previous_metric.bounce_query, total_sum: metrics.total_query, total_previous: previous_metric.total_query, period: period, period_string: period_string
   end
 
-
   private def require_domain
     ids = hashids.decode(share_id)
     raise Lucky::RouteNotFoundError.new(context) if ids.empty?

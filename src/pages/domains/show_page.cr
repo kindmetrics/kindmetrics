@@ -139,9 +139,9 @@ class Domains::ShowPage < SecretGuestLayout
 
   def generate_params(kind : String)
     {
-      domain_id: domain.id,
-      goal_id:   !goal.nil? && kind != "goal" ? goal.not_nil!.id : 0_i64,
-      site_path: site_path.empty? || kind == "site_path" ? "" : site_path,
+      domain_id:   domain.id,
+      goal_id:     !goal.nil? && kind != "goal" ? goal.not_nil!.id : 0_i64,
+      site_path:   site_path.empty? || kind == "site_path" ? "" : site_path,
       source_name: source.empty? || kind == "source_name" ? "" : source,
       medium_name: medium.empty? || kind == "medium_name" ? "" : medium,
     }
@@ -149,9 +149,9 @@ class Domains::ShowPage < SecretGuestLayout
 
   def generate_share_params(kind : String)
     {
-      share_id:  domain.hashid,
-      goal_id:   !goal.nil? && kind != "goal" ? goal.not_nil!.id : 0_i64,
-      site_path: site_path.empty? || kind == "site_path" ? "" : site_path,
+      share_id:    domain.hashid,
+      goal_id:     !goal.nil? && kind != "goal" ? goal.not_nil!.id : 0_i64,
+      site_path:   site_path.empty? || kind == "site_path" ? "" : site_path,
       source_name: source.empty? || kind == "source_name" ? "" : source,
       medium_name: medium.empty? || kind == "medium_name" ? "" : medium,
     }
