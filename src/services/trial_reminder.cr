@@ -41,5 +41,4 @@ class TrialReminder
     return false if subscription_time?(subscription)
     return true
   end
-
 end

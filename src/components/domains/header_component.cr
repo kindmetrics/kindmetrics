@@ -10,6 +10,10 @@ class HeaderComponent < BaseComponent
   needs show_period : Bool = true
   needs current_url : String
   needs current_user : User?
+  needs site_path : String = ""
+  needs source : String = ""
+  needs medium : String = ""
+  needs goal : Goal? = nil
 
   def links
     if share_page?
@@ -53,7 +57,7 @@ class HeaderComponent < BaseComponent
               m TrialComponent, current_user: current_user.not_nil!
             end
             if show_period?
-              m PeriodDropdownComponent, period_string, current_url
+              m PeriodDropdownComponent, period: period, period_string: period_string, domain: domain, site_path: site_path, source: source, medium: medium, goal: goal
             end
           end
         end

@@ -1,8 +1,5 @@
-class Domains::Data::GoalsPage
-  include Lucky::HTMLPage
+class Domains::Data::GoalsPage < Domains::Data::BasePage
   needs goals : Array(NamedTuple(goal: Goal, stats_goal: StatsGoal))
-  needs domain : Domain
-  needs current_user : User?
 
   def render
     unless goals.empty?
@@ -30,7 +27,7 @@ class Domains::Data::GoalsPage
           div class: "progress_bar", style: "width: #{percentage}%;height: 30px"
           span class: "block px-2 truncate", style: "margin-top: -1.6rem;" do
             if row.count > 0
-              link row.goal_name.to_s, to: current_user.nil? ? Share::Show.with(share_id: domain.hashid, goal_id: goal.id) : Domains::Show.with(domain_id: domain.id, goal_id: goal.id)
+              link row.goal_name.to_s, to: current_user.nil? ? Share::Show.with(share_id: domain.hashid, goal_id: goal.id, source_name: source_name, medium_name: medium_name, period: period) : Domains::Show.with(domain_id: domain.id, goal_id: goal.id, source_name: source_name, medium_name: medium_name, period: period)
             else
               text row.goal_name.to_s
             end

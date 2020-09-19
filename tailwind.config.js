@@ -1,6 +1,8 @@
 module.exports = {
+  future: {
+    purgeLayersByDefault: true,
+  },
   purge: {
-    mode: 'all',
     content: ['./src/pages/**/*.html.ecr',
     './src/pages/**/*.cr',
     './src/components/**/*.cr',

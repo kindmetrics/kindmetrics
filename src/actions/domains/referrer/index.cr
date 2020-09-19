@@ -6,12 +6,10 @@ class Domains::Referrer::Index < DomainBaseAction
   end
 
   def get_referrals
-    metrics = Metrics.new(domain, period)
     metrics.get_all_referrers
   end
 
   def get_mediums
-    metrics = Metrics.new(domain, period)
     metrics.get_all_medium_referrers
   end
 end

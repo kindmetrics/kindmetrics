@@ -4,6 +4,5 @@ class TrialEndReminderEmail < BaseEmail
   templates text
 
   def initialize(@user : User)
-
   end
 end

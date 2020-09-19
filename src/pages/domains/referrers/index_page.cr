@@ -13,14 +13,14 @@ class Domains::Referrer::IndexPage < Share::BasePage
       div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
         div class: "card" do
           if referrers.size > 0
-            m DetailTableComponent, first_header: "Referrer", second_header: "Visitors", third_header: "Bounce" do
+            m DetailTableComponent, first_header: "Source", second_header: "Visitors", third_header: "Bounce" do
               referrers.each_with_index do |event, i|
-                m ReferrerMainComponent, event: event, index: i, current_user: current_user, period: @period, current_domain: @domain
+                m ReferrerMainComponent, event: event, index: i, current_user: current_user, period: period, current_domain: domain
               end
             end
           else
             span class: "text-center block" do
-              text "No referrers"
+              text "No sources"
             end
           end
         end
@@ -28,7 +28,7 @@ class Domains::Referrer::IndexPage < Share::BasePage
           if mediums.size > 0
             m DetailTableComponent, first_header: "Medium", second_header: "Visitors", third_header: "Bounce" do
               mediums.each_with_index do |event, i|
-                m ReferrerMediumComponent, event: event, index: i
+                m ReferrerMediumComponent, event: event, index: i, period: period
               end
             end
           else

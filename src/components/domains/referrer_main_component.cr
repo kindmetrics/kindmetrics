@@ -13,7 +13,7 @@ class ReferrerMainComponent < BaseComponent
             text "(direct)"
           end
         else
-          a class: "block px-2 hover:underline truncate", href: current_user.nil? ? Share::Referrer::Show.with(current_domain.hashid, event.referrer_source.to_s, period.to_s).url : Domains::Referrer::Show.with(current_domain.id, event.referrer_source.to_s, period.to_s).url do
+          a class: "block px-2 hover:underline truncate", href: get_url(event) do
             img src: "https://api.faviconkit.com/#{event.referrer_domain}/16", class: "inline align-middle mr-2 h-4 w-4 -mt-px"
             text (event.referrer_source || event.referrer_domain).to_s
           end
@@ -25,6 +25,14 @@ class ReferrerMainComponent < BaseComponent
       td class: "w-1/6 p-2" do
         text event.bounce_rate.to_s + "%"
       end
+    end
+  end
+
+  def get_url(row)
+    if current_user.nil?
+      Share::Show.with(share_id: current_domain.hashid, source_name: row.referrer_source.to_s, period: period).url
+    else
+      Domains::Show.with(domain_id: current_domain.id, source_name: row.referrer_source.to_s, period: period).url
     end
   end
 end

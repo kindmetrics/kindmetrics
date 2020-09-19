@@ -1,14 +1,14 @@
 class Domains::Show < DomainBaseAction
-  include DomainMetrics
   include Period
   include TrialCheck
+  include PreviousDomainMetrics
 
   route do
     domains = DomainQuery.new.user_id(current_user.id)
     if current_user.current_domain_id != domain.id
       SaveUser.update!(current_user, current_domain_id: domain.id)
     end
-    current_user
-    html ShowPage, domain: domain, goal: goal, site_path: site_path, total_unique: unique_query(domain, goal, site_path), total_unique_previous: unique_query_previous(domain, goal, site_path), total_bounce: bounce_query(domain, goal, site_path), total_bounce_previous: bounce_query_previous(domain, goal, site_path), total_sum: total_query(domain, goal, site_path), total_previous: total_query_previous(domain, goal, site_path), period: period, period_string: period_string, domains: domains
+
+    html ShowPage, domain: domain, goal: goal, site_path: site_path, source: source_name, medium: medium_name, total_unique: metrics.unique_query, total_unique_previous: previous_metric.unique_query, total_bounce: metrics.bounce_query, total_bounce_previous: previous_metric.bounce_query, total_sum: metrics.total_query, total_previous: previous_metric.total_query, period: period, period_string: period_string, domains: domains
   end
 end

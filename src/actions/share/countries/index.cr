@@ -9,7 +9,7 @@ class Share::Countries::Index < BrowserAction
     raise Lucky::RouteNotFoundError.new(context) if ids.empty?
     domain = DomainQuery.find(ids.first)
     DomainPolicy.show_share_not_found?(domain, current_user, context)
-    metrics = Metrics.new(domain, period)
+    metrics = Metrics.new(domain, period, nil, "", "", "")
     countries = metrics.get_countries
     html Domains::Countries::IndexPage, domain: domain, period: period, share_page: true, countries: countries
   end
