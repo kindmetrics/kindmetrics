@@ -7,7 +7,7 @@ class Domains::Goals::IndexPage < Share::BasePage
   needs active : String = "Goals"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: @period, active: "Goals"
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, from: from, to: to, active: "Goals"
     div do
       sub_header
       div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-1 gap-6 sm:grid-flow-row" do
@@ -15,7 +15,7 @@ class Domains::Goals::IndexPage < Share::BasePage
           if goals.size > 0
             m DetailTableComponent, first_header: "Goal", second_header: "Conversions" do
               goals.each_with_index do |goal, i|
-                m GoalMainComponent, stats_goal: goal[:stats_goal], goal: goal[:goal], index: i, current_user: current_user, period: @period, current_domain: @domain
+                m GoalMainComponent, stats_goal: goal[:stats_goal], goal: goal[:goal], index: i, current_user: current_user, from: from, to: to, current_domain: @domain
               end
             end
           else
@@ -39,9 +39,9 @@ class Domains::Goals::IndexPage < Share::BasePage
 
   def header_url(period)
     if share_page?
-      Share::Referrer::Index.with(@domain.hashid, period: period)
+      Share::Referrer::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to))
     else
-      Domains::Goals::Index.with(@domain.id, period: period)
+      Domains::Goals::Index.with(@domain.id, from: time_to_string(from), to: time_to_string(to))
     end
   end
 end

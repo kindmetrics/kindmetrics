@@ -13,7 +13,7 @@ describe Metrics do
     EventHandler.create_session(user_id: "11231212", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: nil, is_bounce: 0, domain_id: domain.id)
     EventHandler.create_session(user_id: "53443534", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: nil, is_bounce: 0, domain_id: domain.id)
 
-    metrics = Metrics.new(domain, "7d")
+    metrics = Metrics.new(domain, Time.utc - 7.days, Time.utc)
     unique = metrics.unique_query
     unique.should eq(2)
   end
@@ -27,7 +27,7 @@ describe Metrics do
 
     EventHandler.add_event(user_id: user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", domain_id: domain.id)
 
-    metrics = Metrics.new(domain, "7d")
+    metrics = Metrics.new(domain, Time.utc - 7.days, Time.utc)
     total_views = metrics.total_query
     total_views.should eq(2)
   end
@@ -37,7 +37,7 @@ describe Metrics do
     EventHandler.create_session(user_id: "53443534", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, mark: 1, domain_id: domain.id)
     EventHandler.create_session(user_id: "2423432", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, mark: 1, domain_id: domain.id)
 
-    metrics = Metrics.new(domain, "7d")
+    metrics = Metrics.new(domain, Time.utc - 7.days, Time.utc)
     bounce_rate = metrics.bounce_query
     bounce_rate.should eq(100)
   end
@@ -53,7 +53,7 @@ describe Metrics do
     sessions.size.should eq(2)
     events.size.should eq(2)
 
-    metrics = Metrics.new(domain, "7d")
+    metrics = Metrics.new(domain, Time.utc - 7.days, Time.utc)
     bounce_rate = metrics.bounce_query
     bounce_rate.should eq(50)
   end
@@ -63,7 +63,7 @@ describe Metrics do
     EventHandler.create_session(user_id: "dsfdsfdsf", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
     EventHandler.create_session(user_id: "f32532ewfds", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
-    metrics = Metrics.new(domain, "7d")
+    metrics = Metrics.new(domain, Time.utc - 7.days, Time.utc)
     days, data = metrics.get_days
     days.not_nil!.size.should eq(8)
     data.not_nil!.size.should eq(8)
@@ -80,7 +80,7 @@ describe Metrics do
     EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
     EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
-    metrics = Metrics.new(domain, "7d")
+    metrics = Metrics.new(domain, Time.utc - 7.days, Time.utc)
     days, data = metrics.get_days
     days.not_nil!.size.should eq(8)
     data.not_nil!.size.should eq(8)
@@ -94,7 +94,7 @@ describe Metrics do
     EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
     EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
-    metrics = Metrics.new(domain, "14d")
+    metrics = Metrics.new(domain, Time.utc - 14.days, Time.utc)
     days, data = metrics.get_days
     days.not_nil!.size.should eq(15)
     data.not_nil!.size.should eq(15)
@@ -113,7 +113,7 @@ describe Metrics do
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
-        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+        metrics = Metrics.new(domain, Time.utc - 14.days, Time.utc, nil, "/test/rrr")
 
         unique = metrics.unique_query
         unique.should eq(2)
@@ -124,7 +124,7 @@ describe Metrics do
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/sdfsf", path: "/test/sdfsf", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
-        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+        metrics = Metrics.new(domain, Time.utc - 14.days, Time.utc, nil, "/test/rrr")
 
         unique = metrics.unique_query
         unique.should eq(1)
@@ -136,7 +136,7 @@ describe Metrics do
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
-        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+        metrics = Metrics.new(domain, Time.utc - 14.days, Time.utc, nil, "/test/rrr")
 
         unique = metrics.total_query
         unique.should eq(2)
@@ -147,7 +147,7 @@ describe Metrics do
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/sdfsf", path: "/test/sdfsf", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
-        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+        metrics = Metrics.new(domain, Time.utc - 14.days, Time.utc, nil, "/test/rrr")
 
         unique = metrics.total_query
         unique.should eq(1)
@@ -159,7 +159,7 @@ describe Metrics do
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
-        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+        metrics = Metrics.new(domain, Time.utc - 14.days, Time.utc, nil, "/test/rrr")
 
         devices = metrics.get_devices
         devices.first.count.should eq(2)
@@ -170,7 +170,7 @@ describe Metrics do
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/sdfsf", path: "/test/sdfsf", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, is_bounce: 1, domain_id: domain.id)
 
-        metrics = Metrics.new(domain, "14d", nil, "/test/rrr")
+        metrics = Metrics.new(domain, Time.utc - 14.days, Time.utc, nil, "/test/rrr")
 
         devices = metrics.get_devices
         devices.first.count.should eq(1)

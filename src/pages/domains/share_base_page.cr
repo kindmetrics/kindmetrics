@@ -1,5 +1,7 @@
 abstract class Share::BasePage < SecretGuestLayout
+  include Timeparser
   include Period
   needs domain : Domain
-  needs period : String
+  needs from : Time
+  needs to : Time
 end

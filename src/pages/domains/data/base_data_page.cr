@@ -1,7 +1,9 @@
 abstract class Domains::Data::BasePage
   include Lucky::HTMLPage
+  include Timeparser
   needs domain : Domain
-  needs period : String
+  needs from : Time
+  needs to : Time
   needs current_user : User?
   needs goal : Goal?
   needs site_path : String = ""

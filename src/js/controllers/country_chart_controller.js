@@ -46,8 +46,10 @@ export default class extends Controller {
   }
 
   getData() {
-    const period = this.data.get("period") ? this.data.get("period") : "7d"
-    fetch(this.data.get("url") + "?period=" + period).then(response => {
+    const from = this.data.get("from")
+    const to = this.data.get("to")
+    var url = this.data.get("url") + "?from=" + from + "&to=" + to
+    fetch(url).then(response => {
       return response.json()
     }).then(response => {
       this.element.innerHTML = ""

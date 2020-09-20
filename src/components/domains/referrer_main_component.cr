@@ -1,9 +1,11 @@
 class ReferrerMainComponent < BaseComponent
+  include Timeparser
   needs event : StatsReferrer
   needs index : Int32
   needs current_user : User?
   needs current_domain : Domain
-  needs period : String
+  needs from : Time
+  needs to : Time
 
   def render
     tr class: index.odd? ? "bg-gray-100" : "bg-white" do
@@ -30,9 +32,9 @@ class ReferrerMainComponent < BaseComponent
 
   def get_url(row)
     if current_user.nil?
-      Share::Show.with(share_id: current_domain.hashid, source_name: row.referrer_source.to_s, period: period).url
+      Share::Show.with(share_id: current_domain.hashid, source_name: row.referrer_source.to_s, to: time_to_string(to), from: time_to_string(from)).url
     else
-      Domains::Show.with(domain_id: current_domain.id, source_name: row.referrer_source.to_s, period: period).url
+      Domains::Show.with(domain_id: current_domain.id, source_name: row.referrer_source.to_s, to: time_to_string(to), from: time_to_string(from)).url
     end
   end
 end

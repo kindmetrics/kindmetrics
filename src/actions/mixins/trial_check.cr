@@ -7,6 +7,7 @@ module TrialCheck
 
   def check_trial
     return continue if current_user.trial_ends_at > Time.utc
+    return continue if current_user.admin?
 
     subscription = current_user.subscription!
 

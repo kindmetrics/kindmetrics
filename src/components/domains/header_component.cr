@@ -5,7 +5,8 @@ class HeaderComponent < BaseComponent
   needs domains : DomainQuery?
   needs share_page : Bool = false
   needs total_sum : Int64 = 0
-  needs period : String = "7d"
+  needs from : Time = Time.utc - 7.days
+  needs to : Time = Time.utc
   needs period_string : String = "7 days"
   needs show_period : Bool = true
   needs current_url : String
@@ -18,16 +19,16 @@ class HeaderComponent < BaseComponent
   def links
     if share_page?
       [
-        {"link" => Share::Show.url(@domain.hashid, period: period), "name" => "Dashboard"},
-        {"link" => Share::Referrer::Index.url(@domain.hashid, period: period), "name" => "Referrers"},
-        {"link" => Share::Countries::Index.url(@domain.hashid, period: period), "name" => "Countries"},
+        {"link" => Share::Show.url(@domain.hashid, to: to, from: from), "name" => "Dashboard"},
+        {"link" => Share::Referrer::Index.url(@domain.hashid, to: to, from: from), "name" => "Referrers"},
+        {"link" => Share::Countries::Index.url(@domain.hashid, to: to, from: from), "name" => "Countries"},
       ]
     else
       [
-        {"link" => Domains::Show.url(@domain, period: period), "name" => "Dashboard"},
-        {"link" => Domains::Referrer::Index.url(@domain, period: period), "name" => "Referrers"},
-        {"link" => Domains::Countries::Index.url(@domain, period: period), "name" => "Countries"},
-        {"link" => Domains::Goals::Index.url(@domain, period: period), "name" => "Goals"},
+        {"link" => Domains::Show.url(@domain, to: to, from: from), "name" => "Dashboard"},
+        {"link" => Domains::Referrer::Index.url(@domain, to: to, from: from), "name" => "Referrers"},
+        {"link" => Domains::Countries::Index.url(@domain, to: to, from: from), "name" => "Countries"},
+        {"link" => Domains::Goals::Index.url(@domain, to: to, from: from), "name" => "Goals"},
         {"link" => Domains::Edit.url(@domain), "name" => "Settings"},
         {"link" => Domains::EditReports.url(@domain), "name" => "Reports"},
       ]
@@ -57,7 +58,7 @@ class HeaderComponent < BaseComponent
               m TrialComponent, current_user: current_user.not_nil!
             end
             if show_period?
-              m PeriodDropdownComponent, period: period, period_string: period_string, domain: domain, site_path: site_path, source: source, medium: medium, goal: goal
+              m PeriodDropdownComponent, to: to, from: from, period_string: period_string, domain: domain, site_path: site_path, source: source, medium: medium, goal: goal, current_user: current_user
             end
           end
         end

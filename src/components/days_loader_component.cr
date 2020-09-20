@@ -1,12 +1,14 @@
 class DaysLoaderComponent < BaseComponent
   include DrilldownParams
   needs domain : Domain
-  needs period : String
+  needs from : String
+  needs to : String
 
   def render
     params = Hash(String, String).new
     params["data_controller"] = "days-chart"
-    params["data_days_chart_period"] = period
+    params["data_days_chart_from"] = from
+    params["data_days_chart_to"] = to
     params["data_days_chart_url"] = "/domains/#{@domain.id}/data/days"
     params["height"] = "300"
     params["width"] = "100%"

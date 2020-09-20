@@ -83,8 +83,9 @@ export default class extends Controller {
 
   getData() {
     this.element.innerHTML = this.loader()
-    const period = this.data.get("period") ? this.data.get("period") : "7d"
-    var url = this.data.get("url") + "?period=" + period
+    const from = this.data.get("from")
+    const to = this.data.get("to")
+    var url = this.data.get("url") + "?from=" + from + "&to=" + to
     const goal = this.data.get("goal")
     const site_path = this.data.get("site-path")
     const source = this.data.get("source")

@@ -3,8 +3,11 @@ class Share::Show < BrowserAction
   include Hashid
   include Period
   include PreviousDomainMetrics
+  include Timeparser
+  extend Timeparser
 
-  param period : String = "7d"
+  param from : String = time_to_string(Time.utc - 7.days)
+  param to : String = time_to_string(Time.utc)
   param goal_id : Int64 = 0_i64
   param site_path : String = ""
   param source_name : String = ""
@@ -14,7 +17,7 @@ class Share::Show < BrowserAction
   @domain : Domain?
 
   get "/share/:share_id" do
-    html Domains::ShowPage, domain: domain, goal: goal, source: source_name, medium: medium_name, site_path: site_path, share_page: true, total_unique: metrics.unique_query, total_unique_previous: previous_metric.unique_query, total_bounce: metrics.bounce_query, total_bounce_previous: previous_metric.bounce_query, total_sum: metrics.total_query, total_previous: previous_metric.total_query, period: period, period_string: period_string
+    html Domains::ShowPage, domain: domain, goal: goal, real_count: metrics.real_count, source: source_name, medium: medium_name, site_path: site_path, share_page: true, total_unique: metrics.unique_query, total_unique_previous: previous_metric.unique_query, total_bounce: metrics.bounce_query, total_bounce_previous: previous_metric.bounce_query, total_sum: metrics.total_query, total_previous: previous_metric.total_query, from: string_to_date(from), to: string_to_date(to), period_string: period_string
   end
 
   private def require_domain
@@ -39,6 +42,6 @@ class Share::Show < BrowserAction
   end
 
   private def metrics : Metrics
-    Metrics.new(domain, period, goal, site_path, source_name, medium_name)
+    Metrics.new(domain, string_to_date(from), string_to_date(to), goal, site_path, source_name, medium_name)
   end
 end
