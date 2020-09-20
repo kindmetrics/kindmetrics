@@ -1,6 +1,8 @@
 class PeriodDropdownComponent < BaseComponent
+  include Timeparser
   needs period_string : String
-  needs period : String
+  needs from : Time
+  needs to : Time
   needs domain : Domain
   needs current_user : User?
   needs site_path : String = ""
@@ -23,22 +25,22 @@ class PeriodDropdownComponent < BaseComponent
         end
         div class: "absolute right-0 mt-2 w-full hidden z-20", data_target: "dropdown.menu" do
           div class: "bg-white shadow-lg rounded overflow-hidden border" do
-            a "7 days", href: period_url("7d"), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap"
-            a "14 days", href: period_url("14d"), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap"
-            a "30 days", href: period_url("30d"), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap"
-            a "60 days", href: period_url("60d"), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap"
-            a "90 days", href: period_url("90d"), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap"
+            a "7 days", href: period_url(Time.utc - 7.days, to), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap"
+            a "14 days", href: period_url(Time.utc - 14.days, to), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap"
+            a "30 days", href: period_url(Time.utc - 30.days, to), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap"
+            a "60 days", href: period_url(Time.utc - 60.days, to), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap"
+            a "90 days", href: period_url(Time.utc - 90.days, to), class: "hover:no-underline block px-5 py-4 text-gray-900 bg-white hover:bg-cool-gray-100 whitespace-no-wrap"
           end
         end
       end
     end
   end
 
-  def period_url(period : String)
+  def period_url(from : Time, to : Time = Time.utc)
     if current_user.nil?
-      Share::Show.with(domain.hashid, period: period, goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
+      Share::Show.with(domain.hashid, from: time_to_string(from), to: time_to_string(to), goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
     else
-      Domains::Show.with(domain.id, period: period, goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
+      Domains::Show.with(domain.id, from: time_to_string(from), to: time_to_string(to), goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
     end
   end
 end

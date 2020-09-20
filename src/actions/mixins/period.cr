@@ -1,16 +1,24 @@
 module Period
+  include Lucky::TextHelpers
+  include Timeparser
   def period_string
-    case period
-    when "14d"
-      "14 days"
-    when "30d"
-      "30 days"
-    when "60d"
-      "60 days"
-    when "90d"
-      "90 days"
+    time_span = to_time - from_time
+    pluralize(time_span.days, "days")
+  end
+
+  def from_time : Time
+    if from.is_a?(String)
+      string_to_date(from).as(Time)
     else
-      "7 days"
+      from.as(Time)
+    end
+  end
+
+  def to_time : Time
+    if to.is_a?(String)
+      string_to_date(to).as(Time)
+    else
+      to.as(Time)
     end
   end
 end

@@ -1,13 +1,16 @@
 class Domains::ShowPage < SecretGuestLayout
+  include Timeparser
   needs domains : DomainQuery?
   needs domain : Domain
+  needs real_count : Int64
   needs total_unique : Int64
   needs total_sum : Int64
   needs total_bounce : Int64
   needs total_unique_previous : Int64
   needs total_previous : Int64
   needs total_bounce_previous : Int64
-  needs period : String
+  needs from : Time = Time.utc - 7.days
+  needs to : Time = Time.utc
   needs period_string : String
   needs share_page : Bool = false
   needs site_path : String = ""
@@ -19,7 +22,7 @@ class Domains::ShowPage < SecretGuestLayout
 
   def content
     render_header
-    if total_sum == 0
+    if real_count == 0
       m AddTrackingComponent, domain: @domain
     else
       render_query_tabs
@@ -40,16 +43,16 @@ class Domains::ShowPage < SecretGuestLayout
     div class: "gradient-color" do
       div class: "px-2 sm:px-0 pt-4" do
         if !goal.nil?
-          taber("Goal", goal.not_nil!.name, share_page? ? Share::Show.with(**generate_share_params("goal"), period: period) : Domains::Show.with(**generate_params("goal"), period: period))
+          taber("Goal", goal.not_nil!.name, share_page? ? Share::Show.with(**generate_share_params("goal"), from: time_to_string(from), to: time_to_string(to)) : Domains::Show.with(**generate_params("goal"), from: time_to_string(from), to: time_to_string(to)))
         end
         if !site_path.empty?
-          taber("Path", site_path, share_page? ? Share::Show.with(**generate_share_params("site_path"), period: period) : Domains::Show.with(**generate_params("site_path"), period: period))
+          taber("Path", site_path, share_page? ? Share::Show.with(**generate_share_params("site_path"), from: time_to_string(from), to: time_to_string(to)) : Domains::Show.with(**generate_params("site_path"), from: time_to_string(from), to: time_to_string(to)))
         end
         if !source.empty?
-          taber("Source", source, share_page? ? Share::Show.with(**generate_share_params("source_name"), period: period) : Domains::Show.with(**generate_params("source_name"), period: period))
+          taber("Source", source, share_page? ? Share::Show.with(**generate_share_params("source_name"), from: time_to_string(from), to: time_to_string(to)) : Domains::Show.with(**generate_params("source_name"), from: time_to_string(from), to: time_to_string(to)))
         end
         if !medium.empty?
-          taber("Medium", medium, share_page? ? Share::Show.with(**generate_share_params("medium_name"), period: period) : Domains::Show.with(**generate_params("medium_name"), period: period))
+          taber("Medium", medium, share_page? ? Share::Show.with(**generate_share_params("medium_name"), from: time_to_string(from), to: time_to_string(to)) : Domains::Show.with(**generate_params("medium_name"), from: time_to_string(from), to: time_to_string(to)))
         end
       end
     end
@@ -75,7 +78,7 @@ class Domains::ShowPage < SecretGuestLayout
 
   def render_canvas
     div style: "max-height:320px;" do
-      m DaysLoaderComponent, domain: @domain, period: @period, goal: @goal, site_path: site_path, source: source, medium: medium
+      m DaysLoaderComponent, domain: @domain, from: time_to_string(from), to: time_to_string(to), goal: @goal, site_path: site_path, source: source, medium: medium
     end
   end
 
@@ -83,41 +86,41 @@ class Domains::ShowPage < SecretGuestLayout
     div class: "p-2 sm:p-0 my-3 mb-6" do
       div class: "w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" do
         div class: "card" do
-          m LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, period: @period, site_path: site_path, source: source, medium: medium
+          m LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
         end
         div class: "card" do
           if source.empty?
-            m LoaderComponent, domain: @domain, url: "data/sources", goal: @goal, period: @period, site_path: site_path, source: source, medium: medium
+            m LoaderComponent, domain: @domain, url: "data/sources", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
             if @share_page
-              m DetailsLinkComponent, link: Share::Referrer::Index.with(@domain.hashid, @period).url
+              m DetailsLinkComponent, link: Share::Referrer::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to)).url
             else
-              m DetailsLinkComponent, link: Domains::Referrer::Index.with(@domain, @period).url
+              m DetailsLinkComponent, link: Domains::Referrer::Index.with(@domain, from: time_to_string(from), to: time_to_string(to)).url
             end
           else
-            m LoaderComponent, domain: @domain, url: "data/referrers", goal: @goal, period: @period, site_path: site_path, source: source, medium: medium
+            m LoaderComponent, domain: @domain, url: "data/referrers", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
             if @share_page
-              m DetailsLinkComponent, link: Share::Referrer::Show.with(@domain.hashid, source: source, period: @period).url
+              m DetailsLinkComponent, link: Share::Referrer::Show.with(@domain.hashid, source: source, from: time_to_string(from), to: time_to_string(to)).url
             else
-              m DetailsLinkComponent, link: Domains::Referrer::Show.with(@domain, source: source, period: @period).url
+              m DetailsLinkComponent, link: Domains::Referrer::Show.with(@domain, source: source, from: time_to_string(from), to: time_to_string(to)).url
             end
           end
         end
         div class: "card" do
-          m LoaderComponent, domain: @domain, url: "data/countries", goal: @goal, period: @period, site_path: site_path, style: "relative clear-both", source: source, medium: medium
+          m LoaderComponent, domain: @domain, url: "data/countries", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, style: "relative clear-both", source: source, medium: medium
           if @share_page
-            m DetailsLinkComponent, link: Share::Countries::Index.with(@domain.hashid, @period).url
+            m DetailsLinkComponent, link: Share::Countries::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to)).url
           else
-            m DetailsLinkComponent, link: Domains::Countries::Index.with(@domain, @period).url
+            m DetailsLinkComponent, link: Domains::Countries::Index.with(@domain, from: time_to_string(from), to: time_to_string(to)).url
           end
         end
         div class: "card" do
-          m LoaderComponent, domain: @domain, url: "data/devices/device", goal: @goal, period: @period, site_path: site_path, source: source, medium: medium
+          m LoaderComponent, domain: @domain, url: "data/devices/device", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
         end
         div class: "card" do
-          m LoaderComponent, domain: @domain, url: "data/devices/browser", goal: @goal, period: @period, site_path: site_path, source: source, medium: medium
+          m LoaderComponent, domain: @domain, url: "data/devices/browser", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
         end
         div class: "card" do
-          m LoaderComponent, domain: @domain, url: "data/devices/os", goal: @goal, period: @period, site_path: site_path, source: source, medium: medium
+          m LoaderComponent, domain: @domain, url: "data/devices/os", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
         end
       end
       render_goals unless @goal
@@ -130,11 +133,11 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_goals
-    div data_controller: "loader", data_loader_period: @period, data_loader_url: "/domains/#{@domain.id}/data/goals", site_path: site_path, source: source, medium: medium
+    m LoaderComponent, domain: @domain, url: "data/goals", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
   end
 
   def render_header
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, period: @period, show_period: total_sum > 0, share_page: @share_page, current_user: current_user, goal: goal, site_path: site_path, medium: medium, source: source
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, from: from, to: to, show_period: real_count > 0, share_page: @share_page, current_user: current_user, goal: goal, site_path: site_path, medium: medium, source: source
   end
 
   def generate_params(kind : String)

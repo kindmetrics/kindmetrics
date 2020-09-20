@@ -5,22 +5,27 @@ module PreviousDomainMetrics
   end
 
   private def previous_period
-    case period
-    when "14d"
-      start_date = 15.days.ago.at_end_of_day
-      [start_date - 14.days, start_date]
-    when "30d"
-      start_date = 31.days.ago.at_end_of_day
-      [start_date - 30.days, start_date]
-    when "60d"
-      start_date = 61.days.ago.at_end_of_day
-      [start_date - 60.days, start_date]
-    when "90d"
-      start_date = 91.days.ago.at_end_of_day
-      [start_date - 90.days, start_date]
+    time_span = to_previous_time - from_previous_time
+    days = time_span.days
+
+    start_date = from_previous_time - (days + 1).days
+    end_date = from_previous_time - 1.day
+    [start_date, end_date]
+  end
+
+  def from_previous_time : Time
+    if from.is_a?(String)
+      string_to_date(from).as(Time)
     else
-      start_date = 8.days.ago.at_end_of_day
-      [start_date - 7.days, start_date]
+      from.as(Time)
+    end
+  end
+
+  def to_previous_time : Time
+    if to.is_a?(String)
+      string_to_date(to).as(Time)
+    else
+      to.as(Time)
     end
   end
 end

@@ -1,14 +1,16 @@
 class LoaderComponent < BaseComponent
   include DrilldownParams
   needs domain : Domain
-  needs period : String
+  needs from : String
+  needs to : String
   needs url : String
   needs style : String = ""
 
   def render
     params = Hash(String, String).new
     params["data_controller"] = "loader"
-    params["data_loader_period"] = period
+    params["data_loader_from"] = from
+    params["data_loader_to"] = to
     params["data_loader_url"] = "/domains/#{@domain.id}/#{url}"
     params["class"] = style
 

@@ -14,6 +14,14 @@ class MetricsNew
     res.map(current: UInt64).first["current"].not_nil!.to_i64
   end
 
+  def real_count : Int64
+    sql = <<-SQL
+    SELECT COUNT(*) FROM kindmetrics.events WHERE domain_id=#{@domain.id}
+    SQL
+    res = @client.execute(sql)
+    res.map(total: UInt64).first["total"].to_i64
+  end
+
   def unique_query : Int64
     sql = <<-SQL
     SELECT uniq(user_id) FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > toDateTime('#{slim_from_date}') AND created_at < toDateTime('#{slim_to_date}')

@@ -9,7 +9,7 @@ class Domains::Referrer::ShowPage < Share::BasePage
   quick_def page_title, "#{source} for #{@domain.address} last #{period_string}"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: @period, active: "Referrers"
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, from: from, to: to, active: "Referrers"
     div do
       sub_header
       div class: "p-5 bg-white rounded-md shadow-md my-3 mb-6" do
@@ -35,9 +35,9 @@ class Domains::Referrer::ShowPage < Share::BasePage
 
   def header_url(period)
     if share_page?
-      Share::Referrer::Show.with(@domain.hashid, source: source, period: period)
+      Share::Referrer::Show.with(@domain.hashid, source: source, from: from, to: to)
     else
-      Domains::Referrer::Show.with(@domain.id, source: source, period: period)
+      Domains::Referrer::Show.with(@domain.id, source: source, from: from, to: to)
     end
   end
 end

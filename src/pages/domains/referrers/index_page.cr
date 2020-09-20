@@ -7,7 +7,7 @@ class Domains::Referrer::IndexPage < Share::BasePage
   needs active : String = "Referrers"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: @period, active: "Referrers"
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, to: to, from: from, active: "Referrers"
     div do
       sub_header
       div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
@@ -15,7 +15,7 @@ class Domains::Referrer::IndexPage < Share::BasePage
           if referrers.size > 0
             m DetailTableComponent, first_header: "Source", second_header: "Visitors", third_header: "Bounce" do
               referrers.each_with_index do |event, i|
-                m ReferrerMainComponent, event: event, index: i, current_user: current_user, period: period, current_domain: domain
+                m ReferrerMainComponent, event: event, index: i, current_user: current_user, to: to, from: from, current_domain: domain
               end
             end
           else
@@ -28,7 +28,7 @@ class Domains::Referrer::IndexPage < Share::BasePage
           if mediums.size > 0
             m DetailTableComponent, first_header: "Medium", second_header: "Visitors", third_header: "Bounce" do
               mediums.each_with_index do |event, i|
-                m ReferrerMediumComponent, event: event, index: i, period: period
+                m ReferrerMediumComponent, event: event, index: i, to: to, from: from
               end
             end
           else

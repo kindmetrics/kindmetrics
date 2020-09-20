@@ -1,16 +1,18 @@
 class GoalMainComponent < BaseComponent
+    include Timeparser
   needs stats_goal : StatsGoal
   needs goal : Goal
   needs index : Int32
   needs current_user : User?
   needs current_domain : Domain
-  needs period : String
+  needs from : Time
+  needs to : Time
 
   def render
     tr class: index.odd? ? "bg-gray-100" : "bg-white" do
       td class: "w-4/6 py-2" do
         if stats_goal.count > 0
-          link to: Domains::Show.with(current_domain, goal_id: goal.id), class: "block px-2 hover:underline truncate" do
+          link to: Domains::Show.with(current_domain, goal_id: goal.id, to: time_to_string(to), from: time_to_string(from)), class: "block px-2 hover:underline truncate" do
             text stats_goal.goal_name
           end
         else

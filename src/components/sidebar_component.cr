@@ -1,10 +1,12 @@
 class SidebarComponent < BaseComponent
+  include Timeparser
   needs active : String = "Dashboard"
   needs share_page : Bool = false
   needs current_url : String
   needs current_user : User?
   needs domain : Domain?
-  needs period : String = "7d"
+  needs from : Time = Time.utc - 7.days
+  needs to : Time = Time.utc
   needs domains : DomainQuery?
   needs total_sum : Int64 = 1_i64
 
@@ -127,16 +129,16 @@ class SidebarComponent < BaseComponent
     return [] of Hash(String, String) if domain.nil?
     if share_page?
       [
-        {"link" => Share::Show.url(domain.not_nil!.hashid, period: period), "name" => "Dashboard", "icon" => "dashboard"},
-        {"link" => Share::Referrer::Index.url(domain.not_nil!.hashid, period: period), "name" => "Referrers", "icon" => "referrers"},
-        {"link" => Share::Countries::Index.url(domain.not_nil!.hashid, period: period), "name" => "Countries", "icon" => "countries"},
+        {"link" => Share::Show.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Dashboard", "icon" => "dashboard"},
+        {"link" => Share::Referrer::Index.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Referrers", "icon" => "referrers"},
+        {"link" => Share::Countries::Index.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Countries", "icon" => "countries"},
       ]
     else
       [
-        {"link" => Domains::Show.url(domain.not_nil!, period: period), "name" => "Dashboard", "icon" => "dashboard"},
-        {"link" => Domains::Referrer::Index.url(domain.not_nil!, period: period), "name" => "Referrers", "icon" => "referrers"},
-        {"link" => Domains::Countries::Index.url(domain.not_nil!, period: period), "name" => "Countries", "icon" => "countries"},
-        {"link" => Domains::Goals::Index.url(domain.not_nil!, period: period), "name" => "Goals", "icon" => "goals"},
+        {"link" => Domains::Show.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Dashboard", "icon" => "dashboard"},
+        {"link" => Domains::Referrer::Index.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Referrers", "icon" => "referrers"},
+        {"link" => Domains::Countries::Index.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Countries", "icon" => "countries"},
+        {"link" => Domains::Goals::Index.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Goals", "icon" => "goals"},
         {"link" => Domains::Edit.url(domain.not_nil!), "name" => "Settings", "icon" => "settings"},
         {"link" => Domains::EditReports.url(domain.not_nil!), "name" => "Reports", "icon" => "reports"},
       ]
