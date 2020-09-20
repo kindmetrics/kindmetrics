@@ -381,18 +381,18 @@ class Metrics
   private def where_path_string
     return if @path.empty?
 
-    "AND path='#{@path}'"
+    "AND path=#{PG::EscapeHelper.escape_literal(@path.strip)}"
   end
 
   private def where_source_string
     return if @source.empty?
 
-    "AND referrer_source='#{@source}'"
+    "AND referrer_source=#{PG::EscapeHelper.escape_literal(@source.strip)}"
   end
 
   private def where_medium_string
     return if @medium.empty?
 
-    "AND referrer_medium='#{@medium}'"
+    "AND referrer_medium=#{PG::EscapeHelper.escape_literal(@medium.strip)}"
   end
 end
