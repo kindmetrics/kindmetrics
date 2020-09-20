@@ -15,7 +15,7 @@ abstract class DomainPublicBaseAction < BrowserAction
   private def require_domain
     @domain = DomainQuery.find(domain_id)
     raise Lucky::RouteNotFoundError.new(context) if @domain.nil?
-    
+
     if DomainPolicy.show_share?(domain, current_user)
       continue
     else

@@ -1,6 +1,7 @@
 module Period
   include Lucky::TextHelpers
   include Timeparser
+
   def period_string
     time_span = to_time - from_time
     pluralize(time_span.days, "days")

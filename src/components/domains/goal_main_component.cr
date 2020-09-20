@@ -1,5 +1,5 @@
 class GoalMainComponent < BaseComponent
-    include Timeparser
+  include Timeparser
   needs stats_goal : StatsGoal
   needs goal : Goal
   needs index : Int32
