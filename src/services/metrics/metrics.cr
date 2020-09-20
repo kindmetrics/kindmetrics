@@ -199,7 +199,7 @@ class Metrics
     grouped_json = res.map_nil(date: Time, count: UInt64).to_json
     grouped = Array(StatsDays).from_json(grouped_json)
     grouped2 = [] of StatsDays
-    range = (@from_date...@to_date)
+    range = (@from_date..@to_date)
     range.each do |e|
       date = nil
       grouped.each do |g|
@@ -231,7 +231,7 @@ class Metrics
     grouped_json = res.map_nil(date: Time, count: UInt64).to_json
     grouped = Array(StatsDays).from_json(grouped_json)
     grouped2 = [] of StatsDays
-    range = (@from_date...@to_date)
+    range = (@from_date..@to_date)
     range.each do |e|
       date = nil
       grouped.each do |g|

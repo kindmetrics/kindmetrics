@@ -39,9 +39,9 @@ class Domains::Goals::IndexPage < Share::BasePage
 
   def header_url(period)
     if share_page?
-      Share::Referrer::Index.with(@domain.hashid, from: from, to: to)
+      Share::Referrer::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to))
     else
-      Domains::Goals::Index.with(@domain.id, from: from, to: to)
+      Domains::Goals::Index.with(@domain.id, from: time_to_string(from), to: time_to_string(to))
     end
   end
 end

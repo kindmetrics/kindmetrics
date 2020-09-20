@@ -4,6 +4,7 @@ module Period
 
   def period_string
     time_span = to_time - from_time
+    return "Today" if time_span.days === 0
     pluralize(time_span.days, "days")
   end
 

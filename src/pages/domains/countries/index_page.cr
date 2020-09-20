@@ -11,7 +11,7 @@ class Domains::Countries::IndexPage < Share::BasePage
       sub_header
       div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
         div class: "card" do
-          div data_controller: "country-chart", data_country_chart_period: "7d", data_country_chart_url: "/domains/#{@domain.id}/data/countries_map"
+          div data_controller: "country-chart", data_country_chart_from: time_to_string(from), data_country_chart_to: time_to_string(to), data_country_chart_url: "/domains/#{@domain.id}/data/countries_map"
         end
         div class: "card" do
           if countries.size > 0
@@ -32,9 +32,9 @@ class Domains::Countries::IndexPage < Share::BasePage
 
   def header_url(period)
     if share_page?
-      Share::Countries::Index.with(@domain.hashid, from: from, to: to)
+      Share::Countries::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to))
     else
-      Domains::Countries::Index.with(@domain.id, from: from, to: to)
+      Domains::Countries::Index.with(@domain.id, from: time_to_string(from), to: time_to_string(to))
     end
   end
 end
