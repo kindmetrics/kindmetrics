@@ -20,7 +20,7 @@ describe Events::Create do
   it "events get created for domain" do
     domain = DomainBox.create
 
-    domain.events!.size.should eq(0)
+    domain.events.size.should eq(0)
 
     response = AppClient.exec(Events::Create, name: "pageview", domain: domain.address, user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36", referrer: nil, url: "https://#{domain.address}/asdsadasds", source: nil)
 
@@ -32,7 +32,7 @@ describe Events::Create do
   it "events ignored if bot" do
     domain = DomainBox.create
 
-    domain.events!.size.should eq(0)
+    domain.events.size.should eq(0)
 
     response = AppClient.exec(Events::Create, name: "pageview", domain: domain.address, user_agent: "DuckDuckBot/1.0; (+http://duckduckgo.com/duckduckbot.html)", referrer: nil, url: "https://#{domain.address}/", source: nil)
 
@@ -44,7 +44,7 @@ describe Events::Create do
   it "Do not save non-existing events" do
     domain = DomainBox.create
 
-    domain.events!.size.should eq(0)
+    domain.events.size.should eq(0)
 
     response = AppClient.exec(Events::Create, name: "sign_up", domain: domain.address, user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36", referrer: nil, url: "https://#{domain.address}/", source: nil)
     response.status_code.should eq(200)
@@ -57,7 +57,7 @@ describe Events::Create do
     domain = DomainBox.create
     goal = GoalBox.create &.name("sign_up").domain_id(domain.id)
 
-    domain.events!.size.should eq(0)
+    domain.events.size.should eq(0)
 
     response = AppClient.exec(Events::Create, name: "sign_up", domain: domain.address, user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36", referrer: nil, url: "https://#{domain.address}/", source: nil)
     response.status_code.should eq(200)

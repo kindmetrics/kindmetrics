@@ -6,15 +6,17 @@ class Domain < BaseModel
     column time_zone : String
     column shared : Bool
     belongs_to user : User
-    has_many sessions : Session
-    has_many events : Event
   end
 
   def hashid
     hashids.encode([id])
   end
 
-  def shared?
-    true
+  def sessions : Array(Session)
+    AddClickhouse.get_domain_sessions(id)
+  end
+
+  def events : Array(Event)
+    AddClickhouse.get_domain_events(id)
   end
 end
