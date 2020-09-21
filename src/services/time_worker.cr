@@ -74,7 +74,7 @@ class TimeWorker
     AddClickhouse.update_session(session_id, length: 0, is_bounce: 1)
   end
 
-  def self.get_sessions : Array(ClickSession)
+  def self.get_sessions : Array(Session)
     AddClickhouse.get_active_sessions
   end
 end

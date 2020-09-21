@@ -26,7 +26,7 @@ describe Share::Show do
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
 
-    domain.events!.size.should eq(0)
+    domain.events.size.should eq(0)
 
     response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
 
@@ -40,7 +40,7 @@ describe Share::Show do
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
 
-    domain.events!.size.should eq(0)
+    domain.events.size.should eq(0)
 
     response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
 
@@ -55,7 +55,7 @@ describe Share::Show do
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
 
-    domain.events!.size.should eq(0)
+    domain.events.size.should eq(0)
 
     response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
 
@@ -70,7 +70,7 @@ describe Share::Show do
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
 
-    domain.events!.size.should eq(0)
+    domain.events.size.should eq(0)
 
     response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
 
@@ -85,7 +85,7 @@ describe Share::Show do
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
 
-    domain.events!.size.should eq(0)
+    domain.events.size.should eq(0)
 
     response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
 
@@ -99,7 +99,7 @@ describe Share::Show do
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
 
-    domain.events!.size.should eq(0)
+    domain.events.size.should eq(0)
 
     response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
 

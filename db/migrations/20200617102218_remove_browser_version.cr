@@ -1,9 +1,9 @@
 class RemoveBrowserVersion::V20200617102218 < Avram::Migrator::Migration::V1
   def migrate
-    alter table_for(Session) do
+    alter :sessions do
       remove :browser_version
     end
-    alter table_for(Event) do
+    alter :events do
       remove :browser_version
     end
   end

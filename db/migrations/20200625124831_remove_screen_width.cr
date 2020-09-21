@@ -1,9 +1,9 @@
 class RemoveScreenWidth::V20200625124831 < Avram::Migrator::Migration::V1
   def migrate
-    alter table_for(Session) do
+    alter :sessions do
       remove :screen_width
     end
-    alter table_for(Event) do
+    alter :events do
       remove :screen_width
     end
   end
