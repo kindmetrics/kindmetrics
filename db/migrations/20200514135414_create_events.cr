@@ -1,7 +1,7 @@
 class CreateEvents::V20200514135414 < Avram::Migrator::Migration::V1
   def migrate
     # Learn about migrations at: https://luckyframework.org/guides/database/migrations
-    create table_for(Event) do
+    create :events do
       primary_key id : Int64
       add user_id : String
       add referrer : String?
@@ -17,6 +17,6 @@ class CreateEvents::V20200514135414 < Avram::Migrator::Migration::V1
   end
 
   def rollback
-    drop table_for(Event)
+    drop :events
   end
 end

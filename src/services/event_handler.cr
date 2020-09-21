@@ -161,7 +161,7 @@ class EventHandler
     end
   end
 
-  private def self.get_session(user_id : String) : ClickSession?
+  private def self.get_session(user_id : String) : Session?
     AddClickhouse.get_session(user_id)
   rescue Exception
     nil

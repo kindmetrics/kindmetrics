@@ -1,6 +1,6 @@
 class AddColumnsToSession::V20200523055333 < Avram::Migrator::Migration::V1
   def migrate
-    alter table_for(Session) do
+    alter :sessions do
       add path : String?
       add device : String?
       add operative_system : String?

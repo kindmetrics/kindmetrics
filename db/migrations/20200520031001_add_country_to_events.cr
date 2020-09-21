@@ -1,6 +1,6 @@
 class AddCountryToEvents::V20200520031001 < Avram::Migrator::Migration::V1
   def migrate
-    alter table_for(Event) do
+    alter :events do
       add country : String?
     end
   end

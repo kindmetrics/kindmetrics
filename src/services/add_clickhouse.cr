@@ -60,71 +60,71 @@ class AddClickhouse
     res = client.insert(buf)
   end
 
-  def self.get_session(user_id) : ClickSession?
+  def self.get_session(user_id) : Session?
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
     SELECT *, toDateTime(created_at) as created_at FROM kindmetrics.sessions WHERE user_id='#{user_id}' ORDER BY created_at DESC
     SQL
     res = client.execute_as_json(sql)
-    sessions = Array(ClickSession).from_json(res)
+    sessions = Array(Session).from_json(res)
     return nil if sessions.empty?
     sessions.first
   end
 
-  def self.get_session_by_id(session_id) : ClickSession?
+  def self.get_session_by_id(session_id) : Session?
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
     SELECT *, toDateTime(created_at) as created_at FROM kindmetrics.sessions WHERE id=#{session_id} ORDER BY created_at DESC
     SQL
     res = client.execute_as_json(sql)
-    sessions = Array(ClickSession).from_json(res)
+    sessions = Array(Session).from_json(res)
     return nil if sessions.empty?
     sessions.first
   end
 
-  def self.get_active_sessions : Array(ClickSession)
+  def self.get_active_sessions : Array(Session)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
     SELECT *, toDateTime(created_at) as created_at FROM kindmetrics.sessions WHERE length IS NULL
     SQL
     res = client.execute_as_json(sql)
-    Array(ClickSession).from_json(res)
+    Array(Session).from_json(res)
   end
 
-  def self.get_last_event(session : ClickSession) : Array(ClickEvent)
+  def self.get_last_event(session : Session) : Array(Event)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
     SELECT *, toDateTime(created_at) as created_at FROM kindmetrics.events WHERE session_id=#{session.id} ORDER BY created_at DESC
     SQL
     res = client.execute_as_json(sql)
-    Array(ClickEvent).from_json(res)
+    Array(Event).from_json(res)
   end
 
-  def self.get_events(session_id) : Array(ClickEvent)
+  def self.get_events(session_id) : Array(Event)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
     SELECT * FROM kindmetrics.events WHERE session_id=#{session_id} ORDER BY created_at ASC
     SQL
     res = client.execute_as_json(sql)
-    Array(ClickEvent).from_json(res)
+    Array(Event).from_json(res)
   end
 
-  def self.get_domain_events(domain_id : Int64) : Array(ClickEvent)
+  def self.get_domain_events(domain_id : Int64) : Array(Event)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
     SELECT * FROM kindmetrics.events WHERE domain_id=#{domain_id}
     SQL
     res = client.execute_as_json(sql)
-    Array(ClickEvent).from_json(res)
+    Array(Event).from_json(res)
   end
 
-  def self.get_domain_sessions(domain_id : Int64) : Array(ClickSession)
+  def self.get_domain_sessions(domain_id : Int64) : Array(Session)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
     sql = <<-SQL
     SELECT * FROM kindmetrics.sessions WHERE domain_id=#{domain_id}
     SQL
     res = client.execute_as_json(sql)
-    Array(ClickSession).from_json(res)
+    Array(Session).from_json(res)
   end
 
   def self.update_session(session_id : Int64, length : Int64, is_bounce : Int32)

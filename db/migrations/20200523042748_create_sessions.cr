@@ -1,7 +1,7 @@
 class CreateSessions::V20200523042748 < Avram::Migrator::Migration::V1
   def migrate
     # Learn about migrations at: https://luckyframework.org/guides/database/migrations
-    create table_for(Session) do
+    create :sessions do
       primary_key id : Int64
       add_belongs_to domain : Domain, on_delete: :cascade
       add user_id : String
@@ -20,6 +20,6 @@ class CreateSessions::V20200523042748 < Avram::Migrator::Migration::V1
   end
 
   def rollback
-    drop table_for(Session)
+    drop :sessions
   end
 end
