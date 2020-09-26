@@ -4,7 +4,7 @@ class AppClient < Lucky::BaseHTTPClient
     headers("Content-Type": "application/json")
   end
 
-  def self.auth(user : User)
-    new.headers("Authorization": UserToken.generate(user))
+  def self.auth(token : ApiToken)
+    new.headers("Authorization": token.token)
   end
 end

@@ -15,7 +15,7 @@ describe Api::Domains::Create do
 
     user.domains!.size.should eq(0)
 
-    response = AppClient.exec(Api::Domains::Create, token: token.token, domain: {address: "microgit.com", time_zone: "Europe/Stockholm"})
+    response = AppClient.auth(token).exec(Api::Domains::Create, domain: {address: "microgit.com", time_zone: "Europe/Stockholm"})
     response.status_code.should eq(201)
 
     user.reload

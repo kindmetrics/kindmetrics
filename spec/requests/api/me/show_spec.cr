@@ -2,9 +2,11 @@ require "../../../spec_helper"
 
 describe Api::Me::Show do
   it "returns the signed in user" do
-    user = UserBox.create
+    token = ApiTokenBox.create
 
-    response = AppClient.auth(user).exec(Api::Me::Show)
+    user = token.user!
+
+    response = AppClient.auth(token).exec(Api::Me::Show)
 
     response.should send_json(200, email: user.email)
   end
