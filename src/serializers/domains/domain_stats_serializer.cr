@@ -7,11 +7,11 @@ class DomainStatsSerializer < BaseSerializer
     <script src="https://#{KindEnv.env("APP_TRACK_HOST")}/js/kind.js" defer="true" data-domain="#{@domain.address}"></script>
     HTML
     {
-      address: @domain.address,
-      visitors: @metrics.unique_query,
-      pageviews: @metrics.total_query,
-      bounce: @metrics.bounce_query,
-      track_snippet: snippet
+      address:       @domain.address,
+      visitors:      @metrics.unique_query,
+      pageviews:     @metrics.total_query,
+      bounce:        @metrics.bounce_query,
+      track_snippet: snippet,
     }
   end
 end
