@@ -15,7 +15,7 @@ class DaysLoaderComponent < BaseComponent
     params["style"] = "max-height:300px;"
     params["id"] = "days_chart"
 
-    custom_params = set_params("data_days_")
+    custom_params = set_params("data_days_chart_")
     params.merge!(custom_params) unless custom_params.nil?
 
     div params do

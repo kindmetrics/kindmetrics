@@ -2,7 +2,7 @@ class GoalMetrics
   include Percentage
   include ClickDates
 
-  def initialize(@domain : Domain, @from_date : Time, @to_date : Time)
+  def initialize(@domain : Domain, @from_date : Time, @to_date : Time, @path : String = "", @source : String = "", @medium : String = "")
     @client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
   end
 
@@ -30,6 +30,9 @@ class GoalMetrics
             <<-SQL
       SELECT name as goal_name, uniq(user_id) as count FROM kindmetrics.events
       WHERE name='#{goal.name}' AND domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+      #{where_path_string}
+      #{where_source_string}
+      #{where_medium_string}
       GROUP BY name
       ORDER BY count desc
       SQL
@@ -37,6 +40,9 @@ class GoalMetrics
             <<-SQL
       SELECT name as goal_name, uniq(user_id) as count FROM kindmetrics.events
       WHERE domain_id=#{@domain.id} AND path='#{goal.name}' AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+      #{where_path_string}
+      #{where_source_string}
+      #{where_medium_string}
       GROUP BY name
       ORDER BY count desc
       SQL
@@ -47,5 +53,23 @@ class GoalMetrics
     pages = Array(StatsGoal).from_json(json)
     return nil if pages.empty?
     pages.first
+  end
+
+  private def where_path_string
+    return if @path.empty?
+
+    "AND path=#{PG::EscapeHelper.escape_literal(@path.strip)}"
+  end
+
+  private def where_source_string
+    return if @source.empty?
+
+    "AND referrer_source=#{PG::EscapeHelper.escape_literal(@source.strip)}"
+  end
+
+  private def where_medium_string
+    return if @medium.empty?
+
+    "AND referrer_medium=#{PG::EscapeHelper.escape_literal(@medium.strip)}"
   end
 end

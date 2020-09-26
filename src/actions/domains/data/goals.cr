@@ -5,7 +5,7 @@ class Domains::Data::Goals < DomainPublicBaseAction
   end
 
   def get_goals
-    goal_metrics = GoalMetrics.new(domain, string_to_date(from), string_to_date(to))
+    goal_metrics = GoalMetrics.new(domain, string_to_date(from), string_to_date(to), site_path, source_name, medium_name)
     goal_metrics.get_all_goals
   end
 end
