@@ -1,17 +1,10 @@
 class Users::EditPage < SettingsLayout
+  include SettingsTabs
   needs operation : SaveUser
   quick_def page_title, "Edit"
   quick_def enable_paddle, false
-  quick_def links, [
-    {"link" => Users::Edit.url, "name" => "Settings", "icon" => "settings"},
-    {"link" => Users::Billing.url, "name" => "Billing", "icon" => "billing"},
-  ]
   quick_def active, "Settings"
   quick_def tab, true
-
-  def active
-    "Settings"
-  end
 
   def content
     div class: "max-w-2xl mx-auto" do

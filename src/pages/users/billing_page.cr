@@ -1,18 +1,11 @@
 class Users::BillingPage < SettingsLayout
+  include SettingsTabs
   quick_def enable_paddle, true
   quick_def page_title, "Billing"
   needs subscription : Subscription?
   needs events_count : Int64
-  quick_def links, [
-    {"link" => Users::Edit.url, "name" => "Settings", "icon" => "settings"},
-    {"link" => Users::Billing.url, "name" => "Billing", "icon" => "billing"},
-  ]
   quick_def active, "Settings"
   quick_def tab, true
-
-  def active
-    "Billing"
-  end
 
   def content
     div class: "max-w-2xl mx-auto" do

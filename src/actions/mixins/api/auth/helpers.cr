@@ -16,12 +16,12 @@ module Api::Auth::Helpers
   end
 
   private def token_param : String?
-    params.get?(:auth_token)
+    params.get?(:token)
   end
 
   private def user_from_auth_token(token : String) : User?
-    UserToken.decode_user_id(token).try do |user_id|
-      UserQuery.new.id(user_id).first?
-    end
+    token = ApiTokenQuery.new.token(token).first?
+    return nil if token.nil?
+    token.not_nil!.user!
   end
 end
