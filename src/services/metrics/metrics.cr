@@ -248,7 +248,7 @@ class Metrics
     return days, data
   end
 
-  def get_pages : Array(StatsPages)
+  def get_pages(limit : Int32 = 6) : Array(StatsPages)
     sql = <<-SQL
     SELECT path as address, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
@@ -257,7 +257,7 @@ class Metrics
     #{where_source_string}
     #{where_medium_string}
     GROUP BY path
-    ORDER BY count desc LIMIT 6
+    ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsPages if res.nil?
@@ -372,9 +372,9 @@ class Metrics
     return if @goal.nil?
 
     if @goal.not_nil!.kind == 0
-      "AND name='#{@goal.not_nil!.name}'"
+      "AND name=#{PG::EscapeHelper.escape_literal(@goal.not_nil!.name)}"
     else
-      "AND path='#{@goal.not_nil!.name}'"
+      "AND path=#{PG::EscapeHelper.escape_literal(@goal.not_nil!.name)}"
     end
   end
 

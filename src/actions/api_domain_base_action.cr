@@ -23,13 +23,13 @@ abstract class ApiDomainBaseAction < Lucky::Action
   @domain : Domain?
 
   private def require_domain
-    @domain = DomainQuery.find(domain_id)
+    @domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
     raise Lucky::RouteNotFoundError.new(context) if @domain.nil?
 
     if DomainPolicy.show?(domain, current_user)
       continue
     else
-      raise Lucky::RouteNotFoundError.new(context)
+      raise LuckyCan::ForbiddenError.new(context)
     end
   end
 

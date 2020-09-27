@@ -3,8 +3,8 @@ class Domain::PageSerializer < BaseSerializer
   end
 
   def render
-    @metrics.get_pages.map do |path|
-      {address: path.address, visitors: path.count}
+    @metrics.get_pages(0).map do |path|
+      {address: path.address, visitors: path.count, percentage: path.percentage}
     end
   end
 end
