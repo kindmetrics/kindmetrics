@@ -7544,13 +7544,6 @@ statuses@~1.4.0:
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.4.0.tgz#bb73d446da2796106efcc1b601a253d6c46bd087"
   integrity sha512-zhSCtt8v2NDrRlPQpCNtw/heZLtfUDqxBM1udqikb/Hbk52LK4nQSwr10u77iopCW5LsyHpuXS0GnEc48mLeew==
 
-stimulus-reveal@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/stimulus-reveal/-/stimulus-reveal-1.0.3.tgz#fe35b4ad4bdcc9acf7bb1a66aec03f0957f8bc99"
-  integrity sha512-L7QxhhLNY1t5QqC/0KrixPYPSwWS9HzlvQ7vkYUukh4ewbNHeOPHBGYOCScyHehRfQqWd3AnvXW60UMyJQJzLg==
-  dependencies:
-    stimulus "^1.1.1"
-
 stimulus-toggle-util@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/stimulus-toggle-util/-/stimulus-toggle-util-0.4.1.tgz#f3b9f3be4ea931e42f2a5551f169a3f6a578f9c5"
