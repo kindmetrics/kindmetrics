@@ -9,7 +9,12 @@ module.exports = {
     './src/js/**/*.js']
   },
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'kind-gray': '#E6EBF1',
+        'kind-blue': '#3182ce'
+      }
+    },
   },
   variants: {},
   plugins: [
