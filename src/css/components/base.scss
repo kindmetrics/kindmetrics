@@ -55,10 +55,6 @@ body {
   transition: border-color .2s ease-in, color .2s ease-in;
 }
 
-.blue-numbers {
-  color: #0064FF;
-}
-
 .card {
   @apply rounded-md;
   @apply relative;
@@ -127,12 +123,6 @@ body {
   @apply bg-cool-gray-50;
   @apply text-gray-300;
   @apply cursor-not-allowed;
-}
-.border-kind-gray {
-  border-color: #E6EBF1;
-}
-.bg-kind-gray {
-  background-color: #E6EBF1;
 }
 
 .bg-kind-light-gray {

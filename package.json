@@ -6,12 +6,12 @@
     "@tailwindcss/ui": "^0.5.0",
     "apexcharts": "^3.19.3",
     "datamaps": "^0.5.9",
+    "litepicker": "^1.5.7",
     "normalize-scss": "^7.0.1",
     "stimulus": "^1.1.1",
     "stimulus-toggle-util": "^0.4.1",
     "stimulus-use": "^0.12.1",
     "tailwindcss": "^1.4.6",
-    "tailwindcss-stimulus-components": "^1.0.2",
     "terser-webpack-plugin": "^4.1.0",
     "turbolinks": "^5.2.0"
   },

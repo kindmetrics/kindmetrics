@@ -59,7 +59,7 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def taber(name : String, value : String, close)
-    div class: "inline-block mini-card text-black mr-2 items-center" do
+    div class: "inline-block mini-card text-black mr-2 bg-white items-center" do
       span class: "mr-2" do
         text "#{name}: #{value}"
       end

@@ -21,15 +21,15 @@ class Domains::Data::PagesPage < Domains::Data::BasePage
 
   def render_row(row)
     tr class: "h-9 text-sm subpixel-antialiased" do
-      td class: "w-5/6 py-1 h-9" do
-        div class: "w-full h-9" do
+      td class: "w-5/6 py-1 h-8" do
+        div class: "w-full h-7" do
           div class: "progress_bar", style: "width: #{(row.percentage || 0.001)*100}%;height: 30px"
           a class: "block px-2 hover:underline truncate md:w-48 xl:w-56", style: "margin-top: -1.6rem;", href: get_url(row) do
             text row.address.to_s
           end
         end
       end
-      td class: "w-1/6 h-9 py-1" do
+      td class: "w-1/6 h-8 py-1" do
         div class: "text-right" do
           text row.count
         end

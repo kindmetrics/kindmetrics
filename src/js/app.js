@@ -9,15 +9,22 @@ require("turbolinks").start();
 
 import { Application } from "stimulus"
 import { definitionsFromContext } from "stimulus/webpack-helpers"
-import { Dropdown } from "tailwindcss-stimulus-components"
 import Toggle from 'stimulus-toggle-util';
 
 const application = Application.start()
 const context = require.context("./controllers", true, /\.js$/)
 application.load(definitionsFromContext(context))
-application.register('dropdown', Dropdown)
 application.register('toggle', Toggle);
 
 document.addEventListener("turbolinks:load", function() {
 
 })
+Date.prototype.yyyymmdd = function() {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  return [this.getFullYear(),
+          (mm>9 ? '' : '0') + mm,
+          (dd>9 ? '' : '0') + dd
+        ].join('-');
+};

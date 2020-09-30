@@ -3,7 +3,7 @@ class PasswordResets::NewPage < AuthLayout
   needs user_id : Int64
 
   def content
-    div class: "bg-white shadow-lg rounded p-4" do
+    div class: "" do
       h2 "Reset your password", class: "text-xl"
       render_password_reset_form(@operation)
     end
