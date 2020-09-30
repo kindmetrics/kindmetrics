@@ -27,7 +27,9 @@ Kindmetrics is built on:
 * Lucky framework, on Crystal language
 * Tailwind css
 * Stimulus.js
-* Chart.js
+* Apexchart
+* DataMap
+* Litepicker
 * Clickhouse
 * PostgreSQL
 
