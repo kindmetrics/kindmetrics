@@ -26,7 +26,7 @@ class PeriodDropdownComponent < BaseComponent
         div class: "absolute right-0 mt-2 w-100 z-20", hidden: "", data_reveal: "", data_transition: "" do
           div class: "bg-white shadow-lg rounded overflow-hidden border border-kind-gray" do
             div class: "flex flex-wrap divide-x divide-kind-gray" do
-              div class:"w-1/3 flex flex-wrap divide-y divide-kind-gray" do
+              div class: "w-1/3 flex flex-wrap divide-y divide-kind-gray" do
                 div class: "w-full" do
                   period_url_element("7 days", Time.utc - 7.days, Time.utc)
                   period_url_element("30 days", Time.utc - 30.days, Time.utc)
