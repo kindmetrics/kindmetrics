@@ -13,6 +13,9 @@ module.exports = {
       colors: {
         'kind-gray': '#E6EBF1',
         'kind-blue': '#3182ce'
+      },
+      width: {
+        '100': '26rem'
       }
     },
   },
