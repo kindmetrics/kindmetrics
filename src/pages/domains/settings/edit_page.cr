@@ -51,7 +51,7 @@ class Domains::EditPage < AdminLayout
       textarea(snippet, attrs: [:readonly], class: "w-full text-sm form-textarea")
     end
   end
-User
+
   def render_share
     url = Share::Show.with(hashid).url
     div class: "my-3 card" do
