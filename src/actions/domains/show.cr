@@ -9,6 +9,6 @@ class Domains::Show < DomainBaseAction
       SaveUser.update!(current_user, current_domain_id: domain.id)
     end
 
-    html ShowPage, domain: domain, real_count: metrics.real_count, goal: goal, site_path: site_path, source: source_name, medium: medium_name, total_unique: metrics.unique_query, total_unique_previous: previous_metric.unique_query, total_bounce: metrics.bounce_query, total_bounce_previous: previous_metric.bounce_query, total_sum: metrics.total_query, total_previous: previous_metric.total_query, from: string_to_date(from), to: string_to_date(to), period_string: period_string, domains: domains
+    html ShowPage, domain: domain, real_count: metrics.real_count, goal: goal, site_path: site_path, source: source_name, medium: medium_name, total_unique: metrics.unique_query, total_unique_previous: previous_metric.unique_query, total_bounce: metrics.bounce_query, total_bounce_previous: previous_metric.bounce_query, total_sum: metrics.total_query, total_previous: previous_metric.total_query, from: real_from, to: real_to, period: period, period_string: period_string, domains: domains
   end
 end

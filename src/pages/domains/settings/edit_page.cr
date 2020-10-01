@@ -8,7 +8,7 @@ class Domains::EditPage < AdminLayout
   needs active : String = "Settings"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", show_period: false, active: "Settings"
+    m HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", period: "7d", show_period: false, active: "Settings"
     div class: "max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       h1 "Edit #{@domain.address}", class: "text-xl"
       div class: "my-3 card" do

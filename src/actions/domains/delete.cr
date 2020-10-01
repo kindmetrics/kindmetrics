@@ -9,8 +9,8 @@ class Domains::Delete < BrowserAction
       temp_domain_id = domain.id
       domain.delete
       AddClickhouse.delete(temp_domain_id)
-      flash.success = "Deleted the record"
       flash.keep
+      flash.success = "Deleted the record"
     end
     redirect to: Home::Index
   end
