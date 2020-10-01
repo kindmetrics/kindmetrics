@@ -6,8 +6,8 @@ class Domains::Update < BrowserAction
     domains = DomainQuery.new.user_id(current_user.id)
     UpdateDomain.update(domain, params, current_user: current_user) do |operation, domain|
       if operation.saved?
-        flash.success = "The record has been updated"
         flash.keep
+        flash.success = "The record has been updated"
         redirect to: Show.with(domain.id)
       else
         flash.failure = "It looks like the form is not valid"
