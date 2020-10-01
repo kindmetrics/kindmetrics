@@ -10,4 +10,15 @@ module Timeparser
   def string_to_date(date_string : Time) : Time
     return date_string
   end
+
+  def period_time(period : String) : Time
+    case period
+    when "30d"
+      30.days.ago
+    when "1m"
+      1.month.ago
+    else
+      7.days.ago
+    end
+  end
 end

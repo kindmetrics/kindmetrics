@@ -7,6 +7,7 @@ class HeaderComponent < BaseComponent
   needs total_sum : Int64 = 0
   needs from : Time = Time.utc - 7.days
   needs to : Time = Time.utc
+  needs period : String
   needs period_string : String = "7 days"
   needs show_period : Bool = true
   needs current_url : String
@@ -58,7 +59,7 @@ class HeaderComponent < BaseComponent
               m TrialComponent, current_user: current_user.not_nil!
             end
             if show_period?
-              m PeriodDropdownComponent, to: to, from: from, period_string: period_string, domain: domain, site_path: site_path, source: source, medium: medium, goal: goal, current_user: current_user
+              m PeriodDropdownComponent, to: to, from: from, period: period, period_string: period_string, domain: domain, site_path: site_path, source: source, medium: medium, goal: goal, current_user: current_user
             end
           end
         end

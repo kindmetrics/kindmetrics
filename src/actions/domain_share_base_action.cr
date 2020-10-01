@@ -1,4 +1,4 @@
-abstract class DomainPublicBaseAction < BrowserAction
+abstract class DomainShareBaseAction < BrowserAction
   include Timeparser
   extend Timeparser
   param from : String = ""
@@ -14,7 +14,10 @@ abstract class DomainPublicBaseAction < BrowserAction
   @domain : Domain?
 
   private def require_domain
-    @domain = DomainQuery.find(domain_id)
+    ids = hashids.decode(share_id)
+    raise Lucky::RouteNotFoundError.new(context) if ids.empty?
+
+    @domain = DomainQuery.find(ids.first)
     raise Lucky::RouteNotFoundError.new(context) if @domain.nil?
 
     if DomainPolicy.show_share?(domain, current_user)

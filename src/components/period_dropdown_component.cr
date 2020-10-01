@@ -3,6 +3,7 @@ class PeriodDropdownComponent < BaseComponent
   needs period_string : String
   needs from : Time
   needs to : Time
+  needs period : String
   needs domain : Domain
   needs current_user : User?
   needs site_path : String = ""
@@ -28,16 +29,16 @@ class PeriodDropdownComponent < BaseComponent
             div class: "flex flex-wrap divide-x divide-kind-gray" do
               div class: "w-1/3 flex flex-wrap divide-y divide-kind-gray" do
                 div class: "w-full" do
-                  period_url_element("7 days", Time.utc - 7.days, Time.utc)
-                  period_url_element("30 days", Time.utc - 30.days, Time.utc)
+                  period_url_element("7 days", "7d")
+                  period_url_element("30 days", "30d")
                 end
                 div class: "w-full" do
-                  period_url_element("This Month", Time.utc.at_beginning_of_month, Time.utc)
-                  period_url_element("Last month", (Time.utc - 1.month).at_beginning_of_month, (Time.utc - 1.month).at_end_of_month)
+                  to_from_url_element("This Month", Time.utc.at_beginning_of_month, Time.utc)
+                  to_from_url_element("Last month", (Time.utc - 1.month).at_beginning_of_month, (Time.utc - 1.month).at_end_of_month)
                 end
                 div class: "w-full" do
-                  period_url_element("Last 6 months", (Time.utc - 6.months), Time.utc)
-                  period_url_element("Last 12 months", (Time.utc - 12.months), Time.utc)
+                  to_from_url_element("Last 6 months", (Time.utc - 6.months), Time.utc)
+                  to_from_url_element("Last 12 months", (Time.utc - 12.months), Time.utc)
                 end
               end
               div "", class: "w-2/3", data_controller: "date-picker", data_date_picker_mindate: time_to_string(domain.created_at), data_date_picker_maxdate: time_to_string(Time.utc)
@@ -56,12 +57,30 @@ class PeriodDropdownComponent < BaseComponent
     end
   end
 
-  def period_url_element(text : String, new_from : Time, new_to : Time = Time.utc)
+  def period_url(period : String)
+    if current_user.nil?
+      Share::Show.with(domain.hashid, period: period, goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
+    else
+      Domains::Show.with(domain.id, period: period, goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
+    end
+  end
+
+  def to_from_url_element(text : String, new_from : Time, new_to : Time = Time.utc)
     a text, href: period_url(new_from, new_to), class: "hover:no-underline block px-4 py-3 text-gray-900 text-xs bg-white w-full hover:bg-cool-gray-100 whitespace-no-wrap #{bold_if_same_date(new_from, new_to)}"
+  end
+
+  def period_url_element(text : String, period : String)
+    a text, href: period_url(period), class: "hover:no-underline block px-4 py-3 text-gray-900 text-xs bg-white w-full hover:bg-cool-gray-100 whitespace-no-wrap #{bold_if_same_date(period)}"
   end
 
   def bold_if_same_date(new_from : Time, new_to : Time)
     return "font-bold" if new_from.at_beginning_of_day == from.at_beginning_of_day && new_to.at_end_of_day == to.at_end_of_day
+    nil
+  end
+
+  def bold_if_same_date(new_period : String)
+    from_check = period_time(period).at_beginning_of_day
+    return "font-bold" if from_check == from.at_beginning_of_day && period == new_period
     nil
   end
 
@@ -82,5 +101,16 @@ class PeriodDropdownComponent < BaseComponent
     return date.to_s("%b %-d %Y") if today.year != date.year
 
     date.to_s("%b %-d")
+  end
+
+  def period_time(period : String) : Time
+    case period
+    when "30d"
+      30.days.ago
+    when "1m"
+      1.month.ago
+    else
+      7.days.ago
+    end
   end
 end

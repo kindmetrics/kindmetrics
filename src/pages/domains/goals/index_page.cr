@@ -7,7 +7,7 @@ class Domains::Goals::IndexPage < Share::BasePage
   needs active : String = "Goals"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, from: from, to: to, active: "Goals"
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: period, from: from, to: to, active: "Goals"
     div do
       sub_header
       div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-1 gap-6 sm:grid-flow-row" do

@@ -1,8 +1,9 @@
 abstract class DomainBaseAction < BrowserAction
   include Timeparser
   extend Timeparser
-  param from : String = time_to_string(Time.utc - 7.days)
-  param to : String = time_to_string(Time.utc)
+  param from : String = ""
+  param to : String = ""
+  param period : String = "7d"
   param goal_id : Int64 = 0_i64
   param site_path : String = ""
   param source_name : String = ""
@@ -33,6 +34,24 @@ abstract class DomainBaseAction < BrowserAction
   end
 
   private def metrics : Metrics
-    Metrics.new(domain, string_to_date(from), string_to_date(to), goal, site_path, source_name, medium_name)
+    Metrics.new(domain, real_from, real_to, goal, site_path, source_name, medium_name)
+  end
+
+  private def real_from : Time
+    if !from.empty?
+      string_to_date(from)
+    elsif !period.empty?
+      period_time(period)
+    else
+      period_time("7d")
+    end
+  end
+
+  private def real_to : Time
+    if !to.empty?
+      string_to_date(to)
+    else
+      Time.utc.at_end_of_day
+    end
   end
 end
