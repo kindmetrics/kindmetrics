@@ -250,6 +250,23 @@ class Metrics
 
   def get_pages(limit : Int32 = 6) : Array(StatsPages)
     sql = <<-SQL
+    SELECT path as address, uniq(user_id) as count FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    #{where_goal_string}
+    #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
+    GROUP BY path
+    ORDER BY count desc LIMIT 6
+    SQL
+    res = @client.execute_as_json(sql)
+    return [] of StatsPages if res.nil?
+    pages = Array(StatsPages).from_json(res)
+    count_percentage(pages)
+  end
+
+  def get_entry_pages : Array(StatsPages)
+    sql = <<-SQL
     SELECT path as address, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
     #{where_goal_string}

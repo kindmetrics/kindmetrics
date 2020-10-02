@@ -7,7 +7,7 @@ class Domains::Referrer::IndexPage < Share::BasePage
   needs active : String = "Referrers"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, to: to, from: from, active: "Referrers"
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: period, to: to, from: from, active: "Referrers"
     div do
       sub_header
       div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do

@@ -13,6 +13,8 @@ export default class extends Controller {
           enabled: false
         },
         animations: {
+          enabled: true,
+          easing: 'easeinout',
           speed: 400,
           animateGradually: {
             enabled: false

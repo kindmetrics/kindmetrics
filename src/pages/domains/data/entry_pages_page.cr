@@ -1,4 +1,4 @@
-class Domains::Data::PagesPage < Domains::Data::BasePage
+class Domains::Data::EntryPagesPage < Domains::Data::BasePage
   needs pages : Array(StatsPages)
 
   def render
@@ -12,7 +12,7 @@ class Domains::Data::PagesPage < Domains::Data::BasePage
   end
 
   def render_table
-    m DashboardTableComponent, first_header: "Page", second_header: "Visitors" do
+    m DashboardTableComponent, first_header: "Entry Page", second_header: "Visitors" do
       @pages.each do |r|
         render_row(r)
       end

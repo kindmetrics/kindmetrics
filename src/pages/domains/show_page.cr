@@ -11,6 +11,7 @@ class Domains::ShowPage < SecretGuestLayout
   needs total_bounce_previous : Int64
   needs from : Time = Time.utc - 7.days
   needs to : Time = Time.utc
+  needs period : String
   needs period_string : String
   needs share_page : Bool = false
   needs site_path : String = ""
@@ -59,7 +60,7 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def taber(name : String, value : String, close)
-    div class: "inline-block mini-card text-black mr-2 items-center" do
+    div class: "inline-block mini-card text-black mr-2 bg-white items-center" do
       span class: "mr-2" do
         text "#{name}: #{value}"
       end
@@ -86,7 +87,11 @@ class Domains::ShowPage < SecretGuestLayout
     div class: "p-2 sm:p-0 my-3 mb-6" do
       div class: "w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" do
         div class: "card" do
-          m LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+          if source.empty? && medium.empty?
+            m LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+          else
+            m LoaderComponent, domain: @domain, url: "data/entry_pages", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+          end
         end
         div class: "card" do
           if source.empty?
@@ -124,7 +129,7 @@ class Domains::ShowPage < SecretGuestLayout
         end
       end
       render_goals unless @goal
-      render_promo if share_page? && current_user.nil?
+      # render_promo if share_page? && current_user.nil?
     end
   end
 
@@ -137,7 +142,7 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_header
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, from: from, to: to, show_period: real_count > 0, share_page: @share_page, current_user: current_user, goal: goal, site_path: site_path, medium: medium, source: source
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, from: from, to: to, period: period, show_period: real_count > 0, share_page: @share_page, current_user: current_user, goal: goal, site_path: site_path, medium: medium, source: source
   end
 
   def generate_params(kind : String)

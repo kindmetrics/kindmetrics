@@ -6,7 +6,7 @@ class Domains::Countries::IndexPage < Share::BasePage
   needs countries : Array(StatsCountry)
 
   def content
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, from: from, to: to, active: "Countries"
+    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: period, from: from, to: to, active: "Countries"
     div do
       sub_header
       div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do

@@ -2,7 +2,7 @@ class Domains::Referrer::Show < DomainBaseAction
   include TrialCheck
   get "/domains/:domain_id/referrers/:source" do
     domains = DomainQuery.new.user_id(current_user.id)
-    html ShowPage, domain: domain, total: get_total, events: get_referrals, source: parse_source, from: string_to_date(from), to: string_to_date(to), domains: domains
+    html ShowPage, domain: domain, total: get_total, events: get_referrals, source: parse_source, from: real_from, to: real_to, period: period, domains: domains
   end
 
   def get_referrals
