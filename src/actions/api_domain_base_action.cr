@@ -1,10 +1,5 @@
 # Include modules and add methods that are for all API requests
-abstract class ApiDomainBaseAction < Lucky::Action
-  disable_cookies
-  accepted_formats [:json]
-
-  include Api::Auth::Helpers
-
+abstract class ApiDomainBaseAction < ApiAction
   include Timeparser
   extend Timeparser
   param from : String = time_to_string(Time.utc - 7.days)
@@ -13,10 +8,6 @@ abstract class ApiDomainBaseAction < Lucky::Action
   param site_path : String = ""
   param source_name : String = ""
   param medium_name : String = ""
-
-  # By default all actions require sign in.
-  # Add 'include Api::Auth::SkipRequireAuthToken' to your actions to allow all requests.
-  include Api::Auth::RequireAuthToken
 
   before require_domain
 
