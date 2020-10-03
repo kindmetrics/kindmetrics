@@ -7,7 +7,6 @@ export default class extends Controller {
   }
 
   getData() {
-    this.element.innerHTML = this.loader()
     const from = this.data.get("from")
     const to = this.data.get("to")
     const goal = this.data.get("goal")
@@ -38,10 +37,6 @@ export default class extends Controller {
 
   connect() {
     this.getData();
-  }
-
-  loader() {
-    return "<div class=\"w-1/6 h-24 mb-2 mx-auto\"><div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div></div>"
   }
 
 

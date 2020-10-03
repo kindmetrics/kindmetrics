@@ -84,7 +84,6 @@ export default class extends Controller {
   }
 
   getData() {
-    this.element.innerHTML = this.loader()
     const from = this.data.get("from")
     const to = this.data.get("to")
     var url = this.data.get("url") + "?from=" + from + "&to=" + to
@@ -113,9 +112,5 @@ export default class extends Controller {
 
   connect() {
     this.getData();
-  }
-
-  loader() {
-    return "<div class=\"w-1/6 mx-auto\"><div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div></div>"
   }
 }
