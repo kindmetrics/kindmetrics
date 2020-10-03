@@ -109,7 +109,7 @@ class Metrics
 
   def get_sources(limit : Int32 = 6)
     sql = <<-SQL
-    SELECT referrer_source, any(referrer_domain) as referrer_domain, MIN(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
+    SELECT referrer_source, any(referrer_domain) as referrer_domain, any(referrer) as referrer_url, MIN(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source IS NOT NULL
     #{where_goal_string}
     #{where_path_string}
@@ -119,7 +119,7 @@ class Metrics
     ORDER BY count desc LIMIT #{limit}
     SQL
     res = @client.execute(sql)
-    json = res.map_nil(referrer_source: String, referrer_domain: String, referrer_medium: String, count: UInt64).to_json
+    json = res.map_nil(referrer_source: String, referrer_url: String, referrer_domain: String, referrer_medium: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
     count_percentage(pages)
@@ -248,7 +248,7 @@ class Metrics
     return days, data
   end
 
-  def get_pages : Array(StatsPages)
+  def get_pages(limit : Int32 = 6) : Array(StatsPages)
     sql = <<-SQL
     SELECT path as address, uniq(user_id) as count FROM kindmetrics.events
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
@@ -257,7 +257,7 @@ class Metrics
     #{where_source_string}
     #{where_medium_string}
     GROUP BY path
-    ORDER BY count desc LIMIT 6
+    ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsPages if res.nil?
@@ -265,7 +265,7 @@ class Metrics
     count_percentage(pages)
   end
 
-  def get_entry_pages : Array(StatsPages)
+  def get_entry_pages(limit : Int32 = 6) : Array(StatsPages)
     sql = <<-SQL
     SELECT path as address, uniq(user_id) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
@@ -274,7 +274,7 @@ class Metrics
     #{where_source_string}
     #{where_medium_string}
     GROUP BY path
-    ORDER BY count desc LIMIT 6
+    ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
     res = @client.execute_as_json(sql)
     return [] of StatsPages if res.nil?
@@ -389,9 +389,9 @@ class Metrics
     return if @goal.nil?
 
     if @goal.not_nil!.kind == 0
-      "AND name='#{@goal.not_nil!.name}'"
+      "AND name=#{PG::EscapeHelper.escape_literal(@goal.not_nil!.name)}"
     else
-      "AND path='#{@goal.not_nil!.name}'"
+      "AND path=#{PG::EscapeHelper.escape_literal(@goal.not_nil!.name)}"
     end
   end
 

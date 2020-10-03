@@ -16,7 +16,7 @@ class SaveDomain < Domain::SaveOperation
   end
 
   def set_current_domain(domain)
-    return unless current_user.current_domain.nil?
+    return unless current_user.current_domain!.nil?
 
     SaveUser.update!(current_user, current_domain_id: domain.id)
   end

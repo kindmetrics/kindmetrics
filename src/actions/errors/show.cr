@@ -2,6 +2,7 @@
 #
 # https://luckyframework.org/guides/http-and-routing/error-handling
 class Errors::Show < Lucky::ErrorAction
+  disable_cookies
   DEFAULT_MESSAGE = "Something went wrong."
   default_format :html
   dont_report [Lucky::RouteNotFoundError]

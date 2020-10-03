@@ -1,4 +1,4 @@
-class Events::Create < ApiAction
+class Api::Events::Create < ApiAction
   include Api::Auth::SkipRequireAuthToken
   post "/api/track" do
     address = params.get?(:domain).to_s
