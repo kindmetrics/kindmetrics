@@ -2,6 +2,7 @@
 abstract class ApiDomainBaseAction < ApiAction
   include Timeparser
   extend Timeparser
+  include ApiTrialCheck
   param from : String = time_to_string(Time.utc - 7.days)
   param to : String = time_to_string(Time.utc)
   param goal_id : Int64 = 0_i64

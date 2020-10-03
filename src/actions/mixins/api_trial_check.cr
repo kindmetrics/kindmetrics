@@ -1,4 +1,4 @@
-module TrialCheck
+module ApiTrialCheck
   include SubscriptionCheck
 
   macro included
@@ -10,6 +10,6 @@ module TrialCheck
     return continue if current_user.admin?
     return continue unless subscription_user_check
 
-    redirect to: Users::Billing
+    raise LuckyCan::ForbiddenError.new(context)
   end
 end
