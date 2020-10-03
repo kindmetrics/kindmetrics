@@ -15,7 +15,7 @@ abstract class ApiDomainBaseAction < ApiAction
   @domain : Domain?
 
   private def require_domain
-    @domain = DomainQuery.new.user_id(current_user.id).find(domain_id)
+    @domain = DomainQuery.new.user_id(current_user.id).id(domain_id).first?
     raise Lucky::RouteNotFoundError.new(context) if @domain.nil?
 
     if DomainPolicy.show?(domain, current_user)
@@ -36,5 +36,15 @@ abstract class ApiDomainBaseAction < ApiAction
 
   private def metrics : Metrics
     Metrics.new(domain, string_to_date(from), string_to_date(to), goal, site_path, source_name, medium_name)
+  end
+
+  def render(error : LuckyCan::ForbiddenError)
+    error = ErrorSerializer.new(message: "Forbidden", details: "Probably no working subscription")
+    json error, HTTP::Status::FORBIDDEN
+  end
+
+  def render(error : Lucky::RouteNotFoundError)
+    error = ErrorSerializer.new(message: "Not Found")
+    json error, HTTP::Status::NOT_FOUND
   end
 end
