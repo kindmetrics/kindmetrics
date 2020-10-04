@@ -4,7 +4,7 @@ class Users::BillingPage < SettingsLayout
   quick_def page_title, "Billing"
   needs subscription : Subscription?
   needs events_count : Int64
-  quick_def active, "Settings"
+  quick_def active, "Billing"
   quick_def tab, true
 
   def content

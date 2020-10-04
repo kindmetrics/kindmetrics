@@ -109,17 +109,17 @@ class Metrics
 
   def get_sources(limit : Int32 = 6)
     sql = <<-SQL
-    SELECT referrer_source, any(referrer_domain) as referrer_domain, any(referrer) as referrer_url, MIN(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
+    SELECT referrer_source, any(referrer_domain) as referrer_domain, any(referrer_medium) as referrer_medium, COUNT(*) as count FROM kindmetrics.sessions
     WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND referrer_source IS NOT NULL
     #{where_goal_string}
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
     GROUP BY referrer_source
-    ORDER BY count desc LIMIT #{limit}
+    ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
     res = @client.execute(sql)
-    json = res.map_nil(referrer_source: String, referrer_url: String, referrer_domain: String, referrer_medium: String, count: UInt64).to_json
+    json = res.map_nil(referrer_source: String, referrer_domain: String, referrer_medium: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
     count_percentage(pages)
