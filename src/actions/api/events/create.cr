@@ -11,7 +11,8 @@ class Api::Events::Create < ApiAction
 
     remote_ip = request.headers["X-Forwarded-For"]? || "92.35.68.246"
     user_agent = params.get?(:user_agent).to_s
-    referrer = URI.parse params.get?(:referrer).try { |r| r.to_s } || ""
+    referrer = hide_local(URI.parse(params.get?(:referrer).try { |r| r.to_s } || ""))
+
     url = URI.parse params.get?(:url).try { |r| r.to_s } || ""
 
     EventHandler.handle_event(address, remote_ip, user_agent, referrer, url, params, domain)
@@ -29,5 +30,10 @@ class Api::Events::Create < ApiAction
 
   private def remove_www(uri : String)
     uri.sub(/^www./i, "")
+  end
+
+  private def hide_local(referrer)
+    return URI.parse("") if ["localhost", "127.0.0.1"].includes?(referrer.host)
+    referrer
   end
 end
