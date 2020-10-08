@@ -20,7 +20,7 @@ class EventHandler
     country = IPCOUNTRY.lookup_cc(remote_ip)
 
     browser = UserHash.get_browser(user_agent) if user_agent.present?
-    user_id = UserHash.create(address, remote_ip, user_agent).to_s
+    user_id = UserHash.create(url.host || address, remote_ip, user_agent).to_s
 
     if user_agent.present? && !browser.nil?
       return if browser.not_nil!.bot?

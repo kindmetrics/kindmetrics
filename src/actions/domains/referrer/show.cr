@@ -6,14 +6,18 @@ class Domains::Referrer::Show < DomainBaseAction
   end
 
   def get_referrals
-    metrics.get_referrers(0)
+    new_metrics.get_referrers(0)
   end
 
   def get_total
-    metrics.get_source_referrers_total
+    new_metrics.get_source_referrers_total
   end
 
   def parse_source
     URI.decode(source).sub("+", " ")
+  end
+
+  def new_metrics
+    Metrics.new(domain, real_from, real_to, goal, site_path, source, medium_name)
   end
 end

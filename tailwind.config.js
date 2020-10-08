@@ -12,7 +12,8 @@ module.exports = {
     extend: {
       colors: {
         'kind-gray': '#E6EBF1',
-        'kind-blue': '#3182ce'
+        'kind-blue': '#3182ce',
+        'kind-black': '#30475e'
       },
       width: {
         '100': '26rem'

@@ -9,7 +9,7 @@ class Share::Referrer::Index < DomainShareBaseAction
   end
 
   def get_referrals
-    metrics.get_all_referrers
+    metrics.get_sources(0)
   end
 
   def get_mediums

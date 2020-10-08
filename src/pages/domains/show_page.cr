@@ -9,6 +9,8 @@ class Domains::ShowPage < SecretGuestLayout
   needs total_unique_previous : Int64
   needs total_previous : Int64
   needs total_bounce_previous : Int64
+  needs length : Int64
+  needs length_previous : Int64
   needs from : Time = Time.utc - 7.days
   needs to : Time = Time.utc
   needs period : String
@@ -74,7 +76,7 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_total
-    m TotalRowComponent, @total_unique, @total_sum, @total_bounce, @total_unique_previous, @total_previous, @total_bounce_previous
+    m TotalRowComponent, @total_unique, @total_sum, @total_bounce, @total_unique_previous, @total_previous, @total_bounce_previous, @length, @length_previous
   end
 
   def render_canvas
