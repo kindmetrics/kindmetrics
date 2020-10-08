@@ -61,6 +61,21 @@ class Metrics
     bounce.not_nil!.to_i64
   end
 
+  def avg_length : Int64
+    sql = <<-SQL
+    SELECT avg(length) as avg_length
+    FROM kindmetrics.sessions WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    #{where_goal_string}
+    #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
+    SQL
+    res = @client.execute(sql)
+    avg_length = res.data.first.first.as_f?
+    return 0_i64 if avg_length.nil?
+    avg_length.not_nil!.to_i64
+  end
+
   def bounce_query_referrer(referrer_source : String) : Int64
     sql = <<-SQL
     SELECT round(sum(is_bounce * mark) / sum(mark) * 100) as bounce_rate
