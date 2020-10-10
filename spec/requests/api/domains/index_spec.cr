@@ -13,13 +13,13 @@ describe Api::Domains::Index do
 
     token.user!.domains!.size.should eq(0)
 
-    response = AppClient.auth(token).exec(Api::Domains::Index)
+    response = ApiClient.auth(token).exec(Api::Domains::Index)
     response.status_code.should eq(200)
     response.body.should_not contain("kindmetrics.io")
 
     domain = DomainBox.create &.user_id(token.user_id)
 
-    response = AppClient.auth(token).exec(Api::Domains::Index)
+    response = ApiClient.auth(token).exec(Api::Domains::Index)
     response.status_code.should eq(200)
     response.body.should contain(domain.address)
   end

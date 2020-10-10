@@ -13,7 +13,7 @@ describe Api::Domains::Show do
 
     domain = DomainBox.create &.user_id(token.user_id)
 
-    response = AppClient.auth(token).exec(Api::Domains::Show.with(domain.id))
+    response = ApiClient.auth(token).exec(Api::Domains::Show.with(domain.id))
     response.status_code.should eq(200)
     response.body.should contain(domain.address)
   end
@@ -23,7 +23,7 @@ describe Api::Domains::Show do
 
     domain = DomainBox.create
 
-    response = AppClient.auth(token).exec(Api::Domains::Show.with(domain.id))
+    response = ApiClient.auth(token).exec(Api::Domains::Show.with(domain.id))
     response.status_code.should eq(404)
     response.body.should_not contain(domain.address)
   end

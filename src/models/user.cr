@@ -8,7 +8,7 @@ class User < BaseModel
     column encrypted_password : String
     column confirmed_at : Time?
     column confirmed_token : String
-    column admin : Bool
+    column admin : Bool = false
     belongs_to current_domain : Domain?
     has_many domains : Domain
     has_one subscription : Subscription?

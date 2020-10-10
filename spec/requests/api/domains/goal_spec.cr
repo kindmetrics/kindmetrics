@@ -13,7 +13,7 @@ describe Api::Domains::Goals::Index do
 
     domain = DomainBox.create &.user_id(token.user_id)
 
-    response = AppClient.auth(token).exec(Api::Domains::Goals::Index.with(domain.id))
+    response = ApiClient.auth(token).exec(Api::Domains::Goals::Index.with(domain.id))
     response.status_code.should eq(200)
     test_array = [] of String
     response.body.should eq(test_array.to_json)
@@ -26,7 +26,7 @@ describe Api::Domains::Goals::Index do
 
     goal = GoalBox.create &.domain_id(domain.id)
 
-    response = AppClient.auth(token).exec(Api::Domains::Goals::Index.with(domain.id))
+    response = ApiClient.auth(token).exec(Api::Domains::Goals::Index.with(domain.id))
     response.status_code.should eq(200)
     response.body.should contain(goal.name)
     response.body.should contain("Path")
