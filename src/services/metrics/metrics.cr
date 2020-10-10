@@ -153,7 +153,6 @@ class Metrics
     ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
     res = @client.execute(sql)
-    pp! res
     json = res.map_nil(referrer_url: String, referrer_domain: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)

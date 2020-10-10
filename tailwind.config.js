@@ -13,7 +13,11 @@ module.exports = {
       colors: {
         'kind-gray': '#E6EBF1',
         'kind-blue': '#3182ce',
+        'kind-light-blue': '#c1d9f0',
         'kind-black': '#30475e'
+      },
+      minHeight: {
+        '10': '10rem'
       },
       width: {
         '100': '26rem'

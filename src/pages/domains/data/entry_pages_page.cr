@@ -12,7 +12,7 @@ class Domains::Data::EntryPagesPage < Domains::Data::BasePage
   end
 
   def render_table
-    m DashboardTableComponent, first_header: "Entry Page", second_header: "Visitors" do
+    mount DashboardTableComponent, first_header: "Entry Page", second_header: "Visitors" do
       @pages.each do |r|
         render_row(r)
       end

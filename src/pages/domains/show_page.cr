@@ -26,18 +26,20 @@ class Domains::ShowPage < SecretGuestLayout
   def content
     render_header
     if real_count == 0
-      m AddTrackingComponent, domain: @domain
+      mount AddTrackingComponent, domain: @domain
     else
       render_query_tabs
       render_total
-      div class: "gradient-color" do
-        div class: "mb-6" do
-          div class: "" do
-            render_canvas
+      div class: "mb-6" do
+        div class: "bg-white rounded-md mb-6 border border-kind-gray" do
+          div class: "mb-2" do
+            div class: "min-h-10 " do
+              render_canvas
+            end
           end
         end
+        render_the_rest
       end
-      render_the_rest
     end
   end
 
@@ -76,75 +78,73 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_total
-    m TotalRowComponent, @total_unique, @total_sum, @total_bounce, @total_unique_previous, @total_previous, @total_bounce_previous, @length, @length_previous
+    mount TotalRowComponent, @total_unique, @total_sum, @total_bounce, @total_unique_previous, @total_previous, @total_bounce_previous, @length, @length_previous
   end
 
   def render_canvas
-    div style: "max-height:320px;" do
-      m DaysLoaderComponent, domain: @domain, from: time_to_string(from), to: time_to_string(to), goal: @goal, site_path: site_path, source: source, medium: medium
+    div class: "align-middle", style: "max-height:320px; min-height:315px;" do
+      mount DaysLoaderComponent, domain: @domain, from: time_to_string(from), to: time_to_string(to), goal: @goal, site_path: site_path, source: source, medium: medium
     end
   end
 
   def render_the_rest
-    div class: "p-2 sm:p-0 my-3 mb-6" do
-      div class: "w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" do
-        div class: "card" do
-          if source.empty? && medium.empty?
-            m LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
-          else
-            m LoaderComponent, domain: @domain, url: "data/entry_pages", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
-          end
-        end
-        div class: "card" do
-          if source.empty?
-            m LoaderComponent, domain: @domain, url: "data/sources", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
-            if @share_page
-              m DetailsLinkComponent, link: Share::Referrer::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to)).url
-            else
-              m DetailsLinkComponent, link: Domains::Referrer::Index.with(@domain, from: time_to_string(from), to: time_to_string(to)).url
-            end
-          else
-            m LoaderComponent, domain: @domain, url: "data/referrers", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
-            if @share_page
-              m DetailsLinkComponent, link: Share::Referrer::Show.with(@domain.hashid, source: source, from: time_to_string(from), to: time_to_string(to)).url
-            else
-              m DetailsLinkComponent, link: Domains::Referrer::Show.with(@domain, source: source, from: time_to_string(from), to: time_to_string(to)).url
-            end
-          end
-        end
-        div class: "card" do
-          m LoaderComponent, domain: @domain, url: "data/countries", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, style: "relative clear-both", source: source, medium: medium
-          if @share_page
-            m DetailsLinkComponent, link: Share::Countries::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to)).url
-          else
-            m DetailsLinkComponent, link: Domains::Countries::Index.with(@domain, from: time_to_string(from), to: time_to_string(to)).url
-          end
-        end
-        div class: "card" do
-          m LoaderComponent, domain: @domain, url: "data/devices/device", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
-        end
-        div class: "card" do
-          m LoaderComponent, domain: @domain, url: "data/devices/browser", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
-        end
-        div class: "card" do
-          m LoaderComponent, domain: @domain, url: "data/devices/os", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+    div class: "w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" do
+      div class: "card" do
+        if source.empty? && medium.empty?
+          mount LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+        else
+          mount LoaderComponent, domain: @domain, url: "data/entry_pages", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
         end
       end
-      render_goals unless @goal
-      # render_promo if share_page? && current_user.nil?
+      div class: "card" do
+        if source.empty?
+          mount LoaderComponent, domain: @domain, url: "data/sources", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+          if @share_page
+            mount DetailsLinkComponent, link: Share::Referrer::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to)).url
+          else
+            mount DetailsLinkComponent, link: Domains::Referrer::Index.with(@domain, from: time_to_string(from), to: time_to_string(to)).url
+          end
+        else
+          mount LoaderComponent, domain: @domain, url: "data/referrers", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+          if @share_page
+            mount DetailsLinkComponent, link: Share::Referrer::Show.with(@domain.hashid, source: source, from: time_to_string(from), to: time_to_string(to)).url
+          else
+            mount DetailsLinkComponent, link: Domains::Referrer::Show.with(@domain, source: source, from: time_to_string(from), to: time_to_string(to)).url
+          end
+        end
+      end
+      div class: "card" do
+        mount LoaderComponent, domain: @domain, url: "data/countries", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, style: "relative clear-both", source: source, medium: medium
+        if @share_page
+          mount DetailsLinkComponent, link: Share::Countries::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to)).url
+        else
+          mount DetailsLinkComponent, link: Domains::Countries::Index.with(@domain, from: time_to_string(from), to: time_to_string(to)).url
+        end
+      end
+      div class: "card" do
+        mount LoaderComponent, domain: @domain, url: "data/devices/device", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+      end
+      div class: "card" do
+        mount LoaderComponent, domain: @domain, url: "data/devices/browser", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+      end
+      div class: "card" do
+        mount LoaderComponent, domain: @domain, url: "data/devices/os", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+      end
     end
+    render_goals unless @goal
+    # render_promo if share_page? && current_user.nil?
   end
 
   def render_promo
-    m PromoComponent, domain
+    mount PromoComponent, domain
   end
 
   def render_goals
-    m LoaderComponent, domain: @domain, url: "data/goals", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+    mount LoaderComponent, domain: @domain, url: "data/goals", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
   end
 
   def render_header
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, from: from, to: to, period: period, show_period: real_count > 0, share_page: @share_page, current_user: current_user, goal: goal, site_path: site_path, medium: medium, source: source
+    mount HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, from: from, to: to, period: period, show_period: real_count > 0, share_page: @share_page, current_user: current_user, goal: goal, site_path: site_path, medium: medium, source: source
   end
 
   def generate_params(kind : String)

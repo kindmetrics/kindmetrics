@@ -22,7 +22,7 @@ class SidebarComponent < BaseComponent
             end
             div class: "flex-shrink-0 flex items-center px-2" do
               if !domain.nil? && !current_user.nil?
-                m DomainDropdownComponent, domain: domain.not_nil!, domains: domains
+                mount DomainDropdownComponent, domain: domain.not_nil!, domains: domains
               elsif !domain.nil?
                 div class: "inline-block select-none rounded-md p-3 text-md transister w-full", data_action: "click->dropdown#toggle click@window->dropdown#hide", role: "button" do
                   span class: "appearance-none flex items-center justify-between inline-block text-lg" do
@@ -76,7 +76,7 @@ class SidebarComponent < BaseComponent
           div class: "flex-1 flex flex-col pt-5 pb-4 overflow-y-auto" do
             div class: "flex items-center flex-shrink-0 px-2" do
               if !domain.nil? && !current_user.nil?
-                m DomainDropdownComponent, domain: domain.not_nil!, domains: domains
+                mount DomainDropdownComponent, domain: domain.not_nil!, domains: domains
               elsif !domain.nil?
                 div class: "inline-block select-none rounded-md p-3 text-md transister w-full", data_action: "click->dropdown#toggle click@window->dropdown#hide", role: "button" do
                   span class: "appearance-none flex items-center justify-between inline-block text-lg" do

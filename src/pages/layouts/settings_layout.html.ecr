@@ -32,8 +32,8 @@
           <% a "Dashboard", href: Home::Index.url, class: "px-5 py-3 text-center font-medium text-indigo-600 rounded hover:text-indigo-700 focus:outline-none focus:bg-blue-100 focus:text-blue-700 transition duration-150 ease-in-out" %>
           <% a "Sign out", href: SignIns::Delete.url, class: "px-5 py-3 text-center font-medium text-indigo-600 rounded hover:text-red-700 focus:outline-none focus:bg-red-100 focus:text-red-700 transition duration-150 ease-in-out" %>
         </div>
-        <% m TabComponent, links, active if tab %>
-        <% m Shared::FlashMessages, context.flash %>
+        <% mount TabComponent, links, active if tab %>
+        <% mount Shared::FlashMessages, context.flash %>
         <% content %>
       </div>
     </div>

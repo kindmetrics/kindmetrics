@@ -6,13 +6,13 @@
 # ## Basic usage:
 #
 #    # Renders a text input by default and will guess the label name "Name"
-#    m Shared::Field.new(op.name)
+#    mount Shared::Field.new(op.name)
 #    # Call any of the input methods on the block
-#    m Shared::Field.new(op.email), &.email_input
+#    mount Shared::Field.new(op.email), &.email_input
 #    # Add other HTML attributes
-#    m Shared::Field.new(op.email), &.email_input(autofocus: "true")
+#    mount Shared::Field.new(op.email), &.email_input(autofocus: "true")
 #    # Pass an explicit label name
-#    m Shared::Field.new(op.username, "Your username")
+#    mount Shared::Field.new(op.username, "Your username")
 #
 # ## Customization
 #
@@ -22,7 +22,7 @@
 #    div class: "field-wrapper"
 #      label_for field
 #      yield field
-#      m Shared::FieldErrors.new(field)
+#      mount Shared::FieldErrors.new(field)
 #    end
 #
 # You may also want to have more components if your fields look
@@ -46,7 +46,7 @@ class Shared::Field(T) < BaseComponent
       yield input_builder
     end
 
-    m Shared::FieldErrors, attribute
+    mount Shared::FieldErrors, attribute
   end
 
   # Use a text_input by default

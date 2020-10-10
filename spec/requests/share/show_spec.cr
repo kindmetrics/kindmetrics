@@ -6,7 +6,7 @@ describe Share::Show do
 
     domain_hashid = hashid.encode([345435])
 
-    response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
+    response = ApiClient.exec(Share::Show.with(share_id: domain_hashid))
     response.status_code.should eq(404)
   end
 
@@ -16,7 +16,7 @@ describe Share::Show do
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
 
-    response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
+    response = ApiClient.exec(Share::Show.with(share_id: domain_hashid))
     response.status_code.should eq(404)
   end
 
@@ -28,7 +28,7 @@ describe Share::Show do
 
     domain.events.size.should eq(0)
 
-    response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
+    response = ApiClient.exec(Share::Show.with(share_id: domain_hashid))
 
     response.status_code.should eq(200)
   end
@@ -42,7 +42,7 @@ describe Share::Show do
 
     domain.events.size.should eq(0)
 
-    response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
+    response = ApiClient.exec(Share::Show.with(share_id: domain_hashid))
 
     response.status_code.should eq(404)
   end
@@ -57,7 +57,7 @@ describe Share::Show do
 
     domain.events.size.should eq(0)
 
-    response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
+    response = ApiClient.exec(Share::Show.with(share_id: domain_hashid))
 
     response.status_code.should eq(200)
   end
@@ -72,7 +72,7 @@ describe Share::Show do
 
     domain.events.size.should eq(0)
 
-    response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
+    response = ApiClient.exec(Share::Show.with(share_id: domain_hashid))
 
     response.status_code.should eq(200)
   end
@@ -87,7 +87,7 @@ describe Share::Show do
 
     domain.events.size.should eq(0)
 
-    response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
+    response = ApiClient.exec(Share::Show.with(share_id: domain_hashid))
 
     response.status_code.should eq(404)
   end
@@ -101,7 +101,7 @@ describe Share::Show do
 
     domain.events.size.should eq(0)
 
-    response = AppClient.exec(Share::Show.with(share_id: domain_hashid))
+    response = ApiClient.exec(Share::Show.with(share_id: domain_hashid))
 
     response.status_code.should eq(200)
   end

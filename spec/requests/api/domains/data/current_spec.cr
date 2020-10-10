@@ -13,7 +13,7 @@ describe Api::Domains::Data::Current do
 
     domain = DomainBox.create &.user_id(token.user_id)
 
-    response = AppClient.auth(token).exec(Api::Domains::Data::Current.with(domain.id))
+    response = ApiClient.auth(token).exec(Api::Domains::Data::Current.with(domain.id))
     response.status_code.should eq(200)
     response.body.should contain("0")
   end

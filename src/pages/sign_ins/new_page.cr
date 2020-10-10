@@ -18,8 +18,8 @@ class SignIns::NewPage < AuthLayout
   end
 
   private def sign_in_fields(op)
-    m Shared::Field, op.email, "Email", &.email_input(append_class: "w-full form-input my-2 leading-tight")
-    m Shared::Field, op.password, "Password", &.password_input(append_class: "w-full form-input my-2 leading-tight")
+    mount Shared::Field, op.email, "Email", &.email_input(append_class: "w-full form-input my-2 leading-tight")
+    mount Shared::Field, op.password, "Password", &.password_input(append_class: "w-full form-input my-2 leading-tight")
     div class: "mb-2 -mt-1 text-sm flex justify-between" do
       para "Forgot your password?", class: "inline-block"
       link "Reset password", to: PasswordResetRequests::New, class: "inline-block"

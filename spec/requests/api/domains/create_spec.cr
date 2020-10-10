@@ -8,14 +8,14 @@ describe Api::Domains::Create do
     AddClickhouse.clean_database
   end
 
-  it "see domains of user" do
+  it "create domain for user" do
     token = ApiTokenBox.create
 
     user = token.user!
 
     user.domains!.size.should eq(0)
 
-    response = AppClient.auth(token).exec(Api::Domains::Create, domain: {address: "microgit.com", time_zone: "Europe/Stockholm"})
+    response = ApiClient.auth(token).exec(Api::Domains::Create, domain: {address: "microgit.com", time_zone: "Europe/Stockholm"})
     response.status_code.should eq(201)
 
     user.reload

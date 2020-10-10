@@ -12,7 +12,7 @@ class Domains::Data::GoalsPage < Domains::Data::BasePage
   end
 
   def render_table
-    m DashboardTableComponent, first_header: "Goal", second_header: "Conversions" do
+    mount DashboardTableComponent, first_header: "Goal", second_header: "Conversions" do
       @goals.each do |r|
         render_row(r[:stats_goal], r[:goal])
       end

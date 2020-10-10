@@ -10,7 +10,7 @@ class Admins::IndexPage < AdminLayout
   def content
     div class: "max-w-6xl mx-auto py-6 sm:px-6 lg:px-8 p-5 my-3 mb-6" do
       h1 "Admin"
-      m TotalAdminDataComponent, total_users: users.clone.select_count, total_confirmed_users: confirmed_users.select_count, total_domains: domains.select_count
+      mount TotalAdminDataComponent, total_users: users.clone.select_count, total_confirmed_users: confirmed_users.select_count, total_domains: domains.select_count
       render_user_list
     end
   end

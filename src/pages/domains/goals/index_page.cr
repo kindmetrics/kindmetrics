@@ -7,15 +7,15 @@ class Domains::Goals::IndexPage < Share::BasePage
   needs active : String = "Goals"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: period, from: from, to: to, active: "Goals"
+    mount HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: period, from: from, to: to, active: "Goals"
     div do
       sub_header
       div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-1 gap-6 sm:grid-flow-row" do
         div class: "card" do
           if goals.size > 0
-            m DetailTableComponent, first_header: "Goal", second_header: "Conversions" do
+            mount DetailTableComponent, first_header: "Goal", second_header: "Conversions" do
               goals.each_with_index do |goal, i|
-                m GoalMainComponent, stats_goal: goal[:stats_goal], goal: goal[:goal], index: i, current_user: current_user, from: from, to: to, current_domain: @domain
+                mount GoalMainComponent, stats_goal: goal[:stats_goal], goal: goal[:goal], index: i, current_user: current_user, from: from, to: to, current_domain: @domain
               end
             end
           else

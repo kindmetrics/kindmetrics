@@ -2,14 +2,14 @@ database_name = "kindmetrics_#{Lucky::Env.name}"
 
 AppDatabase.configure do |settings|
   if Lucky::Env.production?
-    settings.url = ENV.fetch("DATABASE_URL")
+    settings.credentials = Avram::Credentials.parse(ENV["DATABASE_URL"])
   else
-    settings.url = ENV["DATABASE_URL"]? || Avram::PostgresURL.build(
+    settings.credentials = Avram::Credentials.parse?(ENV["DATABASE_URL"]?) || Avram::Credentials.new(
       database: database_name,
       hostname: ENV["DB_HOST"]? || "localhost",
-      # Some common usernames are "postgres", "root", or your system username (run 'whoami')
+      # NOTE: This was changed from `String` to `Int32`
+      port: ENV["DB_PORT"]?.try(&.to_i) || 5432,
       username: ENV["DB_USERNAME"]? || "postgres",
-      # Some Postgres installations require no password. Use "" if that is the case.
       password: ENV["DB_PASSWORD"]? || "postgres"
     )
   end

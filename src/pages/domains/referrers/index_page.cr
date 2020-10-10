@@ -7,15 +7,15 @@ class Domains::Referrer::IndexPage < Share::BasePage
   needs active : String = "Referrers"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: period, to: to, from: from, active: "Referrers"
+    mount HeaderComponent, domain: @domain, current_url: context.request.path, domains: domains, total_sum: 1_i64, share_page: @share_page, period_string: period_string, period: period, to: to, from: from, active: "Referrers"
     div do
       sub_header
       div class: "grid grid-cols-1 md:grid-flow-col md:grid-cols-2 gap-6 sm:grid-flow-row" do
         div class: "card" do
           if referrers.size > 0
-            m DetailTableComponent, first_header: "Source", second_header: "Visitors", third_header: "Bounce" do
+            mount DetailTableComponent, first_header: "Source", second_header: "Visitors", third_header: "Bounce" do
               referrers.each_with_index do |event, i|
-                m ReferrerMainComponent, event: event, index: i, current_user: current_user, to: to, from: from, current_domain: domain
+                mount ReferrerMainComponent, event: event, index: i, current_user: current_user, to: to, from: from, current_domain: domain
               end
             end
           else
@@ -26,9 +26,9 @@ class Domains::Referrer::IndexPage < Share::BasePage
         end
         div class: "card" do
           if mediums.size > 0
-            m DetailTableComponent, first_header: "Medium", second_header: "Visitors", third_header: "Bounce" do
+            mount DetailTableComponent, first_header: "Medium", second_header: "Visitors", third_header: "Bounce" do
               mediums.each_with_index do |event, i|
-                m ReferrerMediumComponent, event: event, index: i, to: to, from: from
+                mount ReferrerMediumComponent, event: event, index: i, to: to, from: from
               end
             end
           else
