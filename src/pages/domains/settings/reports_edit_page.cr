@@ -9,7 +9,7 @@ class Domains::EditReportsPage < AdminLayout
   needs active : String = "Reports"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", period: "7d", show_period: false, active: "Reports"
+    mount HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", period: "7d", show_period: false, active: "Reports"
     div class: "max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       h1 "Reports", class: "text-xl"
       div class: "my-3 card" do
@@ -84,14 +84,14 @@ class Domains::EditReportsPage < AdminLayout
   def render_user_email_form(op)
     form_for Domains::EmailReport::Create.with(@domain.id) do
       # Edit fields in src/components/domains/form_fields.cr
-      m Shared::Field, op.email, "Email", &.email_input(autofocus: "true", append_class: "w-full form-input my-2 leading-tight")
+      mount Shared::Field, op.email, "Email", &.email_input(autofocus: "true", append_class: "w-full form-input my-2 leading-tight")
 
       div class: "inline-block flex items-center" do
         div class: "w-1/2" do
-          m Shared::Field, op.weekly, "Weekly", &.checkbox(append_class: "form-checkbox block clear-both my-4")
+          mount Shared::Field, op.weekly, "Weekly", &.checkbox(append_class: "form-checkbox block clear-both my-4")
         end
         div class: "w-1/2" do
-          m Shared::Field, op.monthly, "Monthly", &.checkbox(append_class: "form-checkbox block clear-both my-4")
+          mount Shared::Field, op.monthly, "Monthly", &.checkbox(append_class: "form-checkbox block clear-both my-4")
         end
       end
       submit "Add", data_disable_with: "Adding...", class: "mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

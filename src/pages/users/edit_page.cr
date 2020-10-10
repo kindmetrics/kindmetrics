@@ -18,8 +18,8 @@ class Users::EditPage < SettingsLayout
 
   def render_user_form(op)
     form_for Users::Update do
-      m Shared::Field, op.name
-      m Shared::Field, op.email
+      mount Shared::Field, op.name
+      mount Shared::Field, op.email
 
       submit "Update", data_disable_with: "Updating...", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded focus:outline-none focus:shadow-outline"
     end

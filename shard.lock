@@ -2,11 +2,11 @@ version: 2.0
 shards:
   authentic:
     git: https://github.com/luckyframework/authentic.git
-    version: 0.6.1
+    version: 0.7.0
 
   avram:
     git: https://github.com/luckyframework/avram.git
-    version: 0.16.1
+    version: 0.17.0
 
   baked_file_system:
     git: https://github.com/schovi/baked_file_system.git
@@ -42,7 +42,7 @@ shards:
 
   crystar:
     git: https://github.com/naqvis/crystar.git
-    version: 0.1.7
+    version: 0.1.8
 
   db:
     git: https://github.com/crystal-lang/crystal-db.git
@@ -98,7 +98,7 @@ shards:
 
   lucky:
     git: https://github.com/luckyframework/lucky.git
-    version: 0.23.0
+    version: 0.24.0
 
   lucky_can:
     git: https://github.com/confact/lucky_can.git
@@ -106,7 +106,7 @@ shards:
 
   lucky_cli:
     git: https://github.com/luckyframework/lucky_cli.git
-    version: 0.23.1
+    version: 0.24.0
 
   lucky_flow:
     git: https://github.com/luckyframework/lucky_flow.git
@@ -114,11 +114,11 @@ shards:
 
   lucky_router:
     git: https://github.com/luckyframework/lucky_router.git
-    version: 0.3.0
+    version: 0.3.1
 
   markd:
     git: https://github.com/icyleaf/markd.git
-    version: 0.2.0
+    version: 0.2.1
 
   openssl_ext:
     git: https://github.com/stakach/openssl_ext.git
@@ -136,6 +136,10 @@ shards:
     git: https://github.com/maiha/pretty.cr.git
     version: 0.9.11
 
+  pulsar:
+    git: https://github.com/luckyframework/pulsar.git
+    version: 0.2.1
+
   quoted_printable:
     git: https://github.com/arcage/crystal-quotedprintable.git
     version: 0.1.0
@@ -146,7 +150,7 @@ shards:
 
   selenium:
     git: https://github.com/matthewmcgarvey/selenium.cr.git
-    version: 0.6.0
+    version: 0.6.1
 
   shell-table:
     git: https://github.com/luckyframework/shell-table.cr.git
@@ -166,5 +170,5 @@ shards:
 
   wordsmith:
     git: https://github.com/luckyframework/wordsmith.git
-    version: 0.2.0
+    version: 0.2.1
 

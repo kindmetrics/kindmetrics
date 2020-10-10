@@ -13,7 +13,7 @@ class Domains::Data::Devices::BrowsersPage
   end
 
   def render_table
-    m DashboardTableComponent, first_header: "Browser", second_header: "Percentage" do
+    mount DashboardTableComponent, first_header: "Browser", second_header: "Percentage" do
       @browsers.each do |r|
         render_row(r)
       end

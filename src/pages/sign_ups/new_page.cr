@@ -18,9 +18,9 @@ class SignUps::NewPage < AuthLayout
   end
 
   private def sign_up_fields(op)
-    m Shared::Field, op.name
-    m Shared::Field, op.email, "Email", &.email_input(append_class: "w-full form-input my-2 leading-tight")
-    m Shared::Field, op.password, "Password", &.password_input(append_class: "w-full form-input my-2 leading-tight")
-    m Shared::Field, op.password_confirmation, "Confirm Password", &.password_input(append_class: "w-full form-input my-2 leading-tight")
+    mount Shared::Field, op.name
+    mount Shared::Field, op.email, "Email", &.email_input(append_class: "w-full form-input my-2 leading-tight")
+    mount Shared::Field, op.password, "Password", &.password_input(append_class: "w-full form-input my-2 leading-tight")
+    mount Shared::Field, op.password_confirmation, "Confirm Password", &.password_input(append_class: "w-full form-input my-2 leading-tight")
   end
 end

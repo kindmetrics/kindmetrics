@@ -9,7 +9,7 @@ class Domains::EditGoalsPage < AdminLayout
   needs active : String = "Settings"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", period: "7d", show_period: false, active: "Goals"
+    mount HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", period: "7d", show_period: false, active: "Goals"
     div class: "max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       h1 "Goals", class: "text-xl"
       div class: "my-3 card" do
@@ -73,9 +73,9 @@ class Domains::EditGoalsPage < AdminLayout
 
   def render_goal_form(op)
     form_for Domains::Settings::Goals::Create.with(@domain.id) do
-      m IntDropdownComponent, selects: [{"event", 0}, {"path", 1}], field: op.kind
+      mount IntDropdownComponent, selects: [{"event", 0}, {"path", 1}], field: op.kind
 
-      m Shared::Field, op.name, "Name of event or path to visit", &.text_input(attrs: [:required], autofocus: "true", append_class: "w-full form-input my-2 leading-tight")
+      mount Shared::Field, op.name, "Name of event or path to visit", &.text_input(attrs: [:required], autofocus: "true", append_class: "w-full form-input my-2 leading-tight")
 
       submit "Add", data_disable_with: "Adding...", class: "mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
     end

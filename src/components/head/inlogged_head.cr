@@ -12,7 +12,7 @@ class InloggedHead < BaseComponent
               img class: "h-8 w-8", src: "/apple-icon-76x76.png", alt: "Kindmetrics"
             end
             if !domain.nil?
-              m DomainDropdownComponent, domain: domain.not_nil!, domains: domains
+              mount DomainDropdownComponent, domain: domain.not_nil!, domains: domains
             end
           end
           unless current_user.nil?

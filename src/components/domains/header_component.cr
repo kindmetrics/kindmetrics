@@ -56,16 +56,16 @@ class HeaderComponent < BaseComponent
           end
           div class: "flex" do
             if !current_user.nil? && !subscription_user_check
-              m TrialComponent, current_user: current_user.not_nil!
+              mount TrialComponent, current_user: current_user.not_nil!
             end
             if show_period?
-              m PeriodDropdownComponent, to: to, from: from, period: period, period_string: period_string, domain: domain, site_path: site_path, source: source, medium: medium, goal: goal, current_user: current_user
+              mount PeriodDropdownComponent, to: to, from: from, period: period, period_string: period_string, domain: domain, site_path: site_path, source: source, medium: medium, goal: goal, current_user: current_user
             end
           end
         end
 
         # div class: "clear-both w-full pt-2 mt-3" do
-        #  m TabMenu, links: links, active: @active, domain: @domain if @total_sum > 0
+        #  mount TabMenu, links: links, active: @active, domain: @domain if @total_sum > 0
         # end
       end
     end

@@ -8,7 +8,7 @@ class Domains::EditPage < AdminLayout
   needs active : String = "Settings"
 
   def content
-    m HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", period: "7d", show_period: false, active: "Settings"
+    mount HeaderComponent, domain: @domain, current_url: "#", domains: domains, total_sum: 1_i64, share_page: false, period_string: "7 days", period: "7d", show_period: false, active: "Settings"
     div class: "max-w-xl mx-auto py-6 sm:px-6 lg:px-8 p-5" do
       h1 "Edit #{@domain.address}", class: "text-xl"
       div class: "my-3 card" do
@@ -23,11 +23,11 @@ class Domains::EditPage < AdminLayout
   def render_domain_form(op)
     form_for Domains::Update.with(@domain.id) do
       # Edit fields in src/components/domains/form_fields.cr
-      m Shared::Field, operation.address, "Domain", &.text_input(autofocus: "true", disabled: true, append_class: "w-full form-input my-2 leading-tight transistor")
+      mount Shared::Field, operation.address, "Domain", &.text_input(autofocus: "true", disabled: true, append_class: "w-full form-input my-2 leading-tight transistor")
 
-      m TimezoneDropdown, operation.time_zone
+      mount TimezoneDropdown, operation.time_zone
 
-      m Shared::Field, op.shared, "Share", &.checkbox(append_class: "form-checkbox block clear-both my-4")
+      mount Shared::Field, op.shared, "Share", &.checkbox(append_class: "form-checkbox block clear-both my-4")
 
       submit "Update", data_disable_with: "Updating...", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
     end
@@ -69,7 +69,7 @@ class Domains::EditPage < AdminLayout
 
           link "Back to dashboard", to: Domains::Show.with(@domain), class: "stats-bg py-3 px-2 text-white hover:bg-gray-700 hover:no-underline rounded transister"
         end
-        m TabMenu, links: [{"link" => Domains::Edit.url(@domain), "name" => "Domain"}, {"link" => Domains::EditReports.url(@domain), "name" => "Reports"}], active: "Domain"
+        mount TabMenu, links: [{"link" => Domains::Edit.url(@domain), "name" => "Domain"}, {"link" => Domains::EditReports.url(@domain), "name" => "Reports"}], active: "Domain"
       end
     end
   end
