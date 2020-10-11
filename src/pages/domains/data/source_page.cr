@@ -26,7 +26,7 @@ class Domains::Data::SourcePage < Domains::Data::BasePage
           div class: "progress_bar", style: "width: #{(row.percentage || 0.001)*100}%;height: 30px"
           if !row.referrer_domain.nil? && row.referrer_domain.not_nil! == domain.address
             span class: "block px-2", style: "margin-top: -1.6rem;" do
-              text "(direct)"
+              text "(Direct)"
             end
           else
             a class: "block px-2 hover:underline truncate md:w-48 xl:w-56", style: "margin-top: -1.6rem;", href: get_url(row) do
