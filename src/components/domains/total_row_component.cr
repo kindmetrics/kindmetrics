@@ -15,14 +15,14 @@ class TotalRowComponent < BaseComponent
 
         render_element(@total_sum, @total_previous, normalize_number(@total_sum), normalize_number(@total_previous), "Pageviews")
 
-        render_element(@total_bounce, @total_bounce_previous, total_bounce.to_s + "% ", total_bounce_previous.to_s + "%", "Bounce rate")
+        render_element(@total_bounce, @total_bounce_previous, total_bounce.to_s + "% ", total_bounce_previous.to_s + "%", "Bounce rate", false, true)
 
         render_element(@length, @length_previous, time_format(length), time_format(length_previous), "Average session")
       end
     end
   end
 
-  private def render_element(total, total_previous, format_text, format_previous, name : String, first : Bool = false)
+  private def render_element(total, total_previous, format_text, format_previous, name : String, first : Bool = false, reverse : Bool = false)
     div class: "border-b border-gray-200 md:border-b-0 last:border-b-0" do
       div class: "p-4 md:px-8 md:py-4" do
         dl do
@@ -36,7 +36,7 @@ class TotalRowComponent < BaseComponent
             span class: "mr-2 text-xs leading-5 font-medium text-gray-200" do
               text " from " + format_previous
             end
-            mount GrowthComponent, now: total, before: total_previous
+            mount GrowthComponent, now: total, before: total_previous, reverse: reverse
           end
         end
       end
