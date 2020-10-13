@@ -29,9 +29,10 @@ describe Api::Domains::Show do
   end
 
   it "get error if user do not own domain" do
-    token = ApiTokenBox.create &.user_id(UserBox.create(&.trial_ends_at(5.days.ago)).id)
+    user = UserBox.create &.trial_ends_at(5.days.ago)
+    token = ApiTokenBox.create &.user_id(user.id)
 
-    domain = DomainBox.create
+    domain = DomainBox.create &.user_id(user.id)
 
     response = ApiClient.auth(token).exec(Api::Domains::Show.with(domain.id))
     response.status_code.should eq(403)
