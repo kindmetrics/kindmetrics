@@ -27,4 +27,14 @@ describe Api::Domains::Show do
     response.status_code.should eq(404)
     response.body.should_not contain(domain.address)
   end
+
+  it "get error if user do not own domain" do
+    token = ApiTokenBox.create &.user_id(UserBox.create(&.trial_ends_at(5.days.ago)).id)
+
+    domain = DomainBox.create
+
+    response = ApiClient.auth(token).exec(Api::Domains::Show.with(domain.id))
+    response.status_code.should eq(403)
+    response.body.should_not contain(domain.address)
+  end
 end
