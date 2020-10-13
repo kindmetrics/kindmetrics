@@ -137,7 +137,7 @@ class Metrics
     json = res.map_nil(referrer_source: String, referrer_domain: String, referrer_medium: String, count: UInt64).to_json
     return [] of StatsReferrer if json.nil?
     pages = Array(StatsReferrer).from_json(json)
-    count_percentage(pages)
+    pages = count_percentage(pages)
     count_bounce_rate(pages)
   end
 
