@@ -39,9 +39,9 @@ class Domains::Data::EntryPagesPage < Domains::Data::BasePage
 
   def get_url(row)
     if current_user.nil?
-      Share::Show.with(share_id: domain.hashid, goal_id: goal.try { |g| g.id } || 0_i64, site_path: row.address.to_s, source_name: source_name, medium_name: medium_name, from: time_to_string(from), to: time_to_string(to)).url
+      Share::Show.with(share_id: domain.hashid, goal_id: goal.try { |g| g.id }, site_path: row.address.to_s, source: source, medium: medium, from: time_to_string(from), to: time_to_string(to)).url
     else
-      Domains::Show.with(domain_id: domain.id, goal_id: goal.try { |g| g.id } || 0_i64, site_path: row.address.to_s, source_name: source_name, medium_name: medium_name, from: time_to_string(from), to: time_to_string(to)).url
+      Domains::Show.with(domain_id: domain.id, goal_id: goal.try { |g| g.id }, site_path: row.address.to_s, source: source, medium: medium, from: time_to_string(from), to: time_to_string(to)).url
     end
   end
 end

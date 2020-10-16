@@ -12,9 +12,9 @@ class HeaderComponent < BaseComponent
   needs show_period : Bool = true
   needs current_url : String
   needs current_user : User?
-  needs site_path : String = ""
-  needs source : String = ""
-  needs medium : String = ""
+  needs site_path : String?
+  needs source : String?
+  needs medium : String?
   needs goal : Goal? = nil
 
   def links

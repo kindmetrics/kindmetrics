@@ -6,7 +6,7 @@ abstract class Domains::Data::BasePage
   needs to : Time
   needs current_user : User?
   needs goal : Goal?
-  needs site_path : String = ""
-  needs source_name : String = ""
-  needs medium_name : String = ""
+  needs site_path : String?
+  needs source : String?
+  needs medium : String?
 end

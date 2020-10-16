@@ -32,9 +32,9 @@ class ReferrerMainComponent < BaseComponent
 
   def get_url(row)
     if current_user.nil?
-      Share::Show.with(share_id: current_domain.hashid, source_name: row.referrer_source.to_s, to: time_to_string(to), from: time_to_string(from)).url
+      Share::Show.with(share_id: current_domain.hashid, source: row.referrer_source.to_s, to: time_to_string(to), from: time_to_string(from)).url
     else
-      Domains::Show.with(domain_id: current_domain.id, source_name: row.referrer_source.to_s, to: time_to_string(to), from: time_to_string(from)).url
+      Domains::Show.with(domain_id: current_domain.id, source: row.referrer_source.to_s, to: time_to_string(to), from: time_to_string(from)).url
     end
   end
 end
