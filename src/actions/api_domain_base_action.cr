@@ -32,7 +32,7 @@ abstract class ApiDomainBaseAction < ApiAction
 
   private def goal : Goal?
     return nil if goal_id.nil?
-    GoalQuery.find(goal_id.not_nil!)
+    GoalQuery.new.domain_id(domain.id).find(goal_id.not_nil!)
   end
 
   private def metrics : Metrics
