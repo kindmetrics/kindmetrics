@@ -49,9 +49,9 @@ class Domains::Data::SourcePage < Domains::Data::BasePage
 
   def get_url(row)
     if current_user.nil?
-      Share::Show.with(share_id: domain.hashid, goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: row.referrer_source.to_s, from: time_to_string(from), to: time_to_string(to)).url
+      Share::Show.with(share_id: domain.hashid, goal_id: goal.try { |g| g.id }, site_path: site_path, source: row.referrer_source.to_s, from: time_to_string(from), to: time_to_string(to)).url
     else
-      Domains::Show.with(domain_id: domain.id, goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: row.referrer_source.to_s, from: time_to_string(from), to: time_to_string(to)).url
+      Domains::Show.with(domain_id: domain.id, goal_id: goal.try { |g| g.id }, site_path: site_path, source: row.referrer_source.to_s, from: time_to_string(from), to: time_to_string(to)).url
     end
   end
 end

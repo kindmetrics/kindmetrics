@@ -1,11 +1,6 @@
 class Api::Domains::Goals::Index < ApiDomainBaseAction
   get "/api/domains/:domain_id/goals" do
-    data = get_goals
-    if data
-      json Domain::GoalSerializer.new(data)
-    else
-      json nil, status: 500
-    end
+    json Domain::GoalSerializer.new(get_goals)
   end
 
   def get_goals
