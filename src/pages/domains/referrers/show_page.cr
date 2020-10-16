@@ -1,5 +1,5 @@
 class Domains::Referrer::ShowPage < Share::BasePage
-  needs source : String
+  needs source : String?
   needs events : Array(StatsReferrer)
   needs total : Int64
   needs share_page : Bool = false
@@ -35,9 +35,9 @@ class Domains::Referrer::ShowPage < Share::BasePage
 
   def header_url(period)
     if share_page?
-      Share::Referrer::Show.with(@domain.hashid, source: source, from: from, to: to)
+      Share::Referrer::Show.with(@domain.hashid, source_name: source || "", from: from, to: to)
     else
-      Domains::Referrer::Show.with(@domain.id, source: source, from: from, to: to)
+      Domains::Referrer::Show.with(@domain.id, source_name: source || "", from: from, to: to)
     end
   end
 end

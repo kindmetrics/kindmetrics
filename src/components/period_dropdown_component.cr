@@ -6,20 +6,20 @@ class PeriodDropdownComponent < BaseComponent
   needs period : String
   needs domain : Domain
   needs current_user : User?
-  needs site_path : String = ""
-  needs source : String = ""
-  needs medium : String = ""
+  needs site_path : String?
+  needs source : String?
+  needs medium : String?
   needs goal : Goal? = nil
 
   def render
     div class: "text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900" do
       div class: "relative", data_controller: "reveal" do
-        a href: "", class: "inline-block select-none rounded-md p-3 border-kind-gray border bg-white transister", data_action: "click->reveal#toggle click@window->reveal#hide", role: "button" do
+        a href: "", class: "inline-block select-none rounded-md p-3 text-white bg-kind-black transister", data_action: "click->reveal#toggle click@window->reveal#hide", role: "button" do
           span class: "appearance-none flex items-center justify-between inline-block text-base font-medium" do
             span do
               text period_name
             end
-            tag "svg", class: "h-4 w-4 ml-2 text-kind-blue stroke-current", viewBox: "0 0 20 20", xmlns: "http://www.w3.org/2000/svg" do
+            tag "svg", class: "h-4 w-4 ml-2 text-white fill-current", viewBox: "0 0 20 20", xmlns: "http://www.w3.org/2000/svg" do
               tag "path", d: "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
             end
           end
@@ -51,17 +51,17 @@ class PeriodDropdownComponent < BaseComponent
 
   def period_url(from : Time, to : Time = Time.utc)
     if current_user.nil?
-      Share::Show.with(domain.hashid, from: time_to_string(from), to: time_to_string(to), goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
+      Share::Show.with(domain.hashid, from: time_to_string(from), to: time_to_string(to), goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium).url
     else
-      Domains::Show.with(domain.id, from: time_to_string(from), to: time_to_string(to), goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
+      Domains::Show.with(domain.id, from: time_to_string(from), to: time_to_string(to), goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium).url
     end
   end
 
   def period_url(period : String)
     if current_user.nil?
-      Share::Show.with(domain.hashid, period: period, goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
+      Share::Show.with(domain.hashid, period: period, goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium).url
     else
-      Domains::Show.with(domain.id, period: period, goal_id: goal.try { |g| g.id } || 0_i64, site_path: site_path, source_name: source, medium_name: medium).url
+      Domains::Show.with(domain.id, period: period, goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium).url
     end
   end
 

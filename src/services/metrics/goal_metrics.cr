@@ -2,7 +2,7 @@ class GoalMetrics
   include Percentage
   include ClickDates
 
-  def initialize(@domain : Domain, @from_date : Time, @to_date : Time, @path : String = "", @source : String = "", @medium : String = "")
+  def initialize(@domain : Domain, @from_date : Time, @to_date : Time, @path : String? = nil, @source : String? = nil, @medium : String? = nil)
     @client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
   end
 
@@ -56,20 +56,20 @@ class GoalMetrics
   end
 
   private def where_path_string
-    return if @path.empty?
+    return if @path.nil?
 
-    "AND path=#{PG::EscapeHelper.escape_literal(@path.strip)}"
+    "AND path=#{PG::EscapeHelper.escape_literal(@path.not_nil!.strip)}"
   end
 
   private def where_source_string
-    return if @source.empty?
+    return if @source.nil?
 
-    "AND referrer_source=#{PG::EscapeHelper.escape_literal(@source.strip)}"
+    "AND referrer_source=#{PG::EscapeHelper.escape_literal(@source.not_nil!.strip)}"
   end
 
   private def where_medium_string
-    return if @medium.empty?
+    return if @medium.nil?
 
-    "AND referrer_medium=#{PG::EscapeHelper.escape_literal(@medium.strip)}"
+    "AND referrer_medium=#{PG::EscapeHelper.escape_literal(@medium.not_nil!.strip)}"
   end
 end

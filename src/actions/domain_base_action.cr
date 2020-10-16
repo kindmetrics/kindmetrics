@@ -1,13 +1,13 @@
 abstract class DomainBaseAction < BrowserAction
   include Timeparser
   extend Timeparser
-  param from : String = ""
-  param to : String = ""
+  param from : String?
+  param to : String?
   param period : String = "7d"
-  param goal_id : Int64 = 0_i64
-  param site_path : String = ""
-  param source_name : String = ""
-  param medium_name : String = ""
+  param goal_id : Int64?
+  param site_path : String?
+  param source : String?
+  param medium : String?
 
   before require_domain
 
@@ -29,17 +29,17 @@ abstract class DomainBaseAction < BrowserAction
   end
 
   private def goal : Goal?
-    return nil if goal_id == 0
-    GoalQuery.find(goal_id)
+    return nil if goal_id.nil?
+    GoalQuery.find(goal_id.not_nil!)
   end
 
   private def metrics : Metrics
-    Metrics.new(domain, real_from, real_to, goal, site_path, source_name, medium_name)
+    Metrics.new(domain, real_from, real_to, goal, site_path, source, medium)
   end
 
   private def real_from : Time
-    if !from.empty?
-      string_to_date(from)
+    if !from.nil?
+      string_to_date(from.not_nil!)
     elsif !period.empty?
       period_time(period)
     else
@@ -48,8 +48,8 @@ abstract class DomainBaseAction < BrowserAction
   end
 
   private def real_to : Time
-    if !to.empty?
-      string_to_date(to)
+    if !to.nil?
+      string_to_date(to.not_nil!)
     else
       Time.utc.at_end_of_day
     end

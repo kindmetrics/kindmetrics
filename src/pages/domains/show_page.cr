@@ -16,9 +16,9 @@ class Domains::ShowPage < SecretGuestLayout
   needs period : String
   needs period_string : String
   needs share_page : Bool = false
-  needs site_path : String = ""
-  needs source : String = ""
-  needs medium : String = ""
+  needs site_path : String?
+  needs source : String?
+  needs medium : String?
   needs active : String = "Dashboard"
   needs goal : Goal?
   quick_def page_title, "Analytics for " + @domain.address
@@ -44,27 +44,33 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_query_tabs
-    return if goal.nil? && site_path.empty? && source.empty? && medium.empty?
+    return if goal.nil? && site_path.nil? && source.nil? && medium.nil?
+    from_string = unless from.nil?
+      time_to_string(from.not_nil!)
+    end
+    to_string = unless to.nil?
+      time_to_string(to.not_nil!)
+    end
     div class: "gradient-color" do
       div class: "px-2 sm:px-0 pt-4" do
         if !goal.nil?
-          taber("Goal", goal.not_nil!.name, share_page? ? Share::Show.with(**generate_share_params("goal"), from: time_to_string(from), to: time_to_string(to)) : Domains::Show.with(**generate_params("goal"), from: time_to_string(from), to: time_to_string(to)))
+          taber("Goal", goal.not_nil!.name, share_page? ? Share::Show.with(**generate_share_params("goal"), from: from_string, to: to_string) : Domains::Show.with(**generate_params("goal"), from: from_string, to: to_string))
         end
-        if !site_path.empty?
-          taber("Path", site_path, share_page? ? Share::Show.with(**generate_share_params("site_path"), from: time_to_string(from), to: time_to_string(to)) : Domains::Show.with(**generate_params("site_path"), from: time_to_string(from), to: time_to_string(to)))
+        if !site_path.nil?
+          taber("Path", site_path.not_nil!, share_page? ? Share::Show.with(**generate_share_params("site_path"), from: from_string, to: to_string) : Domains::Show.with(**generate_params("site_path"), from: from_string, to: to_string))
         end
-        if !source.empty?
-          taber("Source", source, share_page? ? Share::Show.with(**generate_share_params("source_name"), from: time_to_string(from), to: time_to_string(to)) : Domains::Show.with(**generate_params("source_name"), from: time_to_string(from), to: time_to_string(to)))
+        if !source.nil?
+          taber("Source", source.not_nil!, share_page? ? Share::Show.with(**generate_share_params("source"), from: from_string, to: to_string) : Domains::Show.with(**generate_params("source"), from: from_string, to: to_string))
         end
-        if !medium.empty?
-          taber("Medium", medium, share_page? ? Share::Show.with(**generate_share_params("medium_name"), from: time_to_string(from), to: time_to_string(to)) : Domains::Show.with(**generate_params("medium_name"), from: time_to_string(from), to: time_to_string(to)))
+        if !medium.nil?
+          taber("Medium", medium.not_nil!, share_page? ? Share::Show.with(**generate_share_params("medium"), from: from_string, to: to_string) : Domains::Show.with(**generate_params("medium"), from: from_string, to: to_string))
         end
       end
     end
   end
 
   def taber(name : String, value : String, close)
-    div class: "inline-block mini-card text-black mr-2 bg-white items-center" do
+    div class: "inline-block mini-card text-white mr-2 bg-white items-center" do
       span class: "mr-2" do
         text "#{name}: #{value}"
       end
@@ -88,28 +94,34 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_the_rest
+    from_string = unless from.nil?
+      time_to_string(from.not_nil!)
+    end
+    to_string = unless to.nil?
+      time_to_string(to.not_nil!)
+    end
     div class: "w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" do
       div class: "card" do
-        if source.empty? && medium.empty?
-          mount LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+        if source.nil? && medium.nil?
+          mount LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium
         else
-          mount LoaderComponent, domain: @domain, url: "data/entry_pages", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+          mount LoaderComponent, domain: @domain, url: "data/entry_pages", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium
         end
       end
       div class: "card" do
-        if source.empty?
-          mount LoaderComponent, domain: @domain, url: "data/sources", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+        if source.nil?
+          mount LoaderComponent, domain: @domain, url: "data/sources", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium
           if @share_page
-            mount DetailsLinkComponent, link: Share::Referrer::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to)).url
+            mount DetailsLinkComponent, link: Share::Referrer::Index.with(@domain.hashid, from: from_string, to: to_string).url
           else
-            mount DetailsLinkComponent, link: Domains::Referrer::Index.with(@domain, from: time_to_string(from), to: time_to_string(to)).url
+            mount DetailsLinkComponent, link: Domains::Referrer::Index.with(@domain, from: from_string, to: to_string).url
           end
         else
-          mount LoaderComponent, domain: @domain, url: "data/referrers", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+          mount LoaderComponent, domain: @domain, url: "data/referrers", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium
           if @share_page
-            mount DetailsLinkComponent, link: Share::Referrer::Show.with(@domain.hashid, source: source, from: time_to_string(from), to: time_to_string(to)).url
+            mount DetailsLinkComponent, link: Share::Referrer::Show.with(@domain.hashid, source_name: source || "", from: from_string, to: to_string).url
           else
-            mount DetailsLinkComponent, link: Domains::Referrer::Show.with(@domain, source: source, from: time_to_string(from), to: time_to_string(to)).url
+            mount DetailsLinkComponent, link: Domains::Referrer::Show.with(@domain, source_name: source || "", from: from_string, to: to_string).url
           end
         end
       end
@@ -150,20 +162,20 @@ class Domains::ShowPage < SecretGuestLayout
   def generate_params(kind : String)
     {
       domain_id:   domain.id,
-      goal_id:     !goal.nil? && kind != "goal" ? goal.not_nil!.id : 0_i64,
-      site_path:   site_path.empty? || kind == "site_path" ? "" : site_path,
-      source_name: source.empty? || kind == "source_name" ? "" : source,
-      medium_name: medium.empty? || kind == "medium_name" ? "" : medium,
+      goal_id:     !goal.nil? && kind != "goal" ? goal.not_nil!.id : nil,
+      site_path:   site_path.nil? || kind == "site_path" ? nil : site_path,
+      source: source.nil? || kind == "source" ? nil : source,
+      medium: medium.nil? || kind == "medium" ? nil : medium,
     }
   end
 
   def generate_share_params(kind : String)
     {
       share_id:    domain.hashid,
-      goal_id:     !goal.nil? && kind != "goal" ? goal.not_nil!.id : 0_i64,
-      site_path:   site_path.empty? || kind == "site_path" ? "" : site_path,
-      source_name: source.empty? || kind == "source_name" ? "" : source,
-      medium_name: medium.empty? || kind == "medium_name" ? "" : medium,
+      goal_id:     !goal.nil? && kind != "goal" ? goal.not_nil!.id : nil,
+      site_path:   site_path.nil? || kind == "site_path" ? nil : site_path,
+      source: source.nil? || kind == "source" ? nil : source,
+      medium: medium.nil? || kind == "medium" ? nil : medium,
     }
   end
 end
