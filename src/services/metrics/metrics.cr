@@ -458,5 +458,4 @@ class Metrics
 
     "AND browser_name=#{PG::EscapeHelper.escape_literal(@browser.not_nil!.strip)}"
   end
-
 end

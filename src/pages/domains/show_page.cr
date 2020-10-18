@@ -175,8 +175,8 @@ class Domains::ShowPage < SecretGuestLayout
       site_path: site_path.nil? || kind == "site_path" ? nil : site_path,
       source:    source.nil? || kind == "source" ? nil : source,
       medium:    medium.nil? || kind == "medium" ? nil : medium,
-      country:    country.nil? || kind == "country" ? nil : country,
-      browser:    browser.nil? || kind == "browser" ? nil : browser,
+      country:   country.nil? || kind == "country" ? nil : country,
+      browser:   browser.nil? || kind == "browser" ? nil : browser,
     }
   end
 
@@ -187,8 +187,8 @@ class Domains::ShowPage < SecretGuestLayout
       site_path: site_path.nil? || kind == "site_path" ? nil : site_path,
       source:    source.nil? || kind == "source" ? nil : source,
       medium:    medium.nil? || kind == "medium" ? nil : medium,
-      country:    country.nil? || kind == "country" ? nil : country,
-      browser:    browser.nil? || kind == "browser" ? nil : browser,
+      country:   country.nil? || kind == "country" ? nil : country,
+      browser:   browser.nil? || kind == "browser" ? nil : browser,
     }
   end
 end
