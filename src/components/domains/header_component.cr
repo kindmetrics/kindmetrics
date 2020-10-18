@@ -15,6 +15,8 @@ class HeaderComponent < BaseComponent
   needs site_path : String?
   needs source : String?
   needs medium : String?
+  needs country : String?
+  needs browser : String?
   needs goal : Goal? = nil
 
   def links
@@ -59,7 +61,7 @@ class HeaderComponent < BaseComponent
               mount TrialComponent, current_user: current_user.not_nil!
             end
             if show_period?
-              mount PeriodDropdownComponent, to: to, from: from, period: period, period_string: period_string, domain: domain, site_path: site_path, source: source, medium: medium, goal: goal, current_user: current_user
+              mount PeriodDropdownComponent, to: to, from: from, period: period, period_string: period_string, domain: domain, site_path: site_path, source: source, medium: medium, goal: goal, browser: browser, country: country, current_user: current_user
             end
           end
         end

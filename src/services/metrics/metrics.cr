@@ -2,7 +2,7 @@ class Metrics
   include Percentage
   include ClickDates
 
-  def initialize(@domain : Domain, @from_date : Time, @to_date : Time, @goal : Goal? = nil, @path : String? = nil, @source : String? = nil, @medium : String? = nil)
+  def initialize(@domain : Domain, @from_date : Time, @to_date : Time, @goal : Goal? = nil, @path : String? = nil, @source : String? = nil, @medium : String? = nil, @country : String? = nil, @browser : String? = nil)
     @client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
   end
 
@@ -29,6 +29,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     SQL
     res = @client.execute(sql)
     res.map(unique: UInt64).first["unique"].to_i64
@@ -41,6 +43,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     SQL
     res = @client.execute(sql)
     res.map(total: UInt64).first["total"].to_i64
@@ -54,6 +58,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_i64?
@@ -69,6 +75,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     SQL
     res = @client.execute(sql)
     avg_length = res.data.first.first.as_f?
@@ -84,6 +92,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_i64?
@@ -99,6 +109,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     SQL
     res = @client.execute(sql)
     bounce = res.data.first.first.as_i64?
@@ -114,6 +126,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY referrer_source
     ORDER BY total desc
     SQL
@@ -130,6 +144,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY referrer_source
     ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
@@ -149,6 +165,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY referrer_url
     ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
@@ -168,6 +186,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY referrer_medium
     ORDER BY count desc
     SQL
@@ -188,6 +208,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY toDate(created_at)
     ORDER BY toDate(created_at) asc
     SQL
@@ -220,6 +242,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY toDate(created_at)
     ORDER BY toDate(created_at) asc
     SQL
@@ -252,6 +276,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY path
     ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
@@ -269,6 +295,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY path
     ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
@@ -286,6 +314,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY country
     ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
@@ -310,6 +340,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY country
     ORDER BY count asc
     SQL
@@ -326,6 +358,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY device
     ORDER BY COUNT(id) desc LIMIT 6
     SQL
@@ -343,6 +377,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY browser_name
     ORDER BY COUNT(id) desc LIMIT 6
     SQL
@@ -360,6 +396,8 @@ class Metrics
     #{where_path_string}
     #{where_source_string}
     #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
     GROUP BY operative_system
     ORDER BY COUNT(id) desc LIMIT 6
     SQL
@@ -407,5 +445,17 @@ class Metrics
     return if @medium.nil?
 
     "AND referrer_medium=#{PG::EscapeHelper.escape_literal(@medium.not_nil!.strip)}"
+  end
+
+  private def where_country_string
+    return if @country.nil?
+
+    "AND country=#{PG::EscapeHelper.escape_literal(@country.not_nil!.strip)}"
+  end
+
+  private def where_browser_string
+    return if @browser.nil?
+
+    "AND browser_name=#{PG::EscapeHelper.escape_literal(@browser.not_nil!.strip)}"
   end
 end

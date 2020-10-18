@@ -26,7 +26,7 @@ class Domains::Data::SourcePage < Domains::Data::BasePage
           div class: "progress_bar", style: "width: #{(row.percentage || 0.001)*100}%;height: 30px"
           if !row.referrer_domain.nil? && row.referrer_domain.not_nil! == domain.address
             span class: "block px-2", style: "margin-top: -1.6rem;" do
-              text "(Direct)"
+              text "Direct"
             end
           else
             a class: "block px-2 hover:underline truncate md:w-48 xl:w-56", style: "margin-top: -1.6rem;", href: get_url(row) do
@@ -49,9 +49,9 @@ class Domains::Data::SourcePage < Domains::Data::BasePage
 
   def get_url(row)
     if current_user.nil?
-      Share::Show.with(share_id: domain.hashid, goal_id: goal.try { |g| g.id }, site_path: site_path, source: row.referrer_source.to_s, from: time_to_string(from), to: time_to_string(to)).url
+      Share::Show.with(share_id: domain.hashid, goal_id: goal.try { |g| g.id }, site_path: site_path, source: row.referrer_source.to_s, country: country, browser: browser, from: time_to_string(from), to: time_to_string(to)).url
     else
-      Domains::Show.with(domain_id: domain.id, goal_id: goal.try { |g| g.id }, site_path: site_path, source: row.referrer_source.to_s, from: time_to_string(from), to: time_to_string(to)).url
+      Domains::Show.with(domain_id: domain.id, goal_id: goal.try { |g| g.id }, site_path: site_path, source: row.referrer_source.to_s, country: country, browser: browser, from: time_to_string(from), to: time_to_string(to)).url
     end
   end
 end

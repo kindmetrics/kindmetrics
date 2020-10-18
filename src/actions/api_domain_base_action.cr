@@ -10,6 +10,8 @@ abstract class ApiDomainBaseAction < ApiAction
   param site_path : String?
   param source_name : String?
   param medium_name : String?
+  param country : String?
+  param browser : String?
 
   before require_domain
 
@@ -36,7 +38,7 @@ abstract class ApiDomainBaseAction < ApiAction
   end
 
   private def metrics : Metrics
-    Metrics.new(domain, real_from, real_to, goal, site_path, source_name, medium_name)
+    Metrics.new(domain, real_from, real_to, goal, site_path, source_name, medium_name, country, browser)
   end
 
   def render(error : LuckyCan::ForbiddenError)

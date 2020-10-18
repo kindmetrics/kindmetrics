@@ -8,6 +8,8 @@ abstract class DomainShareBaseAction < BrowserAction
   param site_path : String?
   param source : String?
   param medium : String?
+  param country : String?
+  param browser : String?
 
   before require_domain
 
@@ -37,7 +39,7 @@ abstract class DomainShareBaseAction < BrowserAction
   end
 
   private def metrics : Metrics
-    Metrics.new(domain, real_from, real_to, goal, site_path, source, medium)
+    Metrics.new(domain, real_from, real_to, goal, site_path, source, medium, country, browser)
   end
 
   private def real_from : Time

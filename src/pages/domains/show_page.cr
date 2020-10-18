@@ -19,6 +19,9 @@ class Domains::ShowPage < SecretGuestLayout
   needs site_path : String?
   needs source : String?
   needs medium : String?
+  needs country : String?
+  needs country_name : String?
+  needs browser : String?
   needs active : String = "Dashboard"
   needs goal : Goal?
   quick_def page_title, "Analytics for " + @domain.address
@@ -44,7 +47,7 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_query_tabs
-    return if goal.nil? && site_path.nil? && source.nil? && medium.nil?
+    return if goal.nil? && site_path.nil? && source.nil? && medium.nil? && country.nil? && browser.nil?
     from_string = unless from.nil?
       time_to_string(from.not_nil!)
     end
@@ -64,6 +67,12 @@ class Domains::ShowPage < SecretGuestLayout
         end
         if !medium.nil?
           taber("Medium", medium.not_nil!, share_page? ? Share::Show.with(**generate_share_params("medium"), from: from_string, to: to_string) : Domains::Show.with(**generate_params("medium"), from: from_string, to: to_string))
+        end
+        if !country.nil?
+          taber("Country", country_name.not_nil!, share_page? ? Share::Show.with(**generate_share_params("country"), from: from_string, to: to_string) : Domains::Show.with(**generate_params("country"), from: from_string, to: to_string))
+        end
+        if !browser.nil?
+          taber("Browser", browser.not_nil!, share_page? ? Share::Show.with(**generate_share_params("browser"), from: from_string, to: to_string) : Domains::Show.with(**generate_params("browser"), from: from_string, to: to_string))
         end
       end
     end
@@ -89,7 +98,7 @@ class Domains::ShowPage < SecretGuestLayout
 
   def render_canvas
     div class: "align-middle", style: "max-height:320px; min-height:315px;" do
-      mount DaysLoaderComponent, domain: @domain, from: time_to_string(from), to: time_to_string(to), goal: @goal, site_path: site_path, source: source, medium: medium
+      mount DaysLoaderComponent, domain: @domain, from: time_to_string(from), to: time_to_string(to), goal: @goal, site_path: site_path, source: source, medium: medium, country: country, browser: browser
     end
   end
 
@@ -103,21 +112,21 @@ class Domains::ShowPage < SecretGuestLayout
     div class: "w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" do
       div class: "card" do
         if source.nil? && medium.nil?
-          mount LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium
+          mount LoaderComponent, domain: @domain, url: "data/pages", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium, country: country, browser: browser
         else
-          mount LoaderComponent, domain: @domain, url: "data/entry_pages", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium
+          mount LoaderComponent, domain: @domain, url: "data/entry_pages", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium, country: country, browser: browser
         end
       end
       div class: "card" do
         if source.nil?
-          mount LoaderComponent, domain: @domain, url: "data/sources", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium
+          mount LoaderComponent, domain: @domain, url: "data/sources", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium, country: country, browser: browser
           if @share_page
             mount DetailsLinkComponent, link: Share::Referrer::Index.with(@domain.hashid, from: from_string, to: to_string).url
           else
             mount DetailsLinkComponent, link: Domains::Referrer::Index.with(@domain, from: from_string, to: to_string).url
           end
         else
-          mount LoaderComponent, domain: @domain, url: "data/referrers", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium
+          mount LoaderComponent, domain: @domain, url: "data/referrers", goal: @goal, from: from_string, to: to_string, site_path: site_path, source: source, medium: medium, country: country, browser: browser
           if @share_page
             mount DetailsLinkComponent, link: Share::Referrer::Show.with(@domain.hashid, source_name: source || "", from: from_string, to: to_string).url
           else
@@ -126,7 +135,7 @@ class Domains::ShowPage < SecretGuestLayout
         end
       end
       div class: "card" do
-        mount LoaderComponent, domain: @domain, url: "data/countries", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, style: "relative clear-both", source: source, medium: medium
+        mount LoaderComponent, domain: @domain, url: "data/countries", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, style: "relative clear-both", source: source, medium: medium, country: country, browser: browser
         if @share_page
           mount DetailsLinkComponent, link: Share::Countries::Index.with(@domain.hashid, from: time_to_string(from), to: time_to_string(to)).url
         else
@@ -134,13 +143,13 @@ class Domains::ShowPage < SecretGuestLayout
         end
       end
       div class: "card" do
-        mount LoaderComponent, domain: @domain, url: "data/devices/device", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+        mount LoaderComponent, domain: @domain, url: "data/devices/device", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium, country: country, browser: browser
       end
       div class: "card" do
-        mount LoaderComponent, domain: @domain, url: "data/devices/browser", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+        mount LoaderComponent, domain: @domain, url: "data/devices/browser", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium, country: country, browser: browser
       end
       div class: "card" do
-        mount LoaderComponent, domain: @domain, url: "data/devices/os", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+        mount LoaderComponent, domain: @domain, url: "data/devices/os", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium, country: country, browser: browser
       end
     end
     render_goals unless @goal
@@ -152,11 +161,11 @@ class Domains::ShowPage < SecretGuestLayout
   end
 
   def render_goals
-    mount LoaderComponent, domain: @domain, url: "data/goals", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium
+    mount LoaderComponent, domain: @domain, url: "data/goals", goal: @goal, from: time_to_string(from), to: time_to_string(to), site_path: site_path, source: source, medium: medium, country: country, browser: browser
   end
 
   def render_header
-    mount HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, from: from, to: to, period: period, show_period: real_count > 0, share_page: @share_page, current_user: current_user, goal: goal, site_path: site_path, medium: medium, source: source
+    mount HeaderComponent, domain: @domain, current_url: context.request.path, domains: @domains, total_sum: @total_sum, period_string: @period_string, from: from, to: to, period: period, show_period: real_count > 0, share_page: @share_page, current_user: current_user, goal: goal, site_path: site_path, medium: medium, source: source, country: country, browser: browser
   end
 
   def generate_params(kind : String)
@@ -166,6 +175,8 @@ class Domains::ShowPage < SecretGuestLayout
       site_path: site_path.nil? || kind == "site_path" ? nil : site_path,
       source:    source.nil? || kind == "source" ? nil : source,
       medium:    medium.nil? || kind == "medium" ? nil : medium,
+      country:   country.nil? || kind == "country" ? nil : country,
+      browser:   browser.nil? || kind == "browser" ? nil : browser,
     }
   end
 
@@ -176,6 +187,8 @@ class Domains::ShowPage < SecretGuestLayout
       site_path: site_path.nil? || kind == "site_path" ? nil : site_path,
       source:    source.nil? || kind == "source" ? nil : source,
       medium:    medium.nil? || kind == "medium" ? nil : medium,
+      country:   country.nil? || kind == "country" ? nil : country,
+      browser:   browser.nil? || kind == "browser" ? nil : browser,
     }
   end
 end

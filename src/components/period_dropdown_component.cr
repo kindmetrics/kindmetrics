@@ -9,6 +9,8 @@ class PeriodDropdownComponent < BaseComponent
   needs site_path : String?
   needs source : String?
   needs medium : String?
+  needs country : String?
+  needs browser : String?
   needs goal : Goal? = nil
 
   def render
@@ -51,17 +53,17 @@ class PeriodDropdownComponent < BaseComponent
 
   def period_url(from : Time, to : Time = Time.utc)
     if current_user.nil?
-      Share::Show.with(domain.hashid, from: time_to_string(from), to: time_to_string(to), goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium).url
+      Share::Show.with(domain.hashid, from: time_to_string(from), to: time_to_string(to), goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium, browser: browser, country: country).url
     else
-      Domains::Show.with(domain.id, from: time_to_string(from), to: time_to_string(to), goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium).url
+      Domains::Show.with(domain.id, from: time_to_string(from), to: time_to_string(to), goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium, browser: browser, country: country).url
     end
   end
 
   def period_url(period : String)
     if current_user.nil?
-      Share::Show.with(domain.hashid, period: period, goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium).url
+      Share::Show.with(domain.hashid, period: period, goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium, browser: browser, country: country).url
     else
-      Domains::Show.with(domain.id, period: period, goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium).url
+      Domains::Show.with(domain.id, period: period, goal_id: goal.try { |g| g.id }, site_path: site_path, source: source, medium: medium, browser: browser, country: country).url
     end
   end
 

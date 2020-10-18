@@ -13,6 +13,8 @@ export default class extends Controller {
     const site_path = this.data.get("site-path")
     const source = this.data.get("source")
     const medium = this.data.get("medium")
+    const country = this.data.get("country")
+    const browser = this.data.get("browser")
     var url = this.data.get("url") + "?from=" + from + "&to=" + to
     if(goal != null) {
       url = url + "&goal_id=" + goal
@@ -25,6 +27,12 @@ export default class extends Controller {
     }
     if(site_path != null) {
       url = url + "&site_path=" + site_path
+    }
+    if(country != null) {
+      url = url + "&country=" + country
+    }
+    if(browser != null) {
+      url = url + "&browser=" + browser
     }
     fetch(url).then(response => {
       return response.text()

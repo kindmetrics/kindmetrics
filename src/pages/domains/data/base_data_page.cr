@@ -9,4 +9,6 @@ abstract class Domains::Data::BasePage
   needs site_path : String?
   needs source : String?
   needs medium : String?
+  needs browser : String?
+  needs country : String?
 end

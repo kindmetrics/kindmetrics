@@ -27,7 +27,7 @@ class Domains::Data::GoalsPage < Domains::Data::BasePage
           div class: "progress_bar", style: "width: #{percentage}%;height: 30px"
           span class: "block px-2 truncate", style: "margin-top: -1.6rem;" do
             if row.count > 0
-              link row.goal_name.to_s, to: current_user.nil? ? Share::Show.with(share_id: domain.hashid, goal_id: goal.id, source: source, medium: medium, from: time_to_string(from), to: time_to_string(to)) : Domains::Show.with(domain_id: domain.id, goal_id: goal.id, source: source, medium: medium, from: time_to_string(from), to: time_to_string(to))
+              link row.goal_name.to_s, to: current_user.nil? ? Share::Show.with(share_id: domain.hashid, goal_id: goal.id, source: source, medium: medium, country: country, browser: browser, from: time_to_string(from), to: time_to_string(to)) : Domains::Show.with(domain_id: domain.id, goal_id: goal.id, source: source, medium: medium, country: country, browser: browser, from: time_to_string(from), to: time_to_string(to))
             else
               text row.goal_name.to_s
             end
