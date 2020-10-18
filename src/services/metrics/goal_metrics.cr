@@ -2,7 +2,7 @@ class GoalMetrics
   include Percentage
   include ClickDates
 
-  def initialize(@domain : Domain, @from_date : Time, @to_date : Time, @path : String? = nil, @source : String? = nil, @medium : String? = nil)
+  def initialize(@domain : Domain, @from_date : Time, @to_date : Time, @path : String? = nil, @source : String? = nil, @medium : String? = nil, @country : String? = nil, @browser : String? = nil)
     @client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
   end
 
@@ -33,6 +33,8 @@ class GoalMetrics
       #{where_path_string}
       #{where_source_string}
       #{where_medium_string}
+      #{where_country_string}
+      #{where_browser_string}
       GROUP BY name
       ORDER BY count desc
       SQL
@@ -43,6 +45,8 @@ class GoalMetrics
       #{where_path_string}
       #{where_source_string}
       #{where_medium_string}
+      #{where_country_string}
+      #{where_browser_string}
       GROUP BY name
       ORDER BY count desc
       SQL
@@ -71,5 +75,17 @@ class GoalMetrics
     return if @medium.nil?
 
     "AND referrer_medium=#{PG::EscapeHelper.escape_literal(@medium.not_nil!.strip)}"
+  end
+
+  private def where_country_string
+    return if @country.nil?
+
+    "AND country=#{PG::EscapeHelper.escape_literal(@country.not_nil!.strip)}"
+  end
+
+  private def where_browser_string
+    return if @browser.nil?
+
+    "AND browser_name=#{PG::EscapeHelper.escape_literal(@browser.not_nil!.strip)}"
   end
 end

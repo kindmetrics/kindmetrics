@@ -25,7 +25,7 @@ class Domains::Data::ReferrerPage < Domains::Data::BasePage
         div class: "w-full h-7" do
           div class: "progress_bar", style: "width: #{(row.percentage || 0.001)*100}%;height: 30px"
           if (row.not_nil!.referrer_url || row.not_nil!.referrer_domain || "").to_s.empty?
-            span class: "block px-2 hover:underline truncate md:w-48 xl:w-56", style: "margin-top: -1.6rem;" do
+            span class: "block px-2 truncate", style: "margin-top: -1.6rem;" do
               text "Direct"
             end
           else

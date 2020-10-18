@@ -1,5 +1,4 @@
-class Domains::Data::CountriesPage
-  include Lucky::HTMLPage
+class Domains::Data::CountriesPage < Domains::Data::BasePage
   needs countries : Array(StatsCountry)
 
   def render
@@ -25,7 +24,7 @@ class Domains::Data::CountriesPage
       td class: "w-5/6 py-1 h-8" do
         div class: "w-full h-7" do
           div class: "progress_bar", style: "width: #{(row.percentage || 0.001)*100}%;height: 30px"
-          span class: "block px-2 truncate", style: "margin-top: -1.6rem;" do
+          a class: "block px-2 hover:underline truncate md:w-48 xl:w-56", style: "margin-top: -1.6rem;", href: get_url(row) do
             text (row.country_name || row.country).to_s
           end
         end
@@ -35,6 +34,14 @@ class Domains::Data::CountriesPage
           text row.count
         end
       end
+    end
+  end
+
+  def get_url(row)
+    if current_user.nil?
+      Share::Show.with(share_id: domain.hashid, country: row.country.to_s, goal_id: goal.try { |g| g.id }, site_path: site_path, browser: browser, source: source, medium: medium, from: time_to_string(from), to: time_to_string(to)).url
+    else
+      Domains::Show.with(domain_id: domain.id, country: row.country.to_s, goal_id: goal.try { |g| g.id }, site_path: site_path, browser: browser, source: source, medium: medium, from: time_to_string(from), to: time_to_string(to)).url
     end
   end
 end
