@@ -4,6 +4,8 @@ abstract class AdminLayout
   # 'needs current_user : User' makes it so that the current_user
   # is always required for pages using MainLayout
   needs current_user : User
+  needs from : Time = Time.utc - 7.days
+  needs to : Time = Time.utc
 
   abstract def content
   abstract def page_title
