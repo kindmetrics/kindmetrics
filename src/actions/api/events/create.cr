@@ -9,7 +9,7 @@ class Api::Events::Create < ApiAction
     domain = DomainQuery.new.address(hostname).first
     return error if domain.nil?
 
-    remote_ip = request.headers["X-Forwarded-For"]? || "92.35.68.246"
+    remote_ip = request.remote_address.to_s || request.headers["X-Forwarded-For"]?
     user_agent = params.get?(:user_agent).to_s
     referrer = hide_local(URI.parse(params.get?(:referrer).try { |r| r.to_s } || ""))
 
