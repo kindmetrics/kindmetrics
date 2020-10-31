@@ -132,15 +132,17 @@ class SidebarComponent < BaseComponent
         {"link" => Share::Show.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Dashboard", "icon" => "dashboard"},
         {"link" => Share::Referrer::Index.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Referrers", "icon" => "referrers"},
         {"link" => Share::Countries::Index.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Countries", "icon" => "countries"},
+        {"link" => Share::PageSpeeds::Index.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Page Speeds", "icon" => "pagespeed"}
       ]
     else
       [
         {"link" => Domains::Show.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Dashboard", "icon" => "dashboard"},
         {"link" => Domains::Referrer::Index.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Referrers", "icon" => "referrers"},
         {"link" => Domains::Countries::Index.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Countries", "icon" => "countries"},
+        {"link" => Domains::PageSpeeds::Index.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Page Speeds", "icon" => "pagespeed"},
         {"link" => Domains::Goals::Index.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Goals", "icon" => "goals"},
         {"link" => Domains::Edit.url(domain.not_nil!), "name" => "Settings", "icon" => "settings"},
-        {"link" => Domains::EditReports.url(domain.not_nil!), "name" => "Reports", "icon" => "reports"},
+        {"link" => Domains::EditReports.url(domain.not_nil!), "name" => "Reports", "icon" => "reports"}
       ]
     end
   end
@@ -174,6 +176,10 @@ class SidebarComponent < BaseComponent
     when "reports"
       return tag "svg", class: classes, viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg" do
         tag "path", clip_rule: "evenodd", d: "M20 4H4C2.89999 4 2.01001 4.90002 2.01001 6L2 18C2 19.1 2.89999 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.90002 21.1 4 20 4ZM4 8L12 13L20 8V18H4V8ZM4 6L12 11L20 6H4Z", fill_rule: "evenodd"
+      end
+    when "pagespeed"
+      return tag "svg", class: classes, viewBox: "0 0 24 24", xmlns: "http://www.w3.org/2000/svg" do
+        tag "path", clip_rule: "evenodd", d: "M15 1H9V3H15V1ZM19.03 7.39001L20.45 5.97C20.02 5.45999 19.55 4.98001 19.04 4.56L17.62 5.98001C16.0699 4.73999 14.12 4 12 4C7.03003 4 3 8.03 3 13C3 17.97 7.02002 22 12 22C16.98 22 21 17.97 21 13C21 10.88 20.26 8.92999 19.03 7.39001ZM5 13C5 16.87 8.13 20 12 20C15.87 20 19 16.87 19 13C19 9.13 15.87 6 12 6C8.13 6 5 9.13 5 13ZM11.6799 15H6.34998C6.91992 16.62 8.16992 17.92 9.76001 18.56L9.65002 18.5L11.6799 15ZM14.3101 7.45999C15.87 8.10999 17.08 9.39999 17.65 11H12.26L14.3101 7.45999ZM10.61 18.83C11.0599 18.94 11.52 19 12 19C13.34 19 14.5699 18.55 15.5699 17.81L13.46 13.91L10.61 18.83ZM6 13C6 11.46 6.58997 10.05 7.55005 8.98999L10.8101 14H6.08997C6.04004 13.67 6 13.34 6 13ZM16.34 17.13C17.37 16.06 18 14.6 18 13C18 12.66 17.96 12.33 17.9099 12H13.5699L16.34 17.13ZM12 7C12.4601 7 12.9 7.06 13.3301 7.14999L10.61 11.85L8.29004 8.29001C9.31006 7.48999 10.6001 7 12 7Z", fill_rule: "evenodd"
       end
     else
       return nil

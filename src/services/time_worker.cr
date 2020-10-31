@@ -62,6 +62,8 @@ class TimeWorker
       referrer_medium: session.referrer_medium,
       path: session.path,
       device: session.device,
+      page_load: session.page_load.to_i,
+      language: session.language,
       operative_system: session.operative_system,
       referrer_domain: session.referrer_domain,
       browser_name: session.browser_name,

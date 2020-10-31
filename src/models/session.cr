@@ -18,7 +18,10 @@ struct Session
 
   property browser_name : String?
   property country : String?
+  property language : String?
   property is_bounce : Int32
+
+  property page_load : Int64
 
   @[JSON::Field(converter: JSON::IntConverter)]
   property length : Int64?

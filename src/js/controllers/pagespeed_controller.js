@@ -3,7 +3,7 @@ import ApexCharts from 'apexcharts'
 export default class extends Controller {
 
   createChart(ctx, response) {
-    const { labels, data, pageviews } = response
+    const { labels, data } = response
 
     var options = {
       chart: {
@@ -38,13 +38,9 @@ export default class extends Controller {
       },
       series: [
         {
-          name: "Visitors",
+          name: "Avg. Page speed (secs)",
           data: data
         },
-        {
-          name: "Pageviews",
-          data: pageviews
-        }
       ],
       dataLabels: {
         enabled: false
@@ -60,7 +56,7 @@ export default class extends Controller {
         curve: 'straight',
         dashArray: [0, 0]
       },
-      colors: ['#30475e', '#3182ce'],
+      colors: ['#30475e'],
       xaxis: {
         type: 'category',
         categories: labels,

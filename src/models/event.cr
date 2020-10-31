@@ -16,6 +16,9 @@ struct Event
   property referrer_domain : String?
   property browser_name : String?
   property country : String?
+  property language : String?
+
+  property page_load : Int64
 
   @[JSON::Field(converter: JSON::IntConverter)]
   property domain_id : Int64
