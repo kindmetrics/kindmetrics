@@ -113,7 +113,6 @@ var Kindmetrics = function () {
 
   _proto.start = function start() {
     try {
-      this.setPushState();
       this.page();
     } catch (e) {
       new Image().src = this.kindmetricsURL + '/api/error?message=' + encodeURIComponent(e.message);

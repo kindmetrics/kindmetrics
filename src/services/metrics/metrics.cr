@@ -267,6 +267,50 @@ class Metrics
     return days, data
   end
 
+  def get_pagespeed_path(limit : Int32 = 6) : Array(StatsPagespeedPath)
+    sql = <<-SQL
+    SELECT path as address, avg(page_load) as page_loader FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND page_load > 0
+    #{where_goal_string}
+    #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
+    GROUP BY path
+    ORDER BY page_loader desc #{limit > 0 ? "LIMIT #{limit}" : nil}
+    SQL
+    res = @client.execute(sql)
+    grouped_json = res.map_nil(address: String, page_load: Float64).to_json
+    return [] of StatsPagespeedPath if res.nil?
+    pages = Array(StatsPagespeedPath).from_json(grouped_json)
+  end
+
+  def get_pagespeed_country(limit : Int32 = 6) : Array(StatsPagespeedCountry)
+    sql = <<-SQL
+    SELECT country, avg(page_load) as page_loader FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND page_load > 0 AND country IS NOT NULL
+    #{where_goal_string}
+    #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
+    GROUP BY country
+    ORDER BY page_loader desc #{limit > 0 ? "LIMIT #{limit}" : nil}
+    SQL
+    res = @client.execute(sql)
+    grouped_json = res.map_nil(country: String, page_load: Float64).to_json
+    return [] of StatsPagespeedCountry if res.nil?
+    countries = Array(StatsPagespeedCountry).from_json(grouped_json)
+    cc2country = IP2Country::CC2Country.new
+    countries.map do |c|
+      next c if c.country.nil?
+      c.country_name = cc2country.lookup(c.country.not_nil!, "en")
+      next c
+    end
+  end
+
   def get_pageviews_days
     return [nil, nil] if total_query == 0
     sql = <<-SQL
