@@ -30,7 +30,7 @@ class Domains::Data::PagespeedPathPage < Domains::Data::BasePage
       end
       td class: "w-1/6 h-8 py-1" do
         div class: "text-right" do
-          text row.page_load.to_s
+          text row.page_load.try { |pl| (pl / 1000).round(3)}.to_s
         end
       end
     end
