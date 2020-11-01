@@ -425,6 +425,12 @@ class Metrics
     res = @client.execute_as_json(sql)
     return [] of StatsLanguage if res.nil?
     languages = Array(StatsLanguage).from_json(res)
+    languages = languages.map do |l|
+      next l if l.language.nil?
+      lang_info = LanguageList::LanguageInfo.find_by_iso_639_1(l.language)
+      l.language_name = lang_info.common_name
+      next l
+    end
     languages = count_percentage(languages)
     languages
   end
