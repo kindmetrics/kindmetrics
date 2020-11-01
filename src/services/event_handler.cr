@@ -93,7 +93,6 @@ class EventHandler
         domain_id: domain.id
       )
     end
-    send_to_socket(domain)
   end
 
   def self.is_current_session?(user_id : String)
@@ -173,8 +172,5 @@ class EventHandler
     AddClickhouse.get_session(user_id)
   rescue Exception
     nil
-  end
-
-  private def self.send_to_socket(domain : Domain)
   end
 end
