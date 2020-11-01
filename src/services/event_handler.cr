@@ -140,7 +140,6 @@ class EventHandler
     end
   end
 
-
   private def self.remove_www(uri : String)
     uri.sub(/^www./i, "")
   end
@@ -177,6 +176,5 @@ class EventHandler
   end
 
   private def self.send_to_socket(domain : Domain)
-
   end
 end

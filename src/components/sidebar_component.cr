@@ -132,7 +132,7 @@ class SidebarComponent < BaseComponent
         {"link" => Share::Show.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Dashboard", "icon" => "dashboard"},
         {"link" => Share::Referrer::Index.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Referrers", "icon" => "referrers"},
         {"link" => Share::Countries::Index.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Countries", "icon" => "countries"},
-        {"link" => Share::PageSpeeds::Index.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Page Speeds", "icon" => "pagespeed"}
+        {"link" => Share::PageSpeeds::Index.url(domain.not_nil!.hashid, to: time_to_string(to), from: time_to_string(from)), "name" => "Page Speeds", "icon" => "pagespeed"},
       ]
     else
       [
@@ -142,7 +142,7 @@ class SidebarComponent < BaseComponent
         {"link" => Domains::PageSpeeds::Index.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Page Speeds", "icon" => "pagespeed"},
         {"link" => Domains::Goals::Index.url(domain.not_nil!, to: time_to_string(to), from: time_to_string(from)), "name" => "Goals", "icon" => "goals"},
         {"link" => Domains::Edit.url(domain.not_nil!), "name" => "Settings", "icon" => "settings"},
-        {"link" => Domains::EditReports.url(domain.not_nil!), "name" => "Reports", "icon" => "reports"}
+        {"link" => Domains::EditReports.url(domain.not_nil!), "name" => "Reports", "icon" => "reports"},
       ]
     end
   end
