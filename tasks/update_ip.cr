@@ -1,5 +1,3 @@
-require "csv_processor"
-
 class UpdateIPCache < LuckyCli::Task
   summary "Update the country cache"
   name "kind.update_cache"
