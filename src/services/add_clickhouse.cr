@@ -1,5 +1,5 @@
 class AddClickhouse
-  def self.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id, created_at : Time = Time.utc)
+  def self.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, page_load : Int32, language : String?, domain_id, session_id, created_at : Time = Time.utc)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
     id = Random.new.rand(0.to_i64..Int64::MAX)
@@ -18,6 +18,8 @@ class AddClickhouse
       referrer_domain:  referrer_domain,
       browser_name:     browser_name,
       country:          country,
+      page_load:        page_load,
+      language:         language,
       domain_id:        domain_id,
       session_id:       session_id,
       created_at:       created_at.to_s("%Y-%m-%d %H:%M:%S"),
@@ -29,7 +31,7 @@ class AddClickhouse
     res = client.insert(buf)
   end
 
-  def self.session_insert(id : Int64, user_id, name : String, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at : Time = Time.utc, mark : Int8 = 0)
+  def self.session_insert(id : Int64, user_id, name : String, length : Int64?, is_bounce : Int32, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, page_load : Int32, language : String?, domain_id, created_at : Time = Time.utc, mark : Int8 = 0)
     client = Clickhouse.new(host: ENV["CLICKHOUSE_HOST"]?.try(&.strip), port: 8123)
 
     json_object = {
@@ -49,6 +51,8 @@ class AddClickhouse
       referrer_domain:  referrer_domain,
       browser_name:     browser_name,
       country:          country,
+      page_load:        page_load,
+      language:         language,
       domain_id:        domain_id,
       created_at:       created_at.to_s("%Y-%m-%d %H:%M:%S"),
     }

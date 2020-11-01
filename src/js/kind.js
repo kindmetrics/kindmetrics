@@ -12,7 +12,7 @@ var Kindmetrics = function () {
     this.trackLocation = window.location;
 
     if (send_pageview) {
-      this.start();
+      this.setPushState();
     }
   }
 
@@ -57,6 +57,8 @@ var Kindmetrics = function () {
 
     var parentNode = window.document.querySelector('[src*="' + this.kindmetricsURL + '"]');
     var domain = parentNode && parentNode.getAttribute('data-domain');
+    var speed = window.performance.timing.domComplete - window.performance.timing.navigationStart;
+    var language = navigator.languages && navigator.languages[0] || navigator.language || navigator.userLanguage;
     var data = {
       name: eventName,
       url: this.getUrl(),
@@ -65,6 +67,8 @@ var Kindmetrics = function () {
       screen_width: window.innerWidth,
       source: this.getSource(),
       medium: this.getMedium(),
+      page_load: speed,
+      language: language,
       user_agent: window.navigator.userAgent
     };
     var url = this.kindmetricsURL + '/api/track';
@@ -76,7 +80,7 @@ var Kindmetrics = function () {
       body: JSON.stringify(data)
     }).then(function (response) {
       if (!response.ok) {
-        _this.ignore(payload.name);
+        _this.ignore(data.name);
       }
     });
   };
@@ -109,7 +113,6 @@ var Kindmetrics = function () {
 
   _proto.start = function start() {
     try {
-      this.setPushState();
       this.page();
     } catch (e) {
       new Image().src = this.kindmetricsURL + '/api/error?message=' + encodeURIComponent(e.message);
@@ -119,4 +122,7 @@ var Kindmetrics = function () {
   return Kindmetrics;
 }();
 
-window.kindmetrics = new Kindmetrics(KINDURL);
+window.kindmetrics = new Kindmetrics(KINDTRACK, KINDURL);
+window.addEventListener('load', function() {
+  window.kindmetrics.start()
+});

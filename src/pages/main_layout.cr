@@ -1,9 +1,12 @@
 abstract class MainLayout
   include Lucky::HTMLPage
+  include Timeparser
 
   # 'needs current_user : User' makes it so that the current_user
   # is always required for pages using MainLayout
   needs current_user : User
+  needs from : Time
+  needs to : Time
 
   abstract def content
   abstract def page_title

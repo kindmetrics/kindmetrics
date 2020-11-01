@@ -233,6 +233,84 @@ class Metrics
     return days, data
   end
 
+  def get_page_speeds
+    return [nil, nil] if total_query == 0
+    sql = <<-SQL
+    SELECT toDate(created_at) as date, avg(page_load) as page_loader FROM kindmetrics.sessions
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND page_load > 0
+    #{where_goal_string}
+    #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
+    GROUP BY toDate(created_at)
+    ORDER BY toDate(created_at) asc
+    SQL
+    res = @client.execute(sql)
+    grouped_json = res.map_nil(date: Time, page_load_sec: Float64).to_json
+    grouped = Array(StatsPageSpeed).from_json(grouped_json)
+    grouped2 = [] of StatsPageSpeed
+    range = (@from_date..@to_date)
+    range.each do |e|
+      date = nil
+      grouped.each do |g|
+        if e.day == g.date.day && e.month == g.date.month
+          date = StatsPageSpeed.new(date: e, page_load_sec: g.page_load_sec.not_nil! / 1000)
+        end
+      end
+      date = StatsPageSpeed.new(date: e, page_load_sec: 0.0_f64) if date.nil?
+      grouped2 << date.not_nil! unless date.nil?
+    end
+    days = grouped2.map { |d| d.date }
+    data = grouped2.map { |d| d.page_load_sec.try(&.round(3)) }
+    return days, data
+  end
+
+  def get_pagespeed_path(limit : Int32 = 6) : Array(StatsPagespeedPath)
+    sql = <<-SQL
+    SELECT path as address, avg(page_load) as page_loader FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND page_load > 0
+    #{where_goal_string}
+    #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
+    GROUP BY path
+    ORDER BY page_loader desc #{limit > 0 ? "LIMIT #{limit}" : nil}
+    SQL
+    res = @client.execute(sql)
+    grouped_json = res.map_nil(address: String, page_load: Float64).to_json
+    return [] of StatsPagespeedPath if res.nil?
+    pages = Array(StatsPagespeedPath).from_json(grouped_json)
+  end
+
+  def get_pagespeed_country(limit : Int32 = 6) : Array(StatsPagespeedCountry)
+    sql = <<-SQL
+    SELECT country, avg(page_load) as page_loader FROM kindmetrics.events
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND page_load > 0 AND country IS NOT NULL
+    #{where_goal_string}
+    #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
+    GROUP BY country
+    ORDER BY page_loader desc #{limit > 0 ? "LIMIT #{limit}" : nil}
+    SQL
+    res = @client.execute(sql)
+    grouped_json = res.map_nil(country: String, page_load: Float64).to_json
+    return [] of StatsPagespeedCountry if res.nil?
+    countries = Array(StatsPagespeedCountry).from_json(grouped_json)
+    cc2country = IP2Country::CC2Country.new
+    countries.map do |c|
+      next c if c.country.nil?
+      c.country_name = cc2country.lookup(c.country.not_nil!, "en")
+      next c
+    end
+  end
+
   def get_pageviews_days
     return [nil, nil] if total_query == 0
     sql = <<-SQL
@@ -309,7 +387,7 @@ class Metrics
   def get_countries(limit : Int32 = 6) : Array(StatsCountry)
     sql = <<-SQL
     SELECT country, uniq(user_id) as count FROM kindmetrics.sessions
-    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}'
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND country IS NOT NULL
     #{where_goal_string}
     #{where_path_string}
     #{where_source_string}
@@ -329,6 +407,32 @@ class Metrics
       c.country_name = cc2country.lookup(c.country.not_nil!, "en")
       next c
     end
+  end
+
+  def get_languages(limit : Int32 = 6) : Array(StatsLanguage)
+    sql = <<-SQL
+    SELECT language, uniq(user_id) as count FROM kindmetrics.sessions
+    WHERE domain_id=#{@domain.id} AND created_at > '#{slim_from_date}' AND created_at < '#{slim_to_date}' AND language IS NOT NULL
+    #{where_goal_string}
+    #{where_path_string}
+    #{where_source_string}
+    #{where_medium_string}
+    #{where_country_string}
+    #{where_browser_string}
+    GROUP BY language
+    ORDER BY count desc #{limit > 0 ? "LIMIT #{limit}" : nil}
+    SQL
+    res = @client.execute_as_json(sql)
+    return [] of StatsLanguage if res.nil?
+    languages = Array(StatsLanguage).from_json(res)
+    languages = languages.map do |l|
+      next l if l.language.nil?
+      lang_info = LanguageList::LanguageInfo.find_by_iso_639_1(l.language)
+      l.language_name = lang_info.common_name
+      next l
+    end
+    languages = count_percentage(languages)
+    languages
   end
 
   def get_countries_map : Array(StatsCountry)?

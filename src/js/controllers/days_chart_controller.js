@@ -97,10 +97,10 @@ export default class extends Controller {
       url = url + "&goal_id=" + goal
     }
     if(source != null) {
-      url = url + "&source_name=" + source
+      url = url + "&source=" + source
     }
     if(medium != null) {
-      url = url + "&medium_name=" + medium
+      url = url + "&medium=" + medium
     }
     if(site_path != null) {
       url = url + "&site_path=" + site_path

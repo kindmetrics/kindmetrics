@@ -17,14 +17,17 @@ class EventHandler
       return if GoalQuery.new.domain_id(domain.id).name(name).size == 0
     end
 
-    country = IPCOUNTRY.lookup_cc(remote_ip)
+    country = IPCOUNTRY.lookup_cc(remote_ip) unless remote_ip.nil? || remote_ip != "127.0.0.1"
 
     browser = UserHash.get_browser(user_agent) if user_agent.present?
-    user_id = UserHash.create(url.host || address, remote_ip, user_agent).to_s
+    user_id = UserHash.create(url.host || address, remote_ip || "", user_agent).to_s
 
     if user_agent.present? && !browser.nil?
       return if browser.not_nil!.bot?
     end
+
+    page_load = params.get?(:page_load).try(&.to_i) || 0
+    language = params.get?(:language).try(&.split("-").first)
 
     temp_source = params.get?(:source)
     temp_medium = params.get?(:medium)
@@ -65,6 +68,8 @@ class EventHandler
         country: country,
         url: url.to_s,
         path: url.path,
+        page_load: page_load,
+        language: language,
         referrer_medium: medium,
         referrer_source: source,
         domain_id: domain.id,
@@ -81,6 +86,8 @@ class EventHandler
         referrer_domain: referrer.host,
         url: url.to_s,
         path: url.path,
+        page_load: page_load,
+        language: language,
         referrer_medium: medium,
         referrer_source: source,
         domain_id: domain.id
@@ -97,19 +104,19 @@ class EventHandler
     return events.first.created_at > SESSION_TIMEOUT.ago
   end
 
-  def self.add_event(user_id : String, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id)
+  def self.add_event(user_id : String, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, page_load, language : String?, country, domain_id)
     session = get_session(user_id)
     if session
-      AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: session.not_nil!.id)
+      AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, page_load, language, domain_id, session_id: session.not_nil!.id)
     else
       puts "session not found?"
     end
   end
 
-  def self.create_session(user_id : String, length : Int64?, name : String, is_bounce : Int32, referrer : String?, url : String?, referrer_source : String?, referrer_medium : String?, path : String?, device : String?, operative_system : String?, referrer_domain : String?, browser_name : String?, country : String?, domain_id : Int64, created_at : Time = Time.utc, mark : Int8 = 0)
+  def self.create_session(user_id : String, length : Int64?, name : String, is_bounce : Int32, referrer : String?, url : String?, referrer_source : String?, referrer_medium : String?, path : String?, device : String?, page_load : Int32, language : String?, operative_system : String?, referrer_domain : String?, browser_name : String?, country : String?, domain_id : Int64, created_at : Time = Time.utc, mark : Int8 = 0)
     id = Random.new.rand(0_i64..Int64::MAX)
-    AddClickhouse.session_insert(id, user_id, name, length, is_bounce, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, created_at.to_utc, mark: mark)
-    AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, domain_id, session_id: id, created_at: created_at.to_utc)
+    AddClickhouse.session_insert(id, user_id, name, length, is_bounce, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, page_load, language, domain_id, created_at.to_utc, mark: mark)
+    AddClickhouse.event_insert(user_id, name, referrer, url, referrer_source, referrer_medium, path, device, operative_system, referrer_domain, browser_name, country, page_load, language, domain_id, session_id: id, created_at: created_at.to_utc)
   end
 
   def self.referer_source(referrer : URI) : String?
