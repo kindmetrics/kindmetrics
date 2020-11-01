@@ -1,5 +1,6 @@
 module LanguageList
-  CACHE_DIR  = File.expand_path(Dir.current) + "/cache"
+  CACHE_DIR = File.expand_path(Dir.current) + "/cache"
+
   class LanguageInfo
     property name : String, iso_639_3 : String?, iso_639_1 : String?, iso_639_2b : String?, iso_639_2t : String?, type : String?
 
@@ -77,15 +78,15 @@ module LanguageList
 
   ALL_LANGUAGES = begin
     yaml_data = YAML.parse(File.read(LanguageList::CACHE_DIR + "/languages.yml"))
-    yaml_data.as_a.map{|e| LanguageInfo.new(e) }
+    yaml_data.as_a.map { |e| LanguageInfo.new(e) }
   end
-  ISO_639_1 = ALL_LANGUAGES.select(&:iso_639_1?)
+  ISO_639_1        = ALL_LANGUAGES.select(&:iso_639_1?)
   LIVING_LANGUAGES = ALL_LANGUAGES.select(&:living?)
   COMMON_LANGUAGES = ALL_LANGUAGES.select(&:common?)
 
-  BY_NAME      = {} of String => LanguageInfo
-  BY_ISO_639_1 = {} of String => LanguageInfo
-  BY_ISO_639_3 = {} of String => LanguageInfo
+  BY_NAME       = {} of String => LanguageInfo
+  BY_ISO_639_1  = {} of String => LanguageInfo
+  BY_ISO_639_3  = {} of String => LanguageInfo
   BY_ISO_639_2B = {} of String => LanguageInfo
   BY_ISO_639_2T = {} of String => LanguageInfo
   ALL_LANGUAGES.each do |lang|
