@@ -17,7 +17,7 @@ class EventHandler
       return if GoalQuery.new.domain_id(domain.id).name(name).size == 0
     end
 
-    country = IPCOUNTRY.lookup_cc(remote_ip) unless remote_ip.nil? || remote_ip == "127.0.0.1"
+    country = IPCOUNTRY.lookup_cc(remote_ip) unless remote_ip.nil? || remote_ip.includes?("127.0.0.1")
 
     browser = UserHash.get_browser(user_agent) if user_agent.present?
     user_id = UserHash.create(url.host || address, remote_ip || "", user_agent).to_s
