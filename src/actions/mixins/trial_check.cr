@@ -10,6 +10,9 @@ module TrialCheck
     return continue if current_user.admin?
     return continue if subscription_user_check
 
+    flash.keep
+    flash.info = "Your trial has passed. You would need to subscribe to continue using Kindmetrics"
+
     redirect to: Users::Billing
   end
 end
