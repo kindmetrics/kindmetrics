@@ -278,7 +278,7 @@ class Metrics
     #{where_country_string}
     #{where_browser_string}
     GROUP BY path
-    ORDER BY page_loader desc #{limit > 0 ? "LIMIT #{limit}" : nil}
+    ORDER BY page_loader ASC #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
     res = @client.execute(sql)
     grouped_json = res.map_nil(address: String, page_load: Float64).to_json
@@ -297,7 +297,7 @@ class Metrics
     #{where_country_string}
     #{where_browser_string}
     GROUP BY country
-    ORDER BY page_loader desc #{limit > 0 ? "LIMIT #{limit}" : nil}
+    ORDER BY page_loader ASC #{limit > 0 ? "LIMIT #{limit}" : nil}
     SQL
     res = @client.execute(sql)
     grouped_json = res.map_nil(country: String, page_load: Float64).to_json
