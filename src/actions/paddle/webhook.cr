@@ -6,13 +6,15 @@ class Paddle::Webhook < ApiAction
     email = params.get?(:email)
     return error if email.nil?
     return error if user.nil?
-    return error unless verify_sign(params.to_h)
+    return error unless paddle_verified?(params.to_h)
 
     kind = params.get?(:alert_name)
 
     case kind
     when "subscription_created"
       create_subscription
+    when "subscription_payment_succeeded"
+      continue_subscription
     when "subscription_updated"
       update_subscription
     when "subscription_cancelled"
@@ -55,6 +57,23 @@ class Paddle::Webhook < ApiAction
     return if subscription.nil?
 
     SaveSubscription.update!(subscription, subscription_id: subscription_id, checkout_id: checkout_id, cancel_url: cancel_url, update_url: update_url, next_bill_at: next_bill_at, plan_id: plan_id)
+  end
+
+  def continue_subscription
+    return if user.nil?
+
+    initial_payment = params.get(:initial_payment)
+    return if initial_payment === 1
+
+    checkout_id = params.get(:checkout_id)
+    plan_id = params.get(:subscription_plan_id)
+    subscription_id = params.get(:subscription_id)
+    next_bill_at = Time.parse_utc(params.get?(:next_bill_date) || "", "%F")
+
+    subscription = user.not_nil!.subscription
+    return if subscription.nil?
+
+    SaveSubscription.update!(subscription, subscription_id: subscription_id, checkout_id: checkout_id, next_bill_at: next_bill_at, plan_id: plan_id)
   end
 
   def cancel_subscription

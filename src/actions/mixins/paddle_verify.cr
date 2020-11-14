@@ -1,5 +1,5 @@
 module PaddleVerify
-  def verify_sign(params)
+  def paddle_verified?(params) : Bool
     signature = Base64.decode(params["p_signature"].to_s)
 
     params.delete("p_signature")
