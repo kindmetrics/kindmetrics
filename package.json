@@ -4,7 +4,7 @@
   "dependencies": {
     "@rails/ujs": "^6.0.0",
     "@tailwindcss/ui": "^0.5.0",
-    "apexcharts": "^3.19.3",
+    "apexcharts": "^3.24.0",
     "datamaps": "^0.5.9",
     "litepicker": "^1.5.7",
     "normalize-scss": "^7.0.1",
