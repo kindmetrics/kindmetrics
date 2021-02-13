@@ -1,4 +1,4 @@
-class GoalBox < Avram::Box
+class GoalFactory < Avram::Factory
   def initialize
     name "/sign_up"
     kind 1

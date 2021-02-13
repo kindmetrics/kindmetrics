@@ -1,4 +1,4 @@
-class DomainBox < Avram::Box
+class DomainFactory < Avram::Factory
   def initialize
     address sequence("kindmetrics.io")
     time_zone "Europe/Stockholm"

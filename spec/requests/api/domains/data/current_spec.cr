@@ -9,9 +9,9 @@ describe Api::Domains::Data::Current do
   end
 
   it "see zero current for domain" do
-    token = ApiTokenBox.create
+    token = ApiTokenFactory.create
 
-    domain = DomainBox.create &.user_id(token.user_id)
+    domain = DomainFactory.create &.user_id(token.user_id)
 
     response = ApiClient.auth(token).exec(Api::Domains::Data::Current.with(domain.id))
     response.status_code.should eq(200)

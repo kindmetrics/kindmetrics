@@ -18,7 +18,7 @@ describe Api::Events::Create do
   end
 
   it "events get created for domain" do
-    domain = DomainBox.create
+    domain = DomainFactory.create
 
     domain.events.size.should eq(0)
 
@@ -30,7 +30,7 @@ describe Api::Events::Create do
   end
 
   it "events ignored if bot" do
-    domain = DomainBox.create
+    domain = DomainFactory.create
 
     domain.events.size.should eq(0)
 
@@ -42,7 +42,7 @@ describe Api::Events::Create do
   end
 
   it "Do not save non-existing events" do
-    domain = DomainBox.create
+    domain = DomainFactory.create
 
     domain.events.size.should eq(0)
 
@@ -54,8 +54,8 @@ describe Api::Events::Create do
   end
 
   it "Do save existing events" do
-    domain = DomainBox.create
-    goal = GoalBox.create &.name("sign_up").domain_id(domain.id)
+    domain = DomainFactory.create
+    goal = GoalFactory.create &.name("sign_up").domain_id(domain.id)
 
     domain.events.size.should eq(0)
 

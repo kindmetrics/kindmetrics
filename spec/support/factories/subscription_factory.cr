@@ -1,4 +1,4 @@
-class SubscriptionBox < Avram::Box
+class SubscriptionFactory < Avram::Factory
   def initialize
     subscription_id sequence("sub_id")
     next_bill_at Time.utc + 6.days

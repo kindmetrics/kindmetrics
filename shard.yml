@@ -39,7 +39,7 @@ dependencies:
     version: 1.5.5
   device_detector:
     github: confact/device_detector
-    version: ~> 0.4.0
+    version: ~> 0.4.1
   email:
     github: arcage/crystal-email
     version: 0.6.1

@@ -10,7 +10,7 @@ shards:
 
   baked_file_system:
     git: https://github.com/schovi/baked_file_system.git
-    version: 0.9.8
+    version: 0.9.8+git.commit.7183bfde8d86a976a6912f582b51cbd1783456af
 
   bindata:
     git: https://github.com/spider-gazelle/bindata.git
@@ -26,7 +26,7 @@ shards:
 
   clickhouse:
     git: https://github.com/confact/clickhouse.cr.git
-    version: 0.5.6+git.commit.3fd20f6341dbf3c37b491f20901b07582d505385
+    version: 0.6.0+git.commit.d608ecfe71b5b4b14d591a9b44c4e87d6c0e42d2
 
   cron_parser:
     git: https://github.com/kostya/cron_parser.git
@@ -50,7 +50,7 @@ shards:
 
   device_detector:
     git: https://github.com/confact/device_detector.git
-    version: 0.4.0
+    version: 0.4.1
 
   dexter:
     git: https://github.com/luckyframework/dexter.git
@@ -85,8 +85,8 @@ shards:
     version: 0.1.5
 
   jq:
-    git: https://github.com/maiha/jq.cr.git
-    version: 0.8.0
+    git: https://github.com/confact/jq.cr.git
+    version: 0.9.0
 
   jwt:
     git: https://github.com/crystal-community/jwt.git
@@ -131,10 +131,6 @@ shards:
   php_serializer:
     git: https://github.com/reiswindy/php_serializer.git
     version: 0.1.0
-
-  pretty:
-    git: https://github.com/maiha/pretty.cr.git
-    version: 0.9.11
 
   pulsar:
     git: https://github.com/luckyframework/pulsar.git

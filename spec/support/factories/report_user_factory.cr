@@ -1,4 +1,4 @@
-class ReportUserBox < Avram::Box
+class ReportUserFactory < Avram::Factory
   def initialize
     email "test@email.com"
     weekly true

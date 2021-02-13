@@ -1,7 +1,7 @@
 require "./app"
 
 require "cron_scheduler"
-require "logger"
+require "log"
 
 L = Log.for("worker")
 

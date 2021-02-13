@@ -9,7 +9,7 @@ describe Api::Domains::Create do
   end
 
   it "create domain for user" do
-    token = ApiTokenBox.create
+    token = ApiTokenFactory.create
 
     user = token.user!
 

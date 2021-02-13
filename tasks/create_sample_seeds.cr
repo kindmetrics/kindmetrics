@@ -1,4 +1,4 @@
-require "../spec/support/boxes/**"
+require "../spec/support/factories/**"
 
 # Add sample data helpful for development, e.g. (fake users, blog posts, etc.)
 #
