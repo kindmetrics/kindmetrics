@@ -9,7 +9,7 @@ describe Api::Domains::Index do
   end
 
   it "see domains of user" do
-    token = ApiTokenBox.create
+    token = ApiTokenFactory.create
 
     token.user!.domains!.size.should eq(0)
 
@@ -17,7 +17,7 @@ describe Api::Domains::Index do
     response.status_code.should eq(200)
     response.body.should_not contain("kindmetrics.io")
 
-    domain = DomainBox.create &.user_id(token.user_id)
+    domain = DomainFactory.create &.user_id(token.user_id)
 
     response = ApiClient.auth(token).exec(Api::Domains::Index)
     response.status_code.should eq(200)

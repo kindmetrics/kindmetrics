@@ -2,7 +2,7 @@ require "../../../spec_helper"
 
 describe Api::Me::Show do
   it "returns the signed in user" do
-    token = ApiTokenBox.create
+    token = ApiTokenFactory.create
 
     user = token.user!
 

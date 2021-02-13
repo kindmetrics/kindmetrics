@@ -9,9 +9,9 @@ describe Api::Domains::Goals::Index do
   end
 
   it "see empty goals list for domain" do
-    token = ApiTokenBox.create
+    token = ApiTokenFactory.create
 
-    domain = DomainBox.create &.user_id(token.user_id)
+    domain = DomainFactory.create &.user_id(token.user_id)
 
     response = ApiClient.auth(token).exec(Api::Domains::Goals::Index.with(domain.id))
     response.status_code.should eq(200)
@@ -20,11 +20,11 @@ describe Api::Domains::Goals::Index do
   end
 
   it "see 1 in goals list for domain" do
-    token = ApiTokenBox.create
+    token = ApiTokenFactory.create
 
-    domain = DomainBox.create &.user_id(token.user_id)
+    domain = DomainFactory.create &.user_id(token.user_id)
 
-    goal = GoalBox.create &.domain_id(domain.id)
+    goal = GoalFactory.create &.domain_id(domain.id)
 
     response = ApiClient.auth(token).exec(Api::Domains::Goals::Index.with(domain.id))
     response.status_code.should eq(200)

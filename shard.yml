@@ -9,15 +9,15 @@ targets:
     main: src/kindmetrics.cr
     worker: src/start_worker.cr
 
-crystal: 0.35.1
+crystal: 0.36.1
 
 dependencies:
   lucky:
     github: luckyframework/lucky
-    version: ~> 0.24.0
+    version: ~> 0.26.0
   authentic:
     github: luckyframework/authentic
-    version: ~> 0.7.0
+    version: ~> 0.7.2
   carbon:
     github: luckyframework/carbon
     version: ~> 0.1.1
@@ -26,7 +26,7 @@ dependencies:
     version: ~> 0.7.0
   lucky_flow:
     github: luckyframework/lucky_flow
-    version: ~> 0.7.0
+    version: ~> 0.7.2
   jwt:
     github: crystal-community/jwt
     version: ~> 1.4.2
@@ -39,7 +39,7 @@ dependencies:
     version: 1.5.5
   device_detector:
     github: confact/device_detector
-    version: ~> 0.4.0
+    version: ~> 0.4.1
   email:
     github: arcage/crystal-email
     version: 0.6.1
@@ -58,6 +58,6 @@ dependencies:
     github: kostya/cron_scheduler
   clickhouse:
     github: confact/clickhouse.cr
-    branch: master
+    version: ~> 0.6.2
   php_serializer:
     github: reiswindy/php_serializer

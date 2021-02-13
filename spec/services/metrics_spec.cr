@@ -8,7 +8,7 @@ describe Metrics do
     AddClickhouse.clean_database
   end
   it "unique calculation" do
-    domain = DomainBox.create
+    domain = DomainFactory.create
 
     EventHandler.create_session(user_id: "11231212", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: nil, is_bounce: 0, domain_id: domain.id)
     EventHandler.create_session(user_id: "53443534", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: nil, is_bounce: 0, domain_id: domain.id)
@@ -19,7 +19,7 @@ describe Metrics do
   end
 
   it "total calculation" do
-    domain = DomainBox.create
+    domain = DomainFactory.create
     user_id = "event973231"
 
     EventHandler.create_session(user_id: user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: nil, is_bounce: 0, domain_id: domain.id)
@@ -33,7 +33,7 @@ describe Metrics do
   end
 
   it "bounce calculation" do
-    domain = DomainBox.create
+    domain = DomainFactory.create
     EventHandler.create_session(user_id: "53443534", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, mark: 1, domain_id: domain.id)
     EventHandler.create_session(user_id: "2423432", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, mark: 1, domain_id: domain.id)
 
@@ -43,7 +43,7 @@ describe Metrics do
   end
 
   it "bounce with 50/50 calculation" do
-    domain = DomainBox.create
+    domain = DomainFactory.create
 
     EventHandler.create_session(user_id: "1573435124370987", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, mark: 1, domain_id: domain.id, created_at: 1.minutes.ago)
     EventHandler.create_session(user_id: "12441241565512", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 234, is_bounce: 0, mark: 1, domain_id: domain.id, created_at: 3.minutes.ago)
@@ -59,7 +59,7 @@ describe Metrics do
   end
 
   it "7 days calculation" do
-    domain = DomainBox.create
+    domain = DomainFactory.create
     EventHandler.create_session(user_id: "dsfdsfdsf", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
     EventHandler.create_session(user_id: "f32532ewfds", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
 
@@ -76,7 +76,7 @@ describe Metrics do
   end
 
   it "fill empty days" do
-    domain = DomainBox.create
+    domain = DomainFactory.create
     EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
     EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
 
@@ -90,7 +90,7 @@ describe Metrics do
   end
 
   it "14 days calculation" do
-    domain = DomainBox.create
+    domain = DomainFactory.create
     EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
     EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
 
@@ -109,7 +109,7 @@ describe Metrics do
   describe "filters" do
     describe "unique" do
       it "filter by path" do
-        domain = DomainBox.create
+        domain = DomainFactory.create
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
 
@@ -120,7 +120,7 @@ describe Metrics do
       end
 
       it "filter by path - only show one" do
-        domain = DomainBox.create
+        domain = DomainFactory.create
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/sdfsf", path: "/test/sdfsf", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
 
@@ -132,7 +132,7 @@ describe Metrics do
     end
     describe "total" do
       it "filter by path" do
-        domain = DomainBox.create
+        domain = DomainFactory.create
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
 
@@ -143,7 +143,7 @@ describe Metrics do
       end
 
       it "filter by path - only show one" do
-        domain = DomainBox.create
+        domain = DomainFactory.create
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/sdfsf", path: "/test/sdfsf", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
 
@@ -155,7 +155,7 @@ describe Metrics do
     end
     describe "devices" do
       it "filter by path" do
-        domain = DomainBox.create
+        domain = DomainFactory.create
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", length: 0, language: "en", page_load: 453, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
 
@@ -166,7 +166,7 @@ describe Metrics do
       end
 
       it "filter by path - only show one" do
-        domain = DomainBox.create
+        domain = DomainFactory.create
         EventHandler.create_session(user_id: "gsddddddr", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/sdfsf", path: "/test/sdfsf", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
         EventHandler.create_session(user_id: "236t5fvsdx", name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: 0, is_bounce: 1, domain_id: domain.id)
 

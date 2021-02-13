@@ -89,7 +89,7 @@ export default class extends Controller {
 
   checkout(event) {
     if(this.data.get("upgrade") == "true") {
-      return window.location = "http://localhost:5000/me/plans/update?plan_id=" + this.plan
+      return window.location = "https://app.kindmetrics.io/me/plans/update?plan_id=" + this.plan
     }
 
     event.preventDefault()

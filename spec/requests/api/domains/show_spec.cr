@@ -9,9 +9,9 @@ describe Api::Domains::Show do
   end
 
   it "see specific domain" do
-    token = ApiTokenBox.create
+    token = ApiTokenFactory.create
 
-    domain = DomainBox.create &.user_id(token.user_id)
+    domain = DomainFactory.create &.user_id(token.user_id)
 
     response = ApiClient.auth(token).exec(Api::Domains::Show.with(domain.id))
     response.status_code.should eq(200)
@@ -19,9 +19,9 @@ describe Api::Domains::Show do
   end
 
   it "get error if user do not own domain" do
-    token = ApiTokenBox.create
+    token = ApiTokenFactory.create
 
-    domain = DomainBox.create
+    domain = DomainFactory.create
 
     response = ApiClient.auth(token).exec(Api::Domains::Show.with(domain.id))
     response.status_code.should eq(404)
@@ -29,10 +29,10 @@ describe Api::Domains::Show do
   end
 
   it "get error if user do not own domain" do
-    user = UserBox.create &.trial_ends_at(5.days.ago)
-    token = ApiTokenBox.create &.user_id(user.id)
+    user = UserFactory.create &.trial_ends_at(5.days.ago)
+    token = ApiTokenFactory.create &.user_id(user.id)
 
-    domain = DomainBox.create &.user_id(user.id)
+    domain = DomainFactory.create &.user_id(user.id)
 
     response = ApiClient.auth(token).exec(Api::Domains::Show.with(domain.id))
     response.status_code.should eq(403)

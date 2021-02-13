@@ -11,7 +11,7 @@ describe Share::Show do
   end
 
   it "Domain is not shared" do
-    domain = DomainBox.create &.shared(false)
+    domain = DomainFactory.create &.shared(false)
 
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
@@ -21,7 +21,7 @@ describe Share::Show do
   end
 
   it "Get share page" do
-    domain = DomainBox.create &.shared(true)
+    domain = DomainFactory.create &.shared(true)
 
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
@@ -34,8 +34,8 @@ describe Share::Show do
   end
 
   it "block if trial is ended" do
-    user = UserBox.create &.trial_ends_at Time.utc - 1.day
-    domain = DomainBox.create &.shared(true).user_id(user.id)
+    user = UserFactory.create &.trial_ends_at Time.utc - 1.day
+    domain = DomainFactory.create &.shared(true).user_id(user.id)
 
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
@@ -48,9 +48,9 @@ describe Share::Show do
   end
 
   it "allow if using subscription" do
-    user = UserBox.create &.trial_ends_at Time.utc - 1.day
-    subscription = SubscriptionBox.create &.user_id(user.id)
-    domain = DomainBox.create &.shared(true).user_id(user.id)
+    user = UserFactory.create &.trial_ends_at Time.utc - 1.day
+    subscription = SubscriptionFactory.create &.user_id(user.id)
+    domain = DomainFactory.create &.shared(true).user_id(user.id)
 
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
@@ -63,9 +63,9 @@ describe Share::Show do
   end
 
   it "allow if subscription is cancelled and still valid date" do
-    user = UserBox.create &.trial_ends_at Time.utc - 1.day
-    subscription = SubscriptionBox.create &.user_id(user.id).cancelled(true).next_bill_at(Time.utc + 2.days)
-    domain = DomainBox.create &.shared(true).user_id(user.id)
+    user = UserFactory.create &.trial_ends_at Time.utc - 1.day
+    subscription = SubscriptionFactory.create &.user_id(user.id).cancelled(true).next_bill_at(Time.utc + 2.days)
+    domain = DomainFactory.create &.shared(true).user_id(user.id)
 
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
@@ -78,9 +78,9 @@ describe Share::Show do
   end
 
   it "block if subscription is cancelled and past due" do
-    user = UserBox.create &.trial_ends_at Time.utc - 1.day
-    subscription = SubscriptionBox.create &.user_id(user.id).cancelled(true).next_bill_at(Time.utc - 2.days)
-    domain = DomainBox.create &.shared(true).user_id(user.id)
+    user = UserFactory.create &.trial_ends_at Time.utc - 1.day
+    subscription = SubscriptionFactory.create &.user_id(user.id).cancelled(true).next_bill_at(Time.utc - 2.days)
+    domain = DomainFactory.create &.shared(true).user_id(user.id)
 
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])
@@ -93,8 +93,8 @@ describe Share::Show do
   end
 
   it "allow if admin" do
-    user = UserBox.create &.trial_ends_at(Time.utc - 1.day).admin(true)
-    domain = DomainBox.create &.shared(true).user_id(user.id)
+    user = UserFactory.create &.trial_ends_at(Time.utc - 1.day).admin(true)
+    domain = DomainFactory.create &.shared(true).user_id(user.id)
 
     hashid = Hashids.new(salt: Lucky::Server.settings.secret_key_base, min_hash_size: HASHID_MIN_LENGTH)
     domain_hashid = hashid.encode([domain.id])

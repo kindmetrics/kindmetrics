@@ -1,4 +1,4 @@
-class UserBox < Avram::Box
+class UserFactory < Avram::Factory
   def initialize
     name sequence("name")
     email "#{sequence("test-email")}@example.com"

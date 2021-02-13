@@ -1,4 +1,4 @@
-require "../spec/support/boxes/**"
+require "../spec/support/factories/**"
 
 # Add seeds here that are *required* for your app to work.
 # For example, you might need at least one admin user or you might need at least
