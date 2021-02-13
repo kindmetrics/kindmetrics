@@ -26,7 +26,7 @@ shards:
 
   clickhouse:
     git: https://github.com/confact/clickhouse.cr.git
-    version: 0.6.0+git.commit.d608ecfe71b5b4b14d591a9b44c4e87d6c0e42d2
+    version: 0.6.1
 
   cron_parser:
     git: https://github.com/kostya/cron_parser.git
