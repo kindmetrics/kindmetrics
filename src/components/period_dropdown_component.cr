@@ -12,6 +12,7 @@ class PeriodDropdownComponent < BaseComponent
   needs country : String?
   needs browser : String?
   needs goal : Goal? = nil
+  needs url_action : Lucky::Action.class = Domains::Show
 
   def render
     div class: "text-sm leading-none rounded no-underline text-gray-700 hover:text-gray-900" do

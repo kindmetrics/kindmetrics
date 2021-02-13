@@ -12,7 +12,7 @@ class RenderKindTracker < BrowserAction
     file = JavascriptStorage.get("kind.js")
     file_content = file.gets_to_end
 
-    pre = file_content.gsub("KINDURL", "\"//#{KindEnv.env("APP_HOST")}\"")
+    pre = file_content.gsub("KINDURL", "\"//#{KindEnv.env("APP_HOST")}\"").gsub("KINDTRACK", "\"//#{KindEnv.env("APP_TRACK_HOST")}\"")
     send_text_response pre, "text/javascript", 200
   end
 end
