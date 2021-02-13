@@ -58,6 +58,6 @@ dependencies:
     github: kostya/cron_scheduler
   clickhouse:
     github: confact/clickhouse.cr
-    version: ~> 0.6.1
+    version: ~> 0.6.2
   php_serializer:
     github: reiswindy/php_serializer
