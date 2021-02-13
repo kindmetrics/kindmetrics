@@ -1,4 +1,4 @@
-FROM crystallang/crystal:0.35.1-alpine-build AS build-env
+FROM crystallang/crystal:0.36.1-alpine-build AS build-env
 
 RUN apk --no-cache add build-base nodejs yarn
 
@@ -17,7 +17,7 @@ RUN crystal build --release tasks.cr -o start_tasks
 RUN crystal build --release ./src/start_worker.cr -o start_worker
 
 
-FROM crystallang/crystal:0.35.1-alpine-build
+FROM crystallang/crystal:0.36.1-alpine-build
 
 RUN mkdir -p /app
 WORKDIR /app
