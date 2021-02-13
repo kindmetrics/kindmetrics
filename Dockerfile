@@ -5,7 +5,7 @@ RUN apk --no-cache add build-base nodejs yarn
 RUN mkdir -p /app
 WORKDIR /app
 
-RUN git clone https://github.com/luckyframework/lucky_cli && cd lucky_cli && git checkout v0.24.0 && shards install && crystal build src/lucky.cr -o /bin/lucky && rm -Rf /app/lucky_cli
+RUN git clone https://github.com/luckyframework/lucky_cli && cd lucky_cli && git checkout v0.26.0 && shards install && crystal build src/lucky.cr -o /bin/lucky && rm -Rf /app/lucky_cli
 
 COPY . /app
 RUN shards install

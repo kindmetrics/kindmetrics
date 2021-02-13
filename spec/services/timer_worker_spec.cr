@@ -10,7 +10,7 @@ describe TimeWorker do
   it "no events attached to session" do
     user_id = "evwesafsafas"
     session_id = Random.new.rand(0.to_i64..Int64::MAX)
-    AddClickhouse.session_insert(id: session_id, user_id: user_id, name: "pageview", length: nil, is_bounce: 1, referrer: "indiehacker.com", url: "https://kindmetrics.com/aaadsad", referrer_source: "indiehacker.com", referrer_medium: "referrer", path: "/asadasd", device: "Desktop", operative_system: "Mac OS", referrer_domain: "indiehacker.com", browser_name: "Chrome", country: "SE", language: "en", page_load: 453, domain_id: DomainBox.create.id)
+    AddClickhouse.session_insert(id: session_id, user_id: user_id, name: "pageview", length: nil, is_bounce: 1, referrer: "indiehacker.com", url: "https://kindmetrics.com/aaadsad", referrer_source: "indiehacker.com", referrer_medium: "referrer", path: "/asadasd", device: "Desktop", operative_system: "Mac OS", referrer_domain: "indiehacker.com", browser_name: "Chrome", country: "SE", language: "en", page_load: 453, domain_id: DomainFactory.create.id)
     session = AddClickhouse.get_session(user_id)
     session.not_nil!.length.should eq(nil)
     session.not_nil!.is_bounce.should eq(1)
@@ -26,7 +26,7 @@ describe TimeWorker do
   it "session with no events and timed out" do
     user_id = "evwesafsafas"
     session_id = Random.new.rand(0.to_i64..Int64::MAX)
-    AddClickhouse.session_insert(id: session_id, user_id: user_id, name: "pageview", length: nil, is_bounce: 1, referrer: "indiehacker.com", url: "https://kindmetrics.com/aaadsad", referrer_source: "indiehacker.com", referrer_medium: "referrer", path: "/asadasd", device: "Desktop", operative_system: "Mac OS", referrer_domain: "indiehacker.com", browser_name: "Chrome", language: "en", page_load: 453, country: "SE", domain_id: DomainBox.create.id, created_at: Time.utc - 50.minutes)
+    AddClickhouse.session_insert(id: session_id, user_id: user_id, name: "pageview", length: nil, is_bounce: 1, referrer: "indiehacker.com", url: "https://kindmetrics.com/aaadsad", referrer_source: "indiehacker.com", referrer_medium: "referrer", path: "/asadasd", device: "Desktop", operative_system: "Mac OS", referrer_domain: "indiehacker.com", browser_name: "Chrome", language: "en", page_load: 453, country: "SE", domain_id: DomainFactory.create.id, created_at: Time.utc - 50.minutes)
     session = AddClickhouse.get_session(user_id)
     session.not_nil!.length.should eq(nil)
     session.not_nil!.is_bounce.should eq(1)
@@ -42,7 +42,7 @@ describe TimeWorker do
   it "has one event attached" do
     AddClickhouse.clean_database
     user_id = "654t5u6hbgfdavgtbfc"
-    EventHandler.create_session(user_id: user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: nil, is_bounce: 1, domain_id: DomainBox.create.id, created_at: 1.hour.ago)
+    EventHandler.create_session(user_id: user_id, name: "pageview", referrer: "https://indiehackers.com/amazing", referrer_domain: "indiehackers.com", url: "https://test.com/test/rrr", path: "/test/rrr", referrer_source: nil, referrer_medium: nil, device: "Android", browser_name: "Chrome", operative_system: "Android", country: "SE", language: "en", page_load: 453, length: nil, is_bounce: 1, domain_id: DomainFactory.create.id, created_at: 1.hour.ago)
     session = AddClickhouse.get_session(user_id)
 
     session.not_nil!.length.should eq(nil)

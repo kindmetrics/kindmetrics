@@ -7,6 +7,6 @@ class SubscriptionFactory < Avram::Factory
     update_url sequence("update_url")
     cancel_url sequence("cancel_url")
     cancelled false
-    user_id UserBox.create.id
+    user_id UserFactory.create.id
   end
 end
