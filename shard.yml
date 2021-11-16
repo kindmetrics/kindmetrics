@@ -54,6 +54,7 @@ dependencies:
     github: splattael/hashids.cr
   quoted_printable:
     github: arcage/crystal-quotedprintable
+    version: ">= 0.1.3"
   cron_scheduler:
     github: kostya/cron_scheduler
   clickhouse:
